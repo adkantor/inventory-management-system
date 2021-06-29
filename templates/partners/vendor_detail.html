@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ vendor.name }}{% endblock title %}
+
+{% block content %}
+
+    <div class="vendor-detail">
+        <h2><a href="">{{ vendor.name }}</a></h2>
+        <p>Tax number: {{ vendor.tax_number }}</p>
+    </div>
+
+{% endblock content %}

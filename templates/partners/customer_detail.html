@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ customer.name }}{% endblock title %}
+
+{% block content %}
+
+    <div class="customer-detail">
+        <h2><a href="">{{ customer.name }}</a></h2>
+        <p>Tax number: {{ customer.tax_number }}</p>
+    </div>
+
+{% endblock content %}

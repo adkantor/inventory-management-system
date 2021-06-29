@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ Vendors }}{% endblock title %}
+
+{% block content %}
+
+    {% for vendor in vendor_list %}
+        <div>
+            <h2><a href="{{ vendor.get_absolute_url }}">{{ vendor.name }}</a></h2>
+        </div>
+    {% endfor %}
+
+{% endblock content %}
