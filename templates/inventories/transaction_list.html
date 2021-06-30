@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+
+{% block title %} Transactions {% endblock title %}
+
+{% block content %}
+
+    {% for transaction in transaction_list %}
+        <div>
+            <h2><a href="{{ transaction.get_absolute_url }}">{{ transaction.type }} {{ transaction.material.name }} {{ transaction.net_weight }} {{ transaction.net_value }}</a></h2>
+        </div>
+    {% endfor %}
+
+{% endblock content %}

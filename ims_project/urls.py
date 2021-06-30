@@ -26,4 +26,5 @@ urlpatterns = [
     # Local apps
     path('', include('pages.urls')),
     path('partners/', include('partners.urls')),
+    path('inventories/', include('inventories.urls')),
 ]

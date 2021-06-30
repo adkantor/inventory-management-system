@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+
+{% block title %} Material Groups {% endblock title %}
+
+{% block content %}
+
+    {% for material_group in material_group_list %}
+        <div>
+            <h2><a href="{{ material_group.get_absolute_url }}">{{ material_group.name }}</a></h2>
+        </div>
+    {% endfor %}
+
+{% endblock content %}

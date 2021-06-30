@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ material.name }}{% endblock title %}
+
+{% block content %}
+
+    <div class="material-detail">
+        <h2><a href="">{{ material.name }}</a></h2>
+        <p> {{ material.material_group.name }} </p>
+    </div>
+
+{% endblock content %}

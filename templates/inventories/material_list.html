@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+
+{% block title %} Materials {% endblock title %}
+
+{% block content %}
+
+    {% for material in material_list %}
+        <div>
+            <h2><a href="{{ material.get_absolute_url }}">{{ material.name }}</a></h2>
+        </div>
+    {% endfor %}
+
+{% endblock content %}
