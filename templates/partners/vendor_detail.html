@@ -5,8 +5,18 @@
 {% block content %}
 
     <div class="vendor-detail">
-        <h2><a href="">{{ vendor.name }}</a></h2>
+        <h2>{{ vendor.name }}</h2>
         <p>Tax number: {{ vendor.tax_number }}</p>
+        <p>Private Person: {{ vendor.is_private_person }}</p>
+        <h3>Address</h3>
+        <p>Country: {{ vendor.tax_number }}</p>
+        <p>Postcode: {{ vendor.postcode }}</p>
+        <p>Address: {{ vendor.address }}</p>
+        <h3>Contact</h3>
+        <p>Name: {{ vendor.contact_name }}</p>
+        <p>Phone: {{ vendor.contact_phone }}</p>
+        <p>Email: {{ vendor.contact_email }}</p>
+        <p><a href="{% url 'vendor_edit' vendor.pk %}">Edit</a> | <a href="{% url 'vendor_delete' vendor.pk %}">Delete</a></p>
     </div>
 
 {% endblock content %}
