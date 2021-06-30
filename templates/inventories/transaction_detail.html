@@ -6,14 +6,15 @@
 
     <div class="transaction-detail">
         <h2><a href="">{{ transaction.material.name }}</a></h2>
-        <p>{{ transaction.transaction_type }}</p>
-        <p>{{ transaction.created_time }}</p>
-        <p>{{ transaction.gross_weight }}</p>
-        <p>{{ transaction.tare_weight }}</p>
-        <p>{{ transaction.net_weight }}</p>
-        <p>{{ transaction.unit_price }}</p>
-        <p>{{ transaction.net_value }}</p>
-        <p>{{ transaction.notes }}</p>
+        <p>Type: {{ transaction.transaction_type }}</p>
+        <p>Created: {{ transaction.created_time }}</p>
+        <p>Gross weight: {{ transaction.gross_weight }}</p>
+        <p>Tare weight: {{ transaction.tare_weight }}</p>
+        <p>Net weight: {{ transaction.net_weight }}</p>
+        <p>Unit price: {{ transaction.unit_price }}</p>
+        <p>Net value: {{ transaction.net_value }}</p>
+        <p>Notes: {{ transaction.notes }}</p>
+        <p><a href="{% url 'transaction_edit' transaction.pk %}">Edit</a> | <a href="{% url 'transaction_delete' transaction.pk %}">Delete</a></p>
     </div>
 
 {% endblock content %}

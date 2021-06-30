@@ -6,6 +6,7 @@
 
     <div class="material-group-detail">
         <h2><a href="">{{ material_group.name }}</a></h2>
+        <p><a href="{% url 'material_group_edit' material_group.pk %}">Edit</a> | <a href="{% url 'material_group_delete' material_group.pk %}">Delete</a></p>
     </div>
 
 {% endblock content %}
