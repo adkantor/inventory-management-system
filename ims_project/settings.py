@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'partners.apps.PartnersConfig',
     'inventories.apps.InventoriesConfig',
+    'documents.apps.DocumentsConfig',
 
 ]
 
@@ -123,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Budapest'
 
 USE_I18N = True
 
