@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
+from documents.models import GoodsReceiptNote
 
 def get_deleted_material_group():
     return MaterialGroup.objects.get_or_create(name='deleted')[0].id
@@ -68,9 +69,15 @@ class Transaction(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, editable=False)
     last_modified = models.DateTimeField(auto_now=True, editable=False)
     gross_weight = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    tare_weight = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    tare_weight = models.DecimalField(max_digits=7, decimal_places=2, default=0, blank=True)
     unit_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     notes = models.TextField(max_length=255, blank=True)
+    goods_receipt_note = models.ForeignKey(
+        GoodsReceiptNote, 
+        related_name='transactions', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True)
 
     @property
     def net_weight(self):
