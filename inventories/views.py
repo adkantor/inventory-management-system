@@ -121,7 +121,7 @@ class TransactionUpdateView(UpdateView):
 
     def get_form(self):
         form = super(TransactionUpdateView, self).get_form()
-        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime()
+        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
         form.fields['transaction_type'].widget.attrs['readonly'] = True
         form.fields['transaction_type'].widget.attrs['disabled'] = True
         return form
