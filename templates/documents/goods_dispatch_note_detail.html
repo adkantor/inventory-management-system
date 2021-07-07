@@ -1,18 +1,18 @@
 {% extends '_base.html' %}
 
-{% block title %}{{ goods_receipt_note.grn }}{% endblock title %}
+{% block title %}{{ goods_dispatch_note.gdn }}{% endblock title %}
 
 {% block content %}
 
     <div class="transaction-detail">
-        <h2>{{ goods_receipt_note.grn }}</h2>
-        <p>Date: {{ goods_receipt_note.date }}</p>
-        <p>Print Date: {{ goods_receipt_note.print_date }}</p>
-        <p>Vendor: {{ goods_receipt_note.vendor }}</p>
-        <p>Notes: {{ goods_receipt_note.notes }}</p>
+        <h2>{{ goods_dispatch_note.gdn }}</h2>
+        <p>Date: {{ goods_dispatch_note.date }}</p>
+        <p>Print Date: {{ goods_dispatch_note.print_date }}</p>
+        <p>Customer: {{ goods_dispatch_note.customer }}</p>
+        <p>Notes: {{ goods_dispatch_note.notes }}</p>
         
         <h3>Transactions</h3>
-        {% for transaction in goods_receipt_note.transactions.all %}
+        {% for transaction in goods_dispatch_note.transactions.all %}
 
             <p>{{ transaction.material.name }}</p>
             <p>Type: {{ transaction.transaction_type }}</p>
@@ -26,7 +26,7 @@
 
         {% endfor %}
         
-        <p><a href="{% url 'goods_receipt_note_edit' goods_receipt_note.pk %}">Edit</a> | <a href="{% url 'goods_receipt_note_delete' goods_receipt_note.pk %}">Delete</a></p>
+        <p><a href="{% url 'goods_dispatch_note_edit' goods_dispatch_note.pk %}">Edit</a> | <a href="{% url 'goods_dispatch_note_delete' goods_dispatch_note.pk %}">Delete</a></p>
     </div>
 
 {% endblock content %}

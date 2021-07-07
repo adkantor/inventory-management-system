@@ -2,7 +2,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from documents.models import GoodsReceiptNote
+from documents.models import GoodsReceiptNote, GoodsDispatchNote
 
 def get_deleted_material_group():
     return MaterialGroup.objects.get_or_create(name='deleted')[0].id
@@ -74,6 +74,12 @@ class Transaction(models.Model):
     notes = models.TextField(max_length=255, blank=True)
     goods_receipt_note = models.ForeignKey(
         GoodsReceiptNote, 
+        related_name='transactions', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True)
+    goods_dispatch_note = models.ForeignKey(
+        GoodsDispatchNote, 
         related_name='transactions', 
         on_delete=models.SET_NULL, 
         null=True, 
