@@ -32,6 +32,28 @@ class MaterialGroupTests(TestCase):
         self.assertContains(response, 'aluminium')
         self.assertTemplateUsed(response, 'inventories/material_group_detail.html')
 
+    def test_goods_material_group_create_view(self):
+        response = self.client.get(reverse('material_group_new'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'inventories/material_group_new.html')
+
+    def test_goods_material_group_edit_view(self):
+        response = self.client.get(reverse('material_group_edit', args=[f'{self.material_group.id}']))
+        no_response = self.client.get('/inventories/material_group_edit/12345/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'aluminium')
+        self.assertTemplateUsed(response, 'inventories/material_group_edit.html')
+
+    def test_goods_material_group_delete_view(self):
+        response = self.client.get(reverse('material_group_delete', args=[f'{self.material_group.id}']))
+        no_response = self.client.get('/inventories/material_group_delete/12345/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'aluminium')
+        self.assertContains(response, 'delete')
+        self.assertTemplateUsed(response, 'inventories/material_group_delete.html')        
+
 
 class MaterialTests(TestCase):
     
@@ -60,6 +82,28 @@ class MaterialTests(TestCase):
         self.assertContains(response, 'alu cooler')
         self.assertTemplateUsed(response, 'inventories/material_detail.html')
 
+    def test_material_create_view(self):
+        response = self.client.get(reverse('material_new'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'inventories/material_new.html')
+
+    def test_material_edit_view(self):
+        response = self.client.get(reverse('material_edit', args=[f'{self.material.id}']))
+        no_response = self.client.get('/inventories/material_edit/12345/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'alu cooler')
+        self.assertTemplateUsed(response, 'inventories/material_edit.html')
+
+    def test_material_delete_view(self):
+        response = self.client.get(reverse('material_delete', args=[f'{self.material.id}']))
+        no_response = self.client.get('/inventories/material_delete/12345/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'alu cooler')
+        self.assertContains(response, 'delete')
+        self.assertTemplateUsed(response, 'inventories/material_delete.html')  
+
 
 class TransactionTests(TestCase):
     
@@ -67,7 +111,7 @@ class TransactionTests(TestCase):
         mat_group = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
         mat = Material.objects.get_or_create(name='alu cooler', material_group=mat_group)[0]
         
-        self.transaction = Transaction.objects.create(
+        self.goods_receipt = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=mat,
             transaction_time=datetime.date(2021,2,3),
@@ -76,18 +120,38 @@ class TransactionTests(TestCase):
             unit_price=5.0,
             notes='some notes'
         )
- 
+
+        self.goods_dispatch = Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=mat,
+            transaction_time=datetime.date(2021,3,4),
+            gross_weight=20.0,
+            tare_weight=4.0,
+            unit_price=10.0,
+            notes='some notes'
+        )
+
 
     def test_transaction_listing(self):
-        self.assertEqual(f'{self.transaction.transaction_type}', Transaction.TYPE_IN)
-        self.assertEqual(f'{self.transaction.material.name}', 'alu cooler')
-        self.assertEqual(f'{self.transaction.material.material_group.name}', 'aluminium')
-        self.assertEqual(self.transaction.gross_weight, 10.0)
-        self.assertEqual(self.transaction.tare_weight, 2.0)
-        self.assertEqual(self.transaction.unit_price, 5.0)
-        self.assertEqual(f'{self.transaction.notes}', 'some notes')
-        self.assertEqual(self.transaction.net_weight, 8.0)
-        self.assertEqual(self.transaction.net_value, 40.0)
+        self.assertEqual(f'{self.goods_receipt.transaction_type}', Transaction.TYPE_IN)
+        self.assertEqual(f'{self.goods_receipt.material.name}', 'alu cooler')
+        self.assertEqual(f'{self.goods_receipt.material.material_group.name}', 'aluminium')
+        self.assertEqual(self.goods_receipt.gross_weight, 10.0)
+        self.assertEqual(self.goods_receipt.tare_weight, 2.0)
+        self.assertEqual(self.goods_receipt.unit_price, 5.0)
+        self.assertEqual(f'{self.goods_receipt.notes}', 'some notes')
+        self.assertEqual(self.goods_receipt.net_weight, 8.0)
+        self.assertEqual(self.goods_receipt.net_value, 40.0)
+
+        self.assertEqual(f'{self.goods_dispatch.transaction_type}', Transaction.TYPE_OUT)
+        self.assertEqual(f'{self.goods_dispatch.material.name}', 'alu cooler')
+        self.assertEqual(f'{self.goods_dispatch.material.material_group.name}', 'aluminium')
+        self.assertEqual(self.goods_dispatch.gross_weight, 20.0)
+        self.assertEqual(self.goods_dispatch.tare_weight, 4.0)
+        self.assertEqual(self.goods_dispatch.unit_price, 10.0)
+        self.assertEqual(f'{self.goods_dispatch.notes}', 'some notes')
+        self.assertEqual(self.goods_dispatch.net_weight, 16.0)
+        self.assertEqual(self.goods_dispatch.net_value, 160.0)
 
     def test_transaction_list_view(self):
         response = self.client.get(reverse('transaction_list'))
@@ -96,9 +160,36 @@ class TransactionTests(TestCase):
         self.assertTemplateUsed(response, 'inventories/transaction_list.html')
     
     def test_transaction_detail_view(self):
-        response = self.client.get(self.transaction.get_absolute_url())
+        response = self.client.get(self.goods_receipt.get_absolute_url())
         no_response = self.client.get('/inventories/transactions/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'alu cooler')
         self.assertTemplateUsed(response, 'inventories/transaction_detail.html')
+
+    def test_goods_receipt_create_view(self):
+        response = self.client.get(reverse('goods_receipt_new'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'inventories/goods_receipt_new.html')
+
+    def test_goods_dispatch_create_view(self):
+        response = self.client.get(reverse('goods_dispatch_new'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'inventories/goods_dispatch_new.html')
+
+    def test_goods_receipt_edit_view(self):
+        response = self.client.get(reverse('goods_receipt_edit', args=[f'{self.goods_receipt.id}']))
+        no_response = self.client.get('/inventories/goods_receipts/12345/edit')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'alu cooler')
+        self.assertTemplateUsed(response, 'inventories/goods_receipt_edit.html')
+
+    def test_transaction_delete_view(self):
+        response = self.client.get(reverse('transaction_delete', args=[f'{self.goods_receipt.id}']))
+        no_response = self.client.get('/inventories/transactions/12345/delete')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'alu cooler')
+        self.assertContains(response, 'delete')
+        self.assertTemplateUsed(response, 'inventories/transaction_delete.html')
