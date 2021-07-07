@@ -14,7 +14,7 @@ class GoodsReceiptNote(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False)
-    grn = models.CharField(max_length=11, blank=True) # format: yyyy/xxxxxx
+    grn = models.CharField(max_length=14, blank=True) # format: GRNyyyy/xxxxxx
     date = models.DateField()
     print_date = models.DateTimeField(blank=True, null=True)
     vendor = models.ForeignKey(
@@ -30,12 +30,12 @@ class GoodsReceiptNote(models.Model):
     @staticmethod
     def get_last_grn(year):
         year_string = str(year)
-        return GoodsReceiptNote.objects.filter(grn__startswith=year_string).order_by('grn').last()
+        return GoodsReceiptNote.objects.filter(grn__startswith=f'GRN{year_string}').order_by('grn').last()
 
     @staticmethod
     def get_next_grn(year, last_grn):
-        suffix = int(last_grn.grn[5:]) + 1 if last_grn else 1
-        return f'{str(year)}/{str(suffix).zfill(6)}'
+        suffix = int(last_grn.grn[8:]) + 1 if last_grn else 1
+        return f'GRN{str(year)}/{str(suffix).zfill(6)}'
 
     def save(self, *args, **kwargs):
         # update grn -> get next unique id
