@@ -48,8 +48,7 @@ class GoodsReceiptNote(models.Model):
             last_grn = GoodsReceiptNote.get_last_grn(current_year)
             next_grn = GoodsReceiptNote.get_next_grn(current_year, last_grn)
             self.grn = next_grn
-        else:
-            super(GoodsReceiptNote, self).save(*args, **kwargs)
+        super(GoodsReceiptNote, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.grn} | {self.date} | {self.vendor}'
@@ -93,11 +92,10 @@ class GoodsDispatchNote(models.Model):
             last_gdn = GoodsDispatchNote.get_last_gdn(current_year)
             next_gdn = GoodsDispatchNote.get_next_gdn(current_year, last_gdn)
             self.gdn = next_gdn
-        else:
-            super(GoodsDispatchNote, self).save(*args, **kwargs)
+        super(GoodsDispatchNote, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.grn} | {self.date} | {self.vendor}'
+        return f'{self.gdn} | {self.date} | {self.customer}'
 
     def get_absolute_url(self):
         return reverse('goods_dispatch_note_detail', args=[str(self.id)])
