@@ -8,6 +8,8 @@
  *
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
+ * 
+ * Note by Adam Kantor: made some corrections to properly handle deletions
  */
  ;(function($) {
     $.fn.formset = function(opts)
@@ -92,7 +94,7 @@
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
                         row.hide();
-                        forms = $('.' + options.formCssClass).not(':hidden');
+                        forms = $('.' + options.formCssClass); //originally: forms = $('.' + options.formCssClass).not(':hidden');
                         totalForms.val(forms.length);
                     } else {
                         row.remove();
