@@ -6,6 +6,7 @@ from .models import MaterialGroup, Material, Transaction
 
 
 # Material Groups
+
 class MaterialGroupListView(ListView):
     model = MaterialGroup
     context_object_name = 'material_group_list'
@@ -84,8 +85,9 @@ class TransactionDeleteView(DeleteView):
 
 class GoodsReceiptCreateView(CreateView):
     model = Transaction
+    context_object_name = 'transaction'
     fields = ('material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes')
+              'unit_price', 'notes', 'goods_receipt_note')
     template_name = 'inventories/goods_receipt_new.html'
 
     def get_form(self):
@@ -99,8 +101,9 @@ class GoodsReceiptCreateView(CreateView):
 
 class GoodsDispatchCreateView(CreateView):
     model = Transaction
+    context_object_name = 'transaction'
     fields = ('material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes')
+              'unit_price', 'notes', 'goods_dispatch_note')
     template_name = 'inventories/goods_dispatch_new.html'
 
     def get_form(self):
@@ -112,15 +115,29 @@ class GoodsDispatchCreateView(CreateView):
         form.instance.transaction_type = Transaction.TYPE_OUT
         return super().form_valid(form)   
 
-class TransactionUpdateView(UpdateView):    
+class GoodsReceiptUpdateView(UpdateView):    
     model = Transaction
     context_object_name = 'transaction'
     fields = ('transaction_type', 'material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes')
-    template_name = 'inventories/transaction_edit.html' 
+              'unit_price', 'notes', 'goods_receipt_note')
+    template_name = 'inventories/goods_receipt_edit.html' 
 
     def get_form(self):
-        form = super(TransactionUpdateView, self).get_form()
+        form = super(GoodsReceiptUpdateView, self).get_form()
+        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
+        form.fields['transaction_type'].widget.attrs['readonly'] = True
+        form.fields['transaction_type'].widget.attrs['disabled'] = True
+        return form
+
+class GoodsDispatchUpdateView(UpdateView):    
+    model = Transaction
+    context_object_name = 'transaction'
+    fields = ('transaction_type', 'material', 'transaction_time', 'gross_weight', 'tare_weight',
+              'unit_price', 'notes', 'goods_dispatch_note')
+    template_name = 'inventories/goods_dispatch_edit.html' 
+
+    def get_form(self):
+        form = super(GoodsDispatchUpdateView, self).get_form()
         form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
         form.fields['transaction_type'].widget.attrs['readonly'] = True
         form.fields['transaction_type'].widget.attrs['disabled'] = True

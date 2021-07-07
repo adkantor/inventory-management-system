@@ -58,6 +58,13 @@ class GoodsReceiptNoteCreateView(CreateView):
         print(self.object.id)
         transaction_formset.instance = self.object
         transaction_formset.save()
+
+        for instance in transaction_formset:
+            # set transaction type
+            transaction = instance.save(commit=False)            
+            transaction.transaction_type = Transaction.TYPE_IN
+            transaction.save()
+
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, header_form, transaction_formset):
@@ -191,16 +198,13 @@ class GoodsDispatchNoteCreateView(CreateView):
     def form_valid(self, header_form, transaction_formset):
         self.object = header_form.save()
         print(self.object.id)
-        # transaction_formset.instance = self.object
-        # transaction_formset.save()
+        transaction_formset.instance = self.object
+        transaction_formset.save()
 
         for instance in transaction_formset:
-            transaction = instance.save(commit=False)
             # set transaction type
+            transaction = instance.save(commit=False)            
             transaction.transaction_type = Transaction.TYPE_OUT
-            # link transaction to GDN
-            transaction.goods_dispatch_note = self.object
-            # save	
             transaction.save()
 
         return HttpResponseRedirect(self.get_success_url())

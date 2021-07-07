@@ -14,7 +14,13 @@
         <p>Unit price: {{ transaction.unit_price }}</p>
         <p>Net value: {{ transaction.net_value }}</p>
         <p>Notes: {{ transaction.notes }}</p>
-        <p><a href="{% url 'transaction_edit' transaction.pk %}">Edit</a> | <a href="{% url 'transaction_delete' transaction.pk %}">Delete</a></p>
+        {% if transaction.transaction_type == "IN" %}
+            <p>Goods Receipt Note: {{ transaction.goods_receipt_note }}</p>
+            <p><a href="{% url 'goods_receipt_edit' transaction.pk %}">Edit</a> | <a href="{% url 'transaction_delete' transaction.pk %}">Delete</a></p>
+        {% elif transaction.transaction_type == "OUT" %}
+            <p>Goods Dispatch Note: {{ transaction.goods_dispatch_note }}</p>
+            <p><a href="{% url 'goods_dispatch_edit' transaction.pk %}">Edit</a> | <a href="{% url 'transaction_delete' transaction.pk %}">Delete</a></p>
+        {% endif %}
     </div>
 
 {% endblock content %}

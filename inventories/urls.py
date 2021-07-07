@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (
     MaterialGroupListView, MaterialGroupDetailView, MaterialGroupCreateView, MaterialGroupUpdateView, MaterialGroupDeleteView, 
     MaterialListView, MaterialDetailView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView,
-    TransactionListView, TransactionDetailView, GoodsReceiptCreateView, GoodsDispatchCreateView, TransactionUpdateView, TransactionDeleteView
+    TransactionListView, TransactionDetailView, TransactionDeleteView, 
+    GoodsReceiptCreateView, GoodsDispatchCreateView, GoodsReceiptUpdateView, GoodsDispatchUpdateView
 )
 
 urlpatterns = [
@@ -24,8 +25,9 @@ urlpatterns = [
     # Transactions
     path('transactions', TransactionListView.as_view(), name='transaction_list'),
     path('transactions/<uuid:pk>', TransactionDetailView.as_view(), name='transaction_detail'),
-    path('transactions/goods_receipt_new/', GoodsReceiptCreateView.as_view(), name='goods_receipt_new'),
-    path('transactions/goods_dispatch_new/', GoodsDispatchCreateView.as_view(), name='goods_dispatch_new'),
-    path('transactions/<uuid:pk>/edit/', TransactionUpdateView.as_view(), name='transaction_edit'),
+    path('transactions/goods_receipts/new/', GoodsReceiptCreateView.as_view(), name='goods_receipt_new'),
+    path('transactions/goods_dispatches/new/', GoodsDispatchCreateView.as_view(), name='goods_dispatch_new'),
+    path('transactions/goods_receipts/<uuid:pk>/edit/', GoodsReceiptUpdateView.as_view(), name='goods_receipt_edit'),
+    path('transactions/goods_dispatches/<uuid:pk>/edit/', GoodsDispatchUpdateView.as_view(), name='goods_dispatch_edit'),
     path('transactions/<uuid:pk>/delete/', TransactionDeleteView.as_view(), name='transaction_delete'),
 ]

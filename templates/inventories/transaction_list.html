@@ -6,7 +6,7 @@
 
     {% for transaction in transaction_list %}
         <div>
-            <h2><a href="{{ transaction.get_absolute_url }}">{{ transaction.type }} {{ transaction.material.name }} {{ transaction.net_weight }} {{ transaction.net_value }}</a></h2>
+            <h2><a href="{{ transaction.get_absolute_url }}">{{ transaction.transaction_type }} {{ transaction.material.name }} {{ transaction.net_weight }} {{ transaction.net_value }}</a></h2>
         </div>
     {% endfor %}
 
