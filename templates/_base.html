@@ -1,36 +1,145 @@
 {% load static %}
+{% load custom_tags %}
 
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Required meta tags -->
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        
+        <!-- Sidebar CSS -->
+        <link href="{% static 'css/navbar-top-fixed.css' %}" rel="stylesheet">
+
+        <style>
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+            }
+
+            @media (min-width: 768px) {
+                .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+                }
+            }
+        </style>
+
         <title>{% block title %}IMS{% endblock title %}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/2e8664a68b.js" crossorigin="anonymous"></script>
 
         {% block headerscripts %}
         {% endblock headerscripts %}
 
     </head>
     <body>
+
+        {% with url_name=request.resolver_match.url_name %}
         
-        <nav class="my-2 my-md-0 mr-md-3">
-            {% comment %} <a class="p-2 text-dark" href="{% url 'about' %}">About</a> {% endcomment %}
-            {% if user.is_authenticated %}
-                <a class="p-2 text-dark" href="{% url 'account_logout' %}">Log Out</a>
-            {% else %}
-                <a class="p-2 text-dark" href="{% url 'account_login' %}">Log In</a>
-            {% endif %}
-        </nav>
-        
-        <div class="container">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Logo and Title</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    
+                    {% if user.is_authenticated %}
+
+                        <div class="navbar-nav me-auto mb-2 mb-md-0">
+                            
+                            {% comment %} Home {% endcomment %}
+                            <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                            
+                            {% comment %} Goods Receipt {% endcomment %}
+                            <a class="nav-link {% if url_name|startswith:'goods_receipt_note' %}active{% endif %}" href="{% url 'goods_receipt_note_list' %}">Goods Receipt</a>
+                            
+                            {% comment %} Goods Dispatch {% endcomment %}
+                            <a class="nav-link {% if url_name|startswith:'goods_dispatch_note' %}active{% endif %}" href="{% url 'goods_dispatch_note_list' %}">Goods Dispatch</a>
+                            
+                            {% comment %} Master Data {% endcomment %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle  {% if url_name|startswith:'vendor' or url_name|startswith:'customer' or url_name|startswith:'material' %}active{% endif %}" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Master Data
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item {% if url_name|startswith:'vendor' %}active{% endif %}" href="{% url 'vendor_list' %}">Vendors</a></li>
+                                    <li><a class="dropdown-item {% if url_name|startswith:'customer' %}active{% endif %}" href="{% url 'customer_list' %}">Customers</a></li>
+                                    <li><a class="dropdown-item {% if url_name|startswith:'material_group' %}active{% endif %}" href="{% url 'material_group_list' %}">Material Groups</a></li>
+                                    <li><a class="dropdown-item {% if url_name|startswith:'material' and not url_name|startswith:'material_group' %}active{% endif %}" href="{% url 'material_list' %}">Materials</a></li>
+                                </ul> 
+                            </li>
+                             
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="dropdown">
+
+                                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://pbs.twimg.com/profile_images/658625563142156288/H2sSv6IA_400x400.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
+                                    <strong>mdo</strong>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'account_logout' %}">Sign out</a></li>
+                                </ul>
+
+                            </div>
+
+                        </div>                    
+                    
+                    {% else %}
+
+                        <div class="navbar-nav me-auto mb-2 mb-md-0">
+
+                            <a class="nav-link active" aria-current="page" href="{% url 'account_login' %}">Sign In</a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </nav> 
+        {% endwith %}
+
+       
+        <main class="container">
             {% block content %}
             {% endblock content %}
-        </div>
+        </main>
+
+
+        <!-- jQuery and JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/2e8664a68b.js" crossorigin="anonymous"></script>
+
         {% block bodyscripts %}
         {% endblock bodyscripts %}
     </body>
 </html>
+
+
+                            {% comment %} TEMPLATE
+                            <a class="nav-link active" aria-current="page" href="#">Active</a>
+                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Dropdown link
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul> 
+                            </li>
+                             {% endcomment %}
