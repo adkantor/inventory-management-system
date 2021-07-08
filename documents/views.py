@@ -137,6 +137,7 @@ class GoodsReceiptNoteListView(ListView):
     model = GoodsReceiptNote
     context_object_name = 'goods_receipt_note_list'
     template_name = 'documents/goods_receipt_note_list.html'
+    ordering = ['-grn']
 
 
 class GoodsReceiptNoteDetailView(DetailView):
@@ -274,6 +275,7 @@ class GoodsDispatchNoteListView(ListView):
     model = GoodsDispatchNote
     context_object_name = 'goods_dispatch_note_list'
     template_name = 'documents/goods_dispatch_note_list.html'
+    ordering = ['-gdn']
 
 
 class GoodsDispatchNoteDetailView(DetailView):

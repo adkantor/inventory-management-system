@@ -10,6 +10,7 @@ class VendorListView(ListView):
     model = Vendor
     context_object_name = 'vendor_list'
     template_name = 'partners/vendor_list.html'
+    ordering = ['name']
 
 class VendorDetailView(DetailView):
     model = Vendor
@@ -40,7 +41,8 @@ class CustomerListView(ListView):
     model = Customer
     context_object_name = 'customer_list'
     template_name = 'partners/customer_list.html'
-
+    ordering = ['name']
+    
 class CustomerDetailView(DetailView):
     model = Customer
     context_object_name = 'customer'

@@ -11,6 +11,7 @@ class MaterialGroupListView(ListView):
     model = MaterialGroup
     context_object_name = 'material_group_list'
     template_name = 'inventories/material_group_list.html'
+    ordering = ['name']
 
 class MaterialGroupDetailView(DetailView):
     model = MaterialGroup
@@ -41,6 +42,7 @@ class MaterialListView(ListView):
     model = Material
     context_object_name = 'material_list'
     template_name = 'inventories/material_list.html'
+    ordering = ['name']
 
 class MaterialDetailView(DetailView):
     model = Material
@@ -71,6 +73,7 @@ class TransactionListView(ListView):
     model = Transaction
     context_object_name = 'transaction_list'
     template_name = 'inventories/transaction_list.html'
+    ordering = ['-transaction_time']
 
 class TransactionDetailView(DetailView):
     model = Transaction
