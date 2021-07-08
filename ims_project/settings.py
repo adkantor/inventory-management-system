@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     # Third-party
     'allauth',
     'allauth.account',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     # Local
     'users.apps.UsersConfig',
@@ -78,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'custom_tags': 'templatetags.custom_tags' #os.path.join(BASE_DIR, 'templatetags', 'custom_tags.py'),
+            },
         },
     },
 ]
@@ -175,3 +180,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+
+# django-crispy-forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
