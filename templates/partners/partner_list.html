@@ -1,0 +1,53 @@
+{% extends '_base_with_header.html' %}
+{% load custom_tags %}
+
+
+    {% block title %}
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name|startswith:'vendor' %}
+                Vendors
+            {% elif url_name|startswith:'customer' %}
+                Customers
+            {% endif %}   
+        {% endwith %}
+    {% endblock title %}
+
+    {% block header %}
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name|startswith:'vendor' %}
+                Vendors
+                <a class="btn btn-success mx-5 px-5" href="{% url 'vendor_new' %}">+ New Vendor</a>
+            {% elif url_name|startswith:'customer' %}
+                Customers
+                <a class="btn btn-success mx-5 px-5" href="{% url 'customer_new' %}">+ New Customer</a>
+            {% endif %}   
+        {% endwith %}
+    {% endblock header %}
+
+
+{% block content %}
+    {{ block.super }}
+    
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Tax Number</th>
+                <th scope="col">Address</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for partner in partner_list %}
+                <tr>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{ partner.name }}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{  partner.tax_number }}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{ partner.full_address }}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+{% endblock content %}

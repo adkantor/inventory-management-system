@@ -1,0 +1,17 @@
+{% extends '_base_with_header.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ partner.name }} | Edit{% endblock title %}
+
+{% block header %}<a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{ partner.name }}{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-info ml-2" type="submit">Update</button>
+    </form>
+
+{% endblock content %}

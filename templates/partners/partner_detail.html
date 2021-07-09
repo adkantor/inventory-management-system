@@ -1,0 +1,76 @@
+{% extends '_base_with_header.html' %}
+{% load custom_tags %}
+
+{% block title %}{{ partner.name }}{% endblock title %}
+
+{% block header %}{{ partner.name }}{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+    {% with url_name=request.resolver_match.url_name %}
+
+    <div class="partner-detail">
+
+        <p>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% if url_name|startswith:'vendor' %}{% url 'vendor_edit' partner.pk %}
+                      {% elif url_name|startswith:'customer' %}{% url 'customer_edit' partner.pk %}
+                      {% endif %}">
+                Edit
+            </a>
+            <a  class="btn btn-outline-danger btn-sm mx-3" 
+                href="{% if url_name|startswith:'vendor' %}{% url 'vendor_delete' partner.pk %}
+                      {% elif url_name|startswith:'customer' %}{% url 'customer_delete' partner.pk %}
+                      {% endif %}">
+                Delete
+            </a>
+        </p>
+
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Company data</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Tax number</th><td>{{ partner.tax_number }}</td></tr>
+                <tr><th scope="row">Private Person or Company?</th><td>{% if partner.is_private_person %}<i class="fas fa-user"></i> Private person{% else %}<i class="fas fa-building"></i> Company{% endif %}</td></tr>
+            </tbody>
+        </table>
+        
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Address</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Country</th><td>{{ partner.country }}</td></tr>
+                <tr><th scope="row">Postcode</th><td>{{ partner.postcode }}</td></tr>
+                <tr><th scope="row">Address</th><td>{{ partner.address }}</td></tr>
+            </tbody>
+        </table>
+
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Contact</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Name</th><td>{{ partner.contact_name }}</td></tr>
+                <tr><th scope="row">Phone</th><td>{{ partner.contact_phone }}</td></tr>
+                <tr><th scope="row">Email</th><td>{{ partner.contact_email }}</td></tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    {% endwith %}
+{% endblock content %}

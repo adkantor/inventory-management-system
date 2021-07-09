@@ -19,6 +19,10 @@ class Partner(models.Model):
     contact_phone = models.CharField(max_length=20, blank=True)
     contact_email = models.EmailField(blank=True)
 
+    @property
+    def full_address(self):
+        return f'{self.postcode} {self.city}, {self.address} ({self.country})'
+
     def __str__(self):
         return f'{self.name} ({self.tax_number})'
 

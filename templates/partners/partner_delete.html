@@ -1,0 +1,17 @@
+{% extends '_base_with_header.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ partner.name }} | Delete{% endblock title %}
+
+{% block header %}<a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{ partner.name }}{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "<strong>{{ partner.name }}</strong>"?</p>
+        <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+    </form>
+
+{% endblock content %}
