@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'partners.apps.PartnersConfig',
     'inventories.apps.InventoriesConfig',
     'documents.apps.DocumentsConfig',
+    'reports.apps.ReportsConfig',
 
 ]
 

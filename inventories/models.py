@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
+from django.core import serializers
 
 from documents.models import GoodsReceiptNote, GoodsDispatchNote
 
@@ -92,6 +94,31 @@ class Transaction(models.Model):
     @property
     def net_value(self):
         return self.net_weight * self.unit_price
+
+    @staticmethod
+    def serialized_filtered_transactions(transaction_types=None, material_group=None, material=None,
+                                         date_from=None, date_to=None):
+        q = Q()
+        if transaction_types is not None:
+            if isinstance(transaction_types, list):
+                q_sub = Q()
+                for transaction_type in transaction_types:
+                    q_sub |= Q(transaction_type=transaction_type)
+                q &= q_sub
+            else:
+                q &= Q(transaction_type=transaction_types)
+        if material_group is not None:
+            q &= Q(material__material_group=material_group)
+        if material is not None:
+            q &= Q(material=material)
+        if date_from is not None:
+            q &= Q(transaction_time__gte=date_from)
+        if date_to is not None:
+            q &= Q(transaction_time__lte=date_to)
+
+        result = Transaction.objects.filter(q)
+        serialized_result = serializers.serialize('json', result)
+        return serialized_result
 
     def __str__(self):
         return f'{self.transaction_time} | {self.transaction_type} | {self.net_weight}  |  {self.material.name} | $({self.net_value})'

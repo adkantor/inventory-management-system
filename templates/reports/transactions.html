@@ -1,0 +1,53 @@
+{% extends '_base.html' %}
+
+
+{% block title %}Transactions{% endblock title %}
+
+{% block content %}
+
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="transaction-type">Transaction type</label>
+                <div id="transaction-type">
+                    <div class="form-check form-check-inline">
+                        <input checked class="form-check-input" type="checkbox" id="transaction-type-in" value="IN">
+                        <label class="form-check-label" for="transaction-type-in">Inbound</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input checked class="form-check-input" type="checkbox" id="transaction-type-out" value="OUT">
+                        <label class="form-check-label" for="transaction-type-out">Outbound</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-3">
+                <label for="material-group">Material Group</label>
+                <select id="material-group" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="material">Material</label>
+                <select id="material" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="date-from">Start Date</label>
+                <input type="text" class="form-control" id="date-from">
+            </div>
+            <div class="col-md-6">
+                <label for="date-to">End Date</label>
+                <input type="text" class="form-control" id="date-to">
+            </div>
+        </div>
+    
+    </form>
+
+{% endblock content %}
