@@ -3,7 +3,7 @@
 
 {% block title %}{{ partner.name }} | Delete{% endblock title %}
 
-{% block header %}<a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{ partner.name }}{% endblock header %}
+{% block header %}<a class="d-block text-decoration-none link-dark" href="{{ partner.get_absolute_url }}">{{ partner.name }}</a>{% endblock header %}
 
 {% block content %}
     {{ block.super }}
@@ -12,6 +12,7 @@
         {% csrf_token %}
         <p>Are you sure you want to delete "<strong>{{ partner.name }}</strong>"?</p>
         <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+        <button class="btn btn-primary ml-2 mx-3" onclick="javascript:history.back();">Cancel</button>
     </form>
 
 {% endblock content %}
