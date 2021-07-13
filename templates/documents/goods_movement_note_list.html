@@ -1,0 +1,57 @@
+{% extends '_base_with_header.html' %}
+{% load custom_tags %}
+
+
+    {% block title %}
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name|startswith:'goods_dispatch' %}
+                Goods Dispatch Notes
+            {% elif url_name|startswith:'goods_receipt' %}
+                Goods Receipt Notes
+            {% endif %}   
+        {% endwith %}
+    {% endblock title %}
+
+    {% block header %}
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name|startswith:'goods_dispatch' %}
+                Goods Dispatch Notes
+                <a class="btn btn-success mx-5 px-5" href="{% url 'goods_dispatch_note_new' %}">+ New Goods Dispatch Note</a>
+            {% elif url_name|startswith:'goods_receipt' %}
+                Goods Receipt Notes
+                <a class="btn btn-success mx-5 px-5" href="{% url 'goods_receipt_note_new' %}">+ New Goods Receipt Note</a>
+            {% endif %}   
+        {% endwith %}
+    {% endblock header %}
+
+
+{% block content %}
+    {{ block.super }}
+    {% with url_name=request.resolver_match.url_name %}
+    
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">{% if url_name|startswith:'goods_dispatch' %}#GDN{% elif url_name|startswith:'goods_receipt' %}#GRN{% endif %}</th>
+                <th scope="col">Date</th>
+                <th scope="col">{% if url_name|startswith:'goods_dispatch' %}Customer{% elif url_name|startswith:'goods_receipt' %}Vendor{% endif %}</th>
+                <th scope="col">Transaction Count</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in goods_movement_note_list %}
+                <tr>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{% if url_name|startswith:'goods_dispatch' %}{{ item.gdn }}{% elif url_name|startswith:'goods_receipt' %}{{ item.grn }}{% endif %}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{{ item.date }}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{% if url_name|startswith:'goods_dispatch' %}{{ item.customer.name }}{% elif url_name|startswith:'goods_receipt' %}{{ item.vendor.name }}{% endif %}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{{ item.transactions.all.count }}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+    {% endwith %}
+{% endblock content %}

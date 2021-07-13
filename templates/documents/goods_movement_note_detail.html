@@ -1,0 +1,93 @@
+{% extends '_base_with_header.html' %}
+{% load custom_tags %}
+
+{% block title %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'goods_dispatch' %}
+            {{ goods_movement_note.gdn }}
+        {% elif url_name|startswith:'goods_receipt' %}
+            {{ goods_movement_note.grn }}
+        {% endif %}
+    {% endwith %}
+{% endblock title %}
+
+{% block header %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'goods_dispatch' %}
+            {{ goods_movement_note.gdn }}
+        {% elif url_name|startswith:'goods_receipt' %}
+            {{ goods_movement_note.grn }}
+        {% endif %}
+    {% endwith %}
+{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+    {% with url_name=request.resolver_match.url_name %}
+
+    <div class="goods-movement-note-detail">
+
+        <p>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% if url_name|startswith:'goods_dispatch' %}{% url 'goods_dispatch_note_edit' goods_movement_note.pk %}
+                      {% elif url_name|startswith:'goods_receipt' %}{% url 'goods_receipt_note_edit' goods_movement_note.pk %}
+                      {% endif %}">
+                Edit
+            </a>
+            <a  class="btn btn-outline-danger btn-sm mx-3" 
+                href="{% if url_name|startswith:'goods_dispatch' %}{% url 'goods_dispatch_note_delete' goods_movement_note.pk %}
+                      {% elif url_name|startswith:'goods_receipt' %}{% url 'goods_receipt_note_delete' goods_movement_note.pk %}
+                      {% endif %}">
+                Delete
+            </a>
+            <button class="btn btn-outline-primary btn-sm mx-3" onclick="javascript:history.back();">Back</button>
+        </p>
+
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Details</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Date</th><td>{{ goods_movement_note.date }}</td></tr>
+                <tr><th scope="row">Print Date</th><td>{{ goods_movement_note.print_date }}</td></tr>
+                {% if url_name|startswith:'goods_dispatch' %}
+                    <tr><th scope="row">Customer</th><td>{{ goods_movement_note.customer.name }}</td></tr>
+                {% elif url_name|startswith:'goods_receipt' %}
+                    <tr><th scope="row">Vendor</th><td>{{ goods_movement_note.vendor.name }}</td></tr>
+                {% endif %}                 
+                <tr><th scope="row">Notes</th><td>{{ goods_movement_note.notes }}</td></tr>
+            </tbody>
+        </table>
+
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Transactions</th></tr>
+            </thead>
+            <tbody>
+                {% for transaction in goods_movement_note.transactions.all %}
+
+                    <tr class="{% if not forloop.first %}border-top{% endif %}"><th scope="row"># {{ forloop.counter }}</th><td class="fw-bold">{{ transaction.material.name }}</td></tr>
+                    <tr><th scope="row">Created</th><td>{{ transaction.created_time }}</td></tr>
+                    <tr><th scope="row">Gross weight</th><td>{{ transaction.gross_weight }}</td></tr>
+                    <tr><th scope="row">Tare weight</th><td>{{ transaction.tare_weight }}</td></tr>
+                    <tr><th scope="row">Net weight</th><td>{{ transaction.net_weight }}</td></tr>
+                    <tr><th scope="row">Unit price</th><td>{{ transaction.unit_price }}</td></tr>
+                    <tr><th scope="row">Net value</th><td>{{ transaction.net_value }}</td></tr>
+                    <tr><th scope="row">Notes</th><td>{{ transaction.notes }}</td></tr>
+
+                {% endfor %}
+            </tbody>
+        </table>        
+       
+    </div>
+
+    {% endwith %}
+{% endblock content %}

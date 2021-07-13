@@ -1,0 +1,58 @@
+{% extends '_base_with_header.html' %}
+{% load custom_tags %}
+
+
+    {% block title %}
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name|startswith:'material_group' %}
+                Material Groups
+            {% elif url_name|startswith:'material' %}
+                Materials
+            {% endif %}   
+        {% endwith %}
+    {% endblock title %}
+
+    {% block header %}
+        {% with url_name=request.resolver_match.url_name %}
+            {% if url_name|startswith:'material_group' %}
+                Material Groups
+                <a class="btn btn-success mx-5 px-5" href="{% url 'material_group_new' %}">+ New Material Group</a>
+            {% elif url_name|startswith:'material' %}
+                Materials
+                <a class="btn btn-success mx-5 px-5" href="{% url 'material_new' %}">+ New Material</a>
+            {% endif %}   
+        {% endwith %}
+    {% endblock header %}
+
+
+{% block content %}
+    {{ block.super }}
+    {% with url_name=request.resolver_match.url_name %}
+    
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                {% if not url_name|startswith:'material_group' %}
+                    <th scope="col">Material Group</th>
+                {% endif %}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in inventory_list %}
+                <tr>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{{ item.name }}</a></td>
+                    {% if not url_name|startswith:'material_group' %}
+                        <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{{ item.material_group }}</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+    {% endwith %}
+
+{% endblock content %}

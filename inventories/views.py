@@ -9,30 +9,32 @@ from .models import MaterialGroup, Material, Transaction
 
 class MaterialGroupListView(ListView):
     model = MaterialGroup
-    context_object_name = 'material_group_list'
-    template_name = 'inventories/material_group_list.html'
+    context_object_name = 'inventory_list'
+    template_name = 'inventories/inventory_list.html'
     ordering = ['name']
 
 class MaterialGroupDetailView(DetailView):
     model = MaterialGroup
-    context_object_name = 'material_group'
-    template_name = 'inventories/material_group_detail.html'
+    context_object_name = 'item'
+    template_name = 'inventories/inventory_detail.html'
 
 class MaterialGroupCreateView(CreateView):
     model = MaterialGroup
     fields = ('name',)
-    template_name = 'inventories/material_group_new.html'
+    template_name = 'inventories/inventory_new.html'
+    success_url = reverse_lazy('material_group_list')
 
 class MaterialGroupUpdateView(UpdateView):
     model = MaterialGroup
-    context_object_name = 'material_group'
+    context_object_name = 'item'
     fields = ('name',)
-    template_name = 'inventories/material_group_edit.html'
+    template_name = 'inventories/inventory_edit.html'
+    success_url = reverse_lazy('material_group_list')
 
 class MaterialGroupDeleteView(DeleteView):
     model = MaterialGroup
-    context_object_name = 'material_group'
-    template_name = 'inventories/material_group_delete.html'
+    context_object_name = 'item'
+    template_name = 'inventories/inventory_delete.html'
     success_url = reverse_lazy('material_group_list')
 
 
@@ -40,30 +42,30 @@ class MaterialGroupDeleteView(DeleteView):
 
 class MaterialListView(ListView):
     model = Material
-    context_object_name = 'material_list'
-    template_name = 'inventories/material_list.html'
+    context_object_name = 'inventory_list'
+    template_name = 'inventories/inventory_list.html'
     ordering = ['name']
 
 class MaterialDetailView(DetailView):
     model = Material
-    context_object_name = 'material'
-    template_name = 'inventories/material_detail.html'
+    context_object_name = 'item'
+    template_name = 'inventories/inventory_detail.html'
 
 class MaterialCreateView(CreateView):
     model = Material
     fields = ('name', 'material_group',)
-    template_name = 'inventories/material_new.html'
+    template_name = 'inventories/inventory_new.html'
 
 class MaterialUpdateView(UpdateView):
     model = Material
-    context_object_name = 'material'
+    context_object_name = 'item'
     fields = ('name', 'material_group',)
-    template_name = 'inventories/material_edit.html'
+    template_name = 'inventories/inventory_edit.html'
 
 class MaterialDeleteView(DeleteView):
     model = Material
-    context_object_name = 'material'
-    template_name = 'inventories/material_delete.html'
+    context_object_name = 'item'
+    template_name = 'inventories/inventory_delete.html'
     success_url = reverse_lazy('material_list')
 
 

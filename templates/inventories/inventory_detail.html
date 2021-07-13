@@ -1,0 +1,61 @@
+{% extends '_base_with_header.html' %}
+{% load custom_tags %}
+
+{% block title %}{{ item.name }}{% endblock title %}
+
+{% block header %}{{ item.name }}{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+    {% with url_name=request.resolver_match.url_name %}
+
+    <div class="inventory-detail">
+
+        <p>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% if url_name|startswith:'material_group' %}{% url 'material_group_edit' item.pk %}
+                      {% elif url_name|startswith:'material' %}{% url 'material_edit' item.pk %}
+                      {% endif %}">
+                Edit
+            </a>
+            <a  class="btn btn-outline-danger btn-sm mx-3" 
+                href="{% if url_name|startswith:'material_group' %}{% url 'material_group_delete' item.pk %}
+                      {% elif url_name|startswith:'material' %}{% url 'material_delete' item.pk %}
+                      {% endif %}">
+                Delete
+            </a>
+            <button class="btn btn-outline-primary btn-sm mx-3" onclick="javascript:history.back();">Back</button>
+        </p>
+
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Features</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Name</th><td>{{ item.name }}</td></tr>
+            </tbody>
+        </table>
+        
+        {% if not url_name|startswith:'material_group' %}
+            <table class="table table-borderless">
+                <colgroup>
+                    <col class="col-md-3">
+                    <col class="col-md-9">
+                </colgroup>
+                <thead class="table-light">
+                    <tr><th scope="col" class="fs-3 py-0" colspan=2>Material Group</th></tr>
+                </thead>
+                <tbody>
+                    <tr><th scope="row">Name</th><td>{{ item.material_group }}</td></tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+    </div>
+
+    {% endwith %}
+{% endblock content %}
