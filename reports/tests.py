@@ -1,11 +1,12 @@
 import datetime
 import json
+import uuid
 
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from inventories.models import MaterialGroup, Material, Transaction
-from .views import UUIDEncoder
+from inventories.models import MaterialGroup, Material, Transaction, UUIDEncoder
+
 
 client = Client()
 
@@ -53,8 +54,11 @@ class GetTransactionsTests(TestCase):
         )
 
         cls.payload_all = {}
+        cls.payload_type0 = {
+            'transaction_types': ['']
+        }
         cls.payload_type1 = {
-            'transaction_types': 'IN'
+            'transaction_types': ['IN']
         }
         cls.payload_type2 = {
             'transaction_types': ['IN', 'OUT']
@@ -94,6 +98,19 @@ class GetTransactionsTests(TestCase):
 
         self.assertEqual(len(data), 3)
         self.assertEqual(response.status_code, 200)
+
+
+    def test_get_transactions_no_type_provided(self):
+        response = client.get(
+            reverse('get_transactions'),
+            data=self.payload_type0,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        json_data = response.json()
+        data = json.loads(json_data['transactions'])
+
+        self.assertEqual(len(data), 0)
 
 
     def test_get_transactions_filtered_by_single_type(self):
@@ -172,6 +189,83 @@ class GetTransactionsTests(TestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(response.status_code, 200)
+
+
+class GetMaterialGroupsTests(TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.mat_group_0 = MaterialGroup.objects.get_or_create(name = 'undefined')[0]
+        cls.mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
+        cls.mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
+
+
+    def test_get_material_groups_returns_all_instances(self):
+        response = client.get(
+            reverse('get_material_groups')
+        )
+        json_data = response.json()
+        self.assertEqual(len(json_data), 3)
+        # check content and sorting
+        self.assertEqual(uuid.UUID(json_data[0]['id']), self.mat_group_1.id) # aluminium
+        self.assertEqual(json_data[0]['name'], self.mat_group_1.name) # aluminium
+        self.assertEqual(uuid.UUID(json_data[1]['id']), self.mat_group_2.id) # steel
+        self.assertEqual(json_data[1]['name'], self.mat_group_2.name) # steel
+        self.assertEqual(uuid.UUID(json_data[2]['id']), self.mat_group_0.id) # undefined
+        self.assertEqual(json_data[2]['name'], self.mat_group_0.name) # undefined
+
+
+class GetMaterialsTests(TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.mat_group_0 = MaterialGroup.objects.get_or_create(name = 'undefined')[0]
+        cls.mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
+        cls.mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
+
+        cls.mat_11 = Material.objects.get_or_create(name='alu cooler', material_group=cls.mat_group_1)[0]
+        cls.mat_12 = Material.objects.get_or_create(name='alu can', material_group=cls.mat_group_1)[0]
+        cls.mat_21 = Material.objects.get_or_create(name='steel can', material_group=cls.mat_group_2)[0]
+
+    def test_get_materials_unfiltered(self):
+        response = client.get(
+            reverse('get_materials', kwargs={'material_group_id': 'all'})
+        )
+        json_data = response.json()
+        print(json_data)
+        self.assertEqual(len(json_data), 3)
+        # check content and sorting
+        self.assertEqual(uuid.UUID(json_data[0]['id']), self.mat_12.id) # alu can
+        self.assertEqual(json_data[0]['name'], self.mat_12.name) # alu can
+        self.assertEqual(uuid.UUID(json_data[0]['material_group_id']), self.mat_12.material_group.id) # alu can
+        self.assertEqual(uuid.UUID(json_data[1]['id']), self.mat_11.id) # alu cooler
+        self.assertEqual(json_data[1]['name'], self.mat_11.name) # alu cooler
+        self.assertEqual(uuid.UUID(json_data[1]['material_group_id']), self.mat_11.material_group.id) # alu cooler
+        self.assertEqual(uuid.UUID(json_data[2]['id']), self.mat_21.id) # steel can
+        self.assertEqual(json_data[2]['name'], self.mat_21.name) # steel can
+        self.assertEqual(uuid.UUID(json_data[2]['material_group_id']), self.mat_21.material_group.id) # steel can
+
+
+    def test_get_materials_filtered(self):
+        # filter by aluminium group
+        material_group_id = UUIDEncoder().default(self.mat_group_1.id)
+        response = client.get(
+            reverse('get_materials', kwargs={'material_group_id': material_group_id})
+        )
+        json_data = response.json()
+        self.assertEqual(len(json_data), 2)
+        # check content and sorting
+        self.assertEqual(uuid.UUID(json_data[0]['id']), self.mat_12.id) # alu can
+        self.assertEqual(json_data[0]['name'], self.mat_12.name) # alu can
+        self.assertEqual(uuid.UUID(json_data[0]['material_group_id']), self.mat_12.material_group.id) # alu can
+        self.assertEqual(uuid.UUID(json_data[1]['id']), self.mat_11.id) # alu cooler
+        self.assertEqual(json_data[1]['name'], self.mat_11.name) # alu cooler
+        self.assertEqual(uuid.UUID(json_data[1]['material_group_id']), self.mat_11.material_group.id) # alu cooler
+
 
     # def test_get_nonexisting_post_raises_error(self):
 

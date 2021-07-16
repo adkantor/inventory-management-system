@@ -1,12 +1,22 @@
 {% extends '_base.html' %}
-
+{% load static %}
 
 {% block title %}Transactions{% endblock title %}
 
+{% block headerscripts %}
+
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.1/build/global/luxon.min.js" integrity="sha256-BdqBGuaawDzMtW2Wn9ISUuYKUY/A7d5NVcj6Ix3jwv8=" crossorigin="anonymous"></script>
+
+{% endblock headerscripts %}
+
 {% block content %}
 
+    {# Form for settings #}
     <form>
         <div class="row">
+            {# Checkboxes to select transaction type #}
             <div class="col-md-6">
                 <label for="transaction-type">Transaction type</label>
                 <div id="transaction-type">
@@ -19,9 +29,8 @@
                         <label class="form-check-label" for="transaction-type-out">Outbound</label>
                     </div>
                 </div>
-
-
             </div>
+            {# Dropdown to select material group #}
             <div class="col-md-3">
                 <label for="material-group">Material Group</label>
                 <select id="material-group" class="form-select">
@@ -29,6 +38,7 @@
                     <option>...</option>
                 </select>
             </div>
+            {# Dropdown to select material #}
             <div class="col-md-3">
                 <label for="material">Material</label>
                 <select id="material" class="form-select">
@@ -37,17 +47,67 @@
                 </select>
             </div>
         </div>
-        <div class="row">
+        <div class="row my-4">
+            {# Date selectors to select start/end date #}
             <div class="col-md-6">
                 <label for="date-from">Start Date</label>
-                <input type="text" class="form-control" id="date-from">
+                <input type="date" class="form-control vDateField" id="date-from" required>
             </div>
             <div class="col-md-6">
                 <label for="date-to">End Date</label>
-                <input type="text" class="form-control" id="date-to">
+                <input type="date" class="form-control vDateField" id="date-to" required>
             </div>
         </div>
     
     </form>
 
+    {# Table for displaying results #}
+ 
+    <table
+        id="results-table"
+        data-toggle="table"
+        data-height="100%"
+        data-ajax="ajaxRequest"
+        data-search="true"
+        data-side-pagination="client"
+        data-pagination="true"
+        data-sort-reset="true"
+        data-show-export="true"
+        data-export-data-type="all"
+        data-export-types="['csv', 'xlsx']"
+    >
+        <thead>
+            <tr>
+                <th data-field="id" data-visible="false">ID</th>
+                <th data-field="transaction_time" data-sortable="true">Transaction Time</th>
+                <th data-field="transaction_type" data-sortable="true">Transaction Type</th>
+                <th data-field="partner" data-sortable="true">Vendor/Customer</th>
+                <th data-field="material_group" data-sortable="true">Material Group</th>
+                <th data-field="material" data-sortable="true">Material</th>
+                <th data-field="net_weight" data-sortable="true" data-formatter="formatNumber" data-halign="right" data-align="right">Net Weight</th>
+                <th data-field="unit_price" data-sortable="true" data-formatter="formatNumber" data-halign="right" data-align="right">Unit Price</th>
+                <th data-field="net_value" data-sortable="true" data-formatter="formatNumber" data-halign="right" data-align="right">Net Value</th>
+            </tr>
+        </thead>
+    </table> 
+
+
+
 {% endblock content %}
+
+{% block bodyscripts %}
+    {# tableExport scripts #}
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/js-xlsx/xlsx.core.min.js"></script>
+    {# Bootstrap Table scripts #}
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>    
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <script type="text/javascript" src="{% static 'js/transactions_report.js' %}"></script>
+{% endblock bodyscripts %}
+
+{% comment %} 
+
+    https://bootstrap-table.com/
+
+{% endcomment %}

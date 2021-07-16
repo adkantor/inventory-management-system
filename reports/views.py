@@ -1,4 +1,3 @@
-import json
 import datetime
 
 from django.http import JsonResponse
@@ -6,19 +5,34 @@ from django.views.generic import TemplateView
 
 from inventories.models import Transaction, MaterialGroup, Material
 
-from uuid import UUID
-
-
-class UUIDEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, UUID):
-            # if the obj is uuid, we simply return the value of uuid
-            return obj.hex
-        return json.JSONEncoder.default(self, obj)
-
 
 class TransactionsView(TemplateView):
     template_name='reports/transactions.html'
+
+
+def get_material_groups(request):
+    # only GET method is accepted
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400) 
+    material_groups = MaterialGroup.serialize_all()
+    return JsonResponse(material_groups, safe=False) 
+    
+
+def get_materials(request, material_group_id):
+    # only GET method is accepted
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400) 
+    # load material group filter
+    if material_group_id == 'all':
+        material_group = None
+    else:
+        try:
+            material_group = MaterialGroup.objects.get(pk=material_group_id)
+        except MaterialGroup.DoesNotExist:
+            return JsonResponse({"error": "Material Group not found."}, status=404)
+    
+    materials = Material.serialize_all(material_group)
+    return JsonResponse(materials, safe=False) 
 
 
 def get_transactions(request):
@@ -34,7 +48,7 @@ def get_transactions(request):
 
     if transaction_types:
         if isinstance(transaction_types, list):
-            if not set(transaction_types).issubset(set([Transaction.TYPE_IN, Transaction.TYPE_OUT])):
+            if not set(transaction_types).issubset(set([Transaction.TYPE_IN, Transaction.TYPE_OUT, ''])):
                 return JsonResponse({"error": "Transaction Type not found."}, status=404)
         elif transaction_types not in (Transaction.TYPE_IN, Transaction.TYPE_OUT):
             return JsonResponse({"error": "Transaction Type not found."}, status=404)
@@ -57,7 +71,7 @@ def get_transactions(request):
     # start date
     if data.get('date_from') is not None:
         try:
-            date_from = datetime.date.fromisoformat(data['date_from'])
+            date_from = datetime.datetime.fromisoformat(data['date_from'])
         except ValueError:
             return JsonResponse({"error": "Invalid date"}, status=400)
     else:
@@ -65,7 +79,7 @@ def get_transactions(request):
     # end date
     if data.get('date_to') is not None:
         try:
-            date_to = datetime.date.fromisoformat(data['date_to'])
+            date_to = datetime.datetime.fromisoformat(data['date_to'])
         except ValueError:
             return JsonResponse({"error": "Invalid date"}, status=400)
     else:
@@ -79,6 +93,4 @@ def get_transactions(request):
         date_to=date_to
     )
 
-    return JsonResponse({
-            'transactions': result,
-        }) 
+    return JsonResponse(result, safe=False) 

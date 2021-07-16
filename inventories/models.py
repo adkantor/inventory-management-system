@@ -2,9 +2,9 @@ import uuid
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
-from django.core import serializers
 
 from documents.models import GoodsReceiptNote, GoodsDispatchNote
+
 
 def get_deleted_material_group():
     return MaterialGroup.objects.get_or_create(name='deleted')[0].id
@@ -29,6 +29,16 @@ class MaterialGroup(models.Model):
     def price_at(date):
         pass # TODO
 
+    def serialize(self):
+        return {
+            'id': str(self.id),
+            'name': self.name
+        }
+
+    @staticmethod
+    def serialize_all():
+        return [material_group.serialize() for material_group in MaterialGroup.objects.order_by('name').all()]
+
 
 class Material(models.Model):
     id = models.UUIDField(
@@ -51,6 +61,20 @@ class Material(models.Model):
 
     def price_at(date):
         pass # TODO
+
+    def serialize(self):
+        return {
+            'id': str(self.id),
+            'name': self.name,
+            'material_group_id': str(self.material_group.id)
+        }
+
+    @staticmethod
+    def serialize_all(material_group):
+        if material_group:
+            return [material.serialize() for material in Material.objects.filter(material_group=material_group).order_by('name').all()]
+        else:
+            return [material.serialize() for material in Material.objects.order_by('name').all()]
 
 
 class Transaction(models.Model):
@@ -93,7 +117,35 @@ class Transaction(models.Model):
 
     @property
     def net_value(self):
-        return self.net_weight * self.unit_price
+        return round(self.net_weight * self.unit_price, 2)
+
+    @property
+    def partner_name(self):
+        if self.goods_receipt_note:
+            return self.goods_receipt_note.vendor_name
+        elif self.goods_dispatch_note:
+            return self.goods_dispatch_note.customer_name
+        return None
+
+    def serialize(self):
+        return {
+            'id': str(self.id),
+            'transaction_type': self.transaction_type,
+            'material_group': self.material.material_group.name,
+            'material': self.material.name,
+            'transaction_time': self.transaction_time.strftime('%Y-%m-%d %H:%M'),
+            'created_time': self.created_time,
+            'last_modified': self.last_modified,
+            'gross_weight': self.gross_weight,
+            'tare_weight': self.tare_weight,
+            'net_weight': self.net_weight,
+            'unit_price': self.unit_price,
+            'net_value': self.net_value,
+            'notes': self.notes,
+            'goods_receipt_note': str(self.goods_receipt_note.id) if self.goods_receipt_note else None,
+            'goods_dispatch_note': str(self.goods_dispatch_note.id) if self.goods_dispatch_note else None,
+            'partner': self.partner_name
+        }
 
     @staticmethod
     def serialized_filtered_transactions(transaction_types=None, material_group=None, material=None,
@@ -116,9 +168,8 @@ class Transaction(models.Model):
         if date_to is not None:
             q &= Q(transaction_time__lte=date_to)
 
-        result = Transaction.objects.filter(q)
-        serialized_result = serializers.serialize('json', result)
-        return serialized_result
+        transactions = Transaction.objects.filter(q).order_by('-transaction_time').all()
+        return [transaction.serialize() for transaction in transactions]
 
     def __str__(self):
         return f'{self.transaction_time} | {self.transaction_type} | {self.net_weight}  |  {self.material.name} | $({self.net_value})'
