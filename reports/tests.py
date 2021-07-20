@@ -5,27 +5,63 @@ import uuid
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from inventories.models import MaterialGroup, Material, Transaction, UUIDEncoder
+from inventories.models import MaterialGroup, Material, Transaction
 
+from .models import datetime_range, daily_material_report
 
 client = Client()
+
+
+class ReportSupportFunctionsTest(TestCase):
+
+    def test_datetime_range_daily(self):
+        rng = datetime_range(
+            start=datetime.date(2021, 7, 1),
+            end=datetime.date(2021, 7, 3),
+            resolution='days'
+        )
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 1), datetime.date(2021, 7, 1)))
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 2), datetime.date(2021, 7, 2)))
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 3), datetime.date(2021, 7, 3)))
+        self.assertRaises(StopIteration)
+
+    def test_datetime_range_weekly(self):
+        rng = datetime_range(
+            start=datetime.date(2021, 7, 8),
+            end=datetime.date(2021, 7, 20),
+            resolution='weeks'
+        )
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 5), datetime.date(2021, 7, 11)))
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 12), datetime.date(2021, 7, 18)))
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 19), datetime.date(2021, 7, 25)))
+        self.assertRaises(StopIteration)
+
+    def test_datetime_range_monthly(self):
+        rng = datetime_range(
+            start=datetime.date(2021, 7, 8),
+            end=datetime.date(2021, 9, 20),
+            resolution='months'
+        )
+        self.assertEqual(next(rng), (datetime.date(2021, 7, 1), datetime.date(2021, 7, 31)))
+        self.assertEqual(next(rng), (datetime.date(2021, 8, 1), datetime.date(2021, 8, 31)))
+        self.assertEqual(next(rng), (datetime.date(2021, 9, 1), datetime.date(2021, 9, 30)))
+        self.assertRaises(StopIteration)
 
 
 class GetTransactionsTests(TestCase):
     
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUp(self):
 
-        mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
-        mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
-        mat_11 = Material.objects.get_or_create(name='alu cooler', material_group=mat_group_1)[0]
-        mat_12 = Material.objects.get_or_create(name='alu can', material_group=mat_group_1)[0]
-        mat_21 = Material.objects.get_or_create(name='steel can', material_group=mat_group_2)[0]
+        self.mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
+        self.mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
+        self.mat_11 = Material.objects.get_or_create(name='alu cooler', material_group=self.mat_group_1)[0]
+        self.mat_12 = Material.objects.get_or_create(name='alu can', material_group=self.mat_group_1)[0]
+        self.mat_21 = Material.objects.get_or_create(name='steel can', material_group=self.mat_group_2)[0]
         
-        cls.t1 = Transaction.objects.create(
+        self.t1 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
-            material=mat_11,
+            material=self.mat_11,
             transaction_time=datetime.date(2021,2,3),
             gross_weight=10.0,
             tare_weight=2.0,
@@ -33,9 +69,9 @@ class GetTransactionsTests(TestCase):
             notes='some notes'
         )
 
-        cls.t2 = Transaction.objects.create(
+        self.t2 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
-            material=mat_12,
+            material=self.mat_12,
             transaction_time=datetime.date(2021,3,4),
             gross_weight=20.0,
             tare_weight=4.0,
@@ -43,9 +79,9 @@ class GetTransactionsTests(TestCase):
             notes='some notes'
         )
 
-        cls.t2 = Transaction.objects.create(
+        self.t2 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_OUT,
-            material=mat_21,
+            material=self.mat_21,
             transaction_time=datetime.date(2021,4,5),
             gross_weight=30.0,
             tare_weight=5.0,
@@ -53,142 +89,138 @@ class GetTransactionsTests(TestCase):
             notes='some notes'
         )
 
-        cls.payload_all = {}
-        cls.payload_type0 = {
-            'transaction_types': ['']
-        }
-        cls.payload_type1 = {
-            'transaction_types': ['IN']
-        }
-        cls.payload_type2 = {
-            'transaction_types': ['IN', 'OUT']
-        }
-        cls.payload_mat_group = {
-            'material_group': mat_group_1.pk
-        }
-        cls.payload_mat = {
-            'material': mat_11.pk
-        }
-        cls.payload_datefrom = {
-            'date_from': '2021-03-01'
-        }
-        cls.payload_mat_group_datefrom = {
-            'material_group': mat_group_1.pk,
-            'date_from': '2021-03-01'
-        }
-
-    # def setUp(self):
-    #     # log in user 1
-    #     u1 = User.objects.get(pk=1)
-    #     client.force_login(u1)
-
-
-    # def tearDown(self):
-    #     client.logout()
-
 
     def test_get_all_transactions(self): 
+        payload = {}
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_all,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
-
-        self.assertEqual(len(data), 3)
         self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 3)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
 
 
     def test_get_transactions_no_type_provided(self):
+        payload = {
+            'transaction_types': ['']
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_type0,
+            data=payload,
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        data = response.json()
 
         self.assertEqual(len(data), 0)
 
 
     def test_get_transactions_filtered_by_single_type(self):
+        payload = {
+            'transaction_types': ['IN']
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_type1,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
 
         self.assertEqual(len(data), 2)
-        self.assertEqual(response.status_code, 200)
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
 
 
     def test_get_transactions_filtered_by_multiple_types(self):
+        payload = {
+            'transaction_types': ['IN', 'OUT']
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_type2,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
 
         self.assertEqual(len(data), 3)
-        self.assertEqual(response.status_code, 200)
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
 
 
     def test_get_transactions_filtered_by_material_group(self): 
+        payload = {
+            'material_group': self.mat_group_1.pk
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_mat_group,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
 
         self.assertEqual(len(data), 2)
-        self.assertEqual(response.status_code, 200)
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
 
 
     def test_get_transactions_filtered_by_material(self): 
+        payload = {
+            'material': self.mat_11.pk
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_mat,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(response.status_code, 200)
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
 
 
     def test_get_transactions_filtered_by_date_from(self): 
+        payload = {
+            'date_from': '2021-03-01'
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_datefrom,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
 
         self.assertEqual(len(data), 2)
-        self.assertEqual(response.status_code, 200)
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
 
 
     def test_get_transactions_filtered_by_material_group_and_date_from(self):
+        payload = {
+            'material_group': self.mat_group_1.pk,
+            'date_from': '2021-03-01'
+        }
         response = client.get(
             reverse('get_transactions'),
-            data=self.payload_mat_group_datefrom,
+            data=payload,
             content_type='application/json'
         )
-        json_data = response.json()
-        data = json.loads(json_data['transactions'])
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(response.status_code, 200)
+        for d in data:
+            self.assertTrue(isinstance(d, dict))        
 
 
 class GetMaterialGroupsTests(TestCase):
@@ -236,7 +268,6 @@ class GetMaterialsTests(TestCase):
             reverse('get_materials', kwargs={'material_group_id': 'all'})
         )
         json_data = response.json()
-        print(json_data)
         self.assertEqual(len(json_data), 3)
         # check content and sorting
         self.assertEqual(uuid.UUID(json_data[0]['id']), self.mat_12.id) # alu can
@@ -252,7 +283,7 @@ class GetMaterialsTests(TestCase):
 
     def test_get_materials_filtered(self):
         # filter by aluminium group
-        material_group_id = UUIDEncoder().default(self.mat_group_1.id)
+        material_group_id = str(self.mat_group_1.id)
         response = client.get(
             reverse('get_materials', kwargs={'material_group_id': material_group_id})
         )
@@ -265,6 +296,134 @@ class GetMaterialsTests(TestCase):
         self.assertEqual(uuid.UUID(json_data[1]['id']), self.mat_11.id) # alu cooler
         self.assertEqual(json_data[1]['name'], self.mat_11.name) # alu cooler
         self.assertEqual(uuid.UUID(json_data[1]['material_group_id']), self.mat_11.material_group.id) # alu cooler
+
+
+class SummaryReportsTests(TestCase):
+
+    @classmethod
+    def setUp(self):
+
+        mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
+        mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
+        mat_11 = Material.objects.get_or_create(name='alu cooler', material_group=mat_group_1)[0]
+        mat_12 = Material.objects.get_or_create(name='alu can', material_group=mat_group_1)[0]
+        mat_21 = Material.objects.get_or_create(name='steel can', material_group=mat_group_2)[0]
+        
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat_11,
+            transaction_time=datetime.date(2021,2,3),
+            gross_weight=10.0,
+            tare_weight=2.0,
+            unit_price=5.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat_12,
+            transaction_time=datetime.date(2021,3,4),
+            gross_weight=20.0,
+            tare_weight=4.0,
+            unit_price=10.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=mat_21,
+            transaction_time=datetime.date(2021,4,5),
+            gross_weight=30.0,
+            tare_weight=5.0,
+            unit_price=15.0,
+            notes='some notes'
+        )
+
+    def test_daily_material_report_1(self):
+        alu = Material.objects.get(name = 'alu cooler')
+        report = daily_material_report(datetime.date(2021,2,1), datetime.date(2021,2,2), alu)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,2,1),
+                'end_of_period': datetime.date(2021,2,1),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,2,2),
+                'end_of_period': datetime.date(2021,2,2),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            }            
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_daily_material_report_2(self):
+        alu = Material.objects.get(name = 'alu cooler')
+        report = daily_material_report(datetime.date(2021,2,2), datetime.date(2021,2,4), alu)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,2,2),
+                'end_of_period': datetime.date(2021,2,2),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,2,3),
+                'end_of_period': datetime.date(2021,2,3),
+                'qty_opening': 0,
+                'qty_in': 8,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },           
+            {
+                'start_of_period': datetime.date(2021,2,4),
+                'end_of_period': datetime.date(2021,2,4),
+                'qty_opening': 8,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_daily_material_report_3(self):
+        steel = Material.objects.get(name = 'steel can')
+        report = daily_material_report(datetime.date(2021,4,4), datetime.date(2021,4,6), steel)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,4,4),
+                'end_of_period': datetime.date(2021,4,4),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,4,5),
+                'end_of_period': datetime.date(2021,4,5),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 25,
+                'qty_closing': -25,
+            },           
+            {
+                'start_of_period': datetime.date(2021,4,6),
+                'end_of_period': datetime.date(2021,4,6),
+                'qty_opening': -25,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': -25,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
 
 
     # def test_get_nonexisting_post_raises_error(self):

@@ -88,7 +88,7 @@ class GoodsReceiptNoteTests(TestCase):
         self.assertContains(response, 'Test Vendor')
         self.assertContains(response, 'GRN2021/000001')
         self.assertContains(response, 'GRN2021/000002')
-        self.assertTemplateUsed(response, 'documents/goods_receipt_note_list.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_list.html')
     
     def test_goods_receipt_note_detail_view(self):
         response = self.client.get(self.goods_receipt_note_1.get_absolute_url())
@@ -101,7 +101,7 @@ class GoodsReceiptNoteTests(TestCase):
         self.assertContains(response, 'Some notes')
         self.assertContains(response, 'transaction 1')
         self.assertContains(response, 'transaction 2')
-        self.assertTemplateUsed(response, 'documents/goods_receipt_note_detail.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_detail.html')
 
     def test_goods_receipt_note_create_view(self):
         response = self.client.get(reverse('goods_receipt_note_new'))
@@ -209,7 +209,7 @@ class GoodsDispatchNoteTests(TestCase):
         self.assertContains(response, 'Test Customer')
         self.assertContains(response, 'GDN2021/000001')
         self.assertContains(response, 'GDN2021/000002')
-        self.assertTemplateUsed(response, 'documents/goods_dispatch_note_list.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_list.html')
     
     def test_goods_dispatch_note_detail_view(self):
         response = self.client.get(self.goods_dispatch_note_1.get_absolute_url())
@@ -222,7 +222,7 @@ class GoodsDispatchNoteTests(TestCase):
         self.assertContains(response, 'Some notes')
         self.assertContains(response, 'transaction 1')
         self.assertContains(response, 'transaction 2')
-        self.assertTemplateUsed(response, 'documents/goods_dispatch_note_detail.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_detail.html')
 
     def test_goods_dispatch_note_create_view(self):
         response = self.client.get(reverse('goods_dispatch_note_new'))

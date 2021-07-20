@@ -39,7 +39,7 @@ class VendorTests(TestCase):
         response = self.client.get(reverse('vendor_list'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Test Vendor')
-        self.assertTemplateUsed(response, 'partners/vendor_list.html')
+        self.assertTemplateUsed(response, 'partners/partner_list.html')
     
     def test_vendor_detail_view(self):
         response = self.client.get(self.vendor.get_absolute_url())
@@ -47,8 +47,29 @@ class VendorTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'Test Vendor')
-        self.assertTemplateUsed(response, 'partners/vendor_detail.html')
+        self.assertTemplateUsed(response, 'partners/partner_detail.html')
 
+    def test_vendor_create_view(self):
+        response = self.client.get(reverse('vendor_new'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'partners/partner_new.html')
+
+    def test_vendor_edit_view(self):
+        response = self.client.get(reverse('vendor_edit', args=[f'{self.vendor.id}']))
+        no_response = self.client.get('/partners/vendors/12345/edit/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'Test Vendor')
+        self.assertTemplateUsed(response, 'partners/partner_edit.html')
+
+    def test_vendor_delete_view(self):
+        response = self.client.get(reverse('vendor_delete', args=[f'{self.vendor.id}']))
+        no_response = self.client.get('/partners/vendors/12345/delete/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'Test Vendor')
+        self.assertContains(response, 'delete')
+        self.assertTemplateUsed(response, 'partners/partner_delete.html')        
 
 class CustomerTests(TestCase):
     
@@ -83,7 +104,7 @@ class CustomerTests(TestCase):
         response = self.client.get(reverse('customer_list'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Test Customer')
-        self.assertTemplateUsed(response, 'partners/customer_list.html')
+        self.assertTemplateUsed(response, 'partners/partner_list.html')
     
     def test_customer_detail_view(self):
         response = self.client.get(self.customer.get_absolute_url())
@@ -91,4 +112,27 @@ class CustomerTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'Test Customer')
-        self.assertTemplateUsed(response, 'partners/customer_detail.html')
+        self.assertTemplateUsed(response, 'partners/partner_detail.html')
+
+    def test_customer_create_view(self):
+        response = self.client.get(reverse('customer_new'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'partners/partner_new.html')
+
+    def test_customer_edit_view(self):
+        response = self.client.get(reverse('customer_edit', args=[f'{self.customer.id}']))
+        no_response = self.client.get('/partners/customers/12345/edit/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'Test Customer')
+        self.assertTemplateUsed(response, 'partners/partner_edit.html')
+
+    def test_customer_delete_view(self):
+        response = self.client.get(reverse('customer_delete', args=[f'{self.customer.id}']))
+        no_response = self.client.get('/partners/customers/12345/delete/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'Test Customer')
+        self.assertContains(response, 'delete')
+        self.assertTemplateUsed(response, 'partners/partner_delete.html')  
+
