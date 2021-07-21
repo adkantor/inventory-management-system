@@ -79,7 +79,8 @@ def get_transactions(request):
     if data.get('date_from') is not None:
         try:
             date_from = datetime.datetime.fromisoformat(data['date_from'])
-            date_from = tz.localize(date_from)
+            if date_from.tzinfo is None:
+                date_from = tz.localize(date_from)
         except ValueError:
             return JsonResponse({"error": "Invalid date"}, status=400)
     else:
@@ -88,7 +89,8 @@ def get_transactions(request):
     if data.get('date_to') is not None:
         try:
             date_to = datetime.datetime.fromisoformat(data['date_to'])
-            date_to = tz.localize(date_to)
+            if date_to.tzinfo is None:
+                date_to = tz.localize(date_to)
         except ValueError:
             return JsonResponse({"error": "Invalid date"}, status=400)
     else:
@@ -105,7 +107,7 @@ def get_transactions(request):
     return JsonResponse(result, safe=False) 
 
 def get_summary(request):
-
+    print("REQUEST RECEIVED: get_summary")
     # only GET method is accepted
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400) 
@@ -116,6 +118,7 @@ def get_summary(request):
     # resolution
     if data.get('resolution') is not None:
         try:
+            print(data['resolution'])
             resolution = Resolution(data['resolution'])
         except ValueError:
             return JsonResponse({"error": "Resolution not found."}, status=404)
@@ -123,11 +126,13 @@ def get_summary(request):
         return JsonResponse({"error": "Resolution missing."}, status=400)
     # material group / material
     if data.get('material') is not None:
+        print(data['material'])
         try:
             filter_by = Material.objects.get(pk=data['material']) 
         except Material.DoesNotExist:
             return JsonResponse({"error": "Material not found."}, status=404)
     elif data.get('material_group') is not None:
+        print(data['material_group'])
         try:
             filter_by = MaterialGroup.objects.get(pk=data['material_group']) 
         except MaterialGroup.DoesNotExist:
@@ -139,20 +144,23 @@ def get_summary(request):
     if data.get('date_from') is not None:
         try:
             date_from = datetime.datetime.fromisoformat(data['date_from'])
-            date_from = tz.localize(date_from)
+            if date_from.tzinfo is None:
+                date_from = tz.localize(date_from)
         except ValueError:
             return JsonResponse({"error": "Invalid date"}, status=400)
     else:
-        date_from = None
+        return JsonResponse({"error": "Invalid date"}, status=400)
     # end date
     if data.get('date_to') is not None:
+        print(data['date_to'])
         try:
             date_to = datetime.datetime.fromisoformat(data['date_to'])
-            date_to = tz.localize(date_to)
+            if date_to.tzinfo is None:
+                date_to = tz.localize(date_to)
         except ValueError:
             return JsonResponse({"error": "Invalid date"}, status=400)
     else:
-        date_to = None
+        return JsonResponse({"error": "Invalid date"}, status=400)
 
     result = generate_report(date_from, date_to, resolution, filter_by)
 
