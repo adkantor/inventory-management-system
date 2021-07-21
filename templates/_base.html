@@ -86,7 +86,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item {% if url_name|startswith:'transactions' %}active{% endif %}" href="{% url 'transactions' %}">Transaction report</a></li>
-                                    <li><a class="dropdown-item {% if url_name|startswith:'summary' %}active{% endif %}" href="#">Summary report</a></li>
+                                    <li><a class="dropdown-item {% if url_name|startswith:'summary' %}active{% endif %}" href="{% url 'summary' %}">Summary report</a></li>
                                 </ul> 
                             </div>
 

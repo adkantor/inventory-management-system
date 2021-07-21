@@ -1,6 +1,5 @@
 const myForm = document.forms[0];
-const transactionTypeInCheckbox = document.getElementById("transaction-type-in");
-const transactionTypeOutCheckbox = document.getElementById("transaction-type-out");
+const reportTypeRadioGroup = document.getElementsByName("report-options");
 const materialGroupSelect = document.getElementById("material-group");
 const materialSelect = document.getElementById("material");
 const dateFromBox = document.getElementById("date-from");
@@ -16,14 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
     dateFromBox.value = DateTime.now().startOf('month').toISODate();
     dateToBox.value = DateTime.now().endOf('month').toISODate();
 
-    // Type IN event listener
-    transactionTypeInCheckbox.addEventListener('change', (event) => {
+    // Report type event listener
+    function reportTypeChangeHandler(event) {
         updateReport();
-    });
-
-    // Type OUT event listener
-    transactionTypeOutCheckbox.addEventListener('change', (event) => {
-        updateReport();
+    }
+    Array.prototype.forEach.call(reportTypeRadioGroup, (radio) => {
+        radio.addEventListener('change', reportTypeChangeHandler);
     });
 
     // Material Group change event listener
@@ -76,13 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
-    // Bootstrap-table event listeners
-    resultsTable.on('click-row.bs.table', (e, row, element, field) => {
-        const uuid = row.id;
-        const url = `../../inventories/transactions/${uuid}`;
-        window.open(url, '_blank'); // open in new tab
-      })
 
     // Populate Material Group select
     populateMaterialGroupSelect();
@@ -152,17 +142,18 @@ function addOptionsToSelect(selectObject, optionValue, optionHTML, dataIdentifie
 
 
 function updateReport() {
+    console.log('updateReport');
     resultsTable.bootstrapTable('refresh');
+    $('#results-table').bootstrapTable('refresh');
+    console.log('refresh called');
 }
 
 
 function ajaxRequest(params) {
-    
-    // Returns array of transaction types. Returns [''] if none of types is checked.
-    const transactionTypes = (() => {
-        const values = ['IN', 'OUT', ''];
-        const mask = [transactionTypeInCheckbox.checked, transactionTypeOutCheckbox.checked, !(transactionTypeInCheckbox.checked || transactionTypeOutCheckbox.checked)];
-        return values.filter((d, ind) => mask[ind]);
+    console.log('ajaxRequest');
+    const reportType = (() => {
+        const val = getCheckedRadioOptionValue(reportTypeRadioGroup);
+        return val;
     })();
     
     const materialGroup = (() => {
@@ -194,8 +185,9 @@ function ajaxRequest(params) {
     })();
 
     const url = (() => {
-        let u = new URL('http://127.0.0.1:8000/reports/get-transactions/');
+        let u = new URL('http://127.0.0.1:8000/reports/get-summary/');
         let searchParams = new URLSearchParams();
+        searchParams.append('resolution', reportType);
         searchParams.append('date_from', dateFrom);
         searchParams.append('date_to', dateTo);
         if (materialGroup) {
@@ -204,7 +196,6 @@ function ajaxRequest(params) {
         if (material) {
             searchParams.append('material', material);
         }
-        transactionTypes.forEach(t => searchParams.append('transaction_types', t))
 
         u.search = searchParams.toString();
         return u;
@@ -225,6 +216,14 @@ function ajaxRequest(params) {
 
   }
 
+function getCheckedRadioOptionValue(radioGroup) {
+    for (let i = 0, length = radioGroup.length; i < length; i++) {
+        if (radioGroup[i].checked) {
+          return radioGroup[i].value;
+        }
+    }    
+}
+    // return document.querySelector('input[name="report-options"]:checked').value
 
 //---------------------------
 // Bootstrap Table functions
@@ -234,6 +233,22 @@ function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
+function customViewFormatter (data) {
+    console.log('customViewFormatter');
+    var template = $('#reportTemplate').html()
+    var view = ''
+    $.each(data, function (i, row) {
+      view += template
+        .replace('%START_OF_PERIOD%', row.start_of_period)
+        .replace('%END_OF_PERIOD%', row.end_of_period)
+        .replace('%QTY_OPENING%', row.qty_opening)
+        .replace('%QTY_IN%', row.qty_in)
+        .replace('%QTY_OUT%', row.qty_out)
+        .replace('%QTY_CLOSING%', row.qty_closing);
+    })
+
+    return `<div class="row mx-0">${view}</div>`
+  }
 
 // function customSort(sortName, sortOrder, data) {
 //     var order = sortOrder === 'desc' ? -1 : 1

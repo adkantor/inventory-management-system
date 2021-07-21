@@ -1,0 +1,166 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}Summary Report{% endblock title %}
+
+{% block headerscripts %}
+
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="{% static 'css/summary_report.css' %}">
+    
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.1/build/global/luxon.min.js" integrity="sha256-BdqBGuaawDzMtW2Wn9ISUuYKUY/A7d5NVcj6Ix3jwv8=" crossorigin="anonymous"></script>
+
+{% endblock headerscripts %}
+
+{% block content %}
+
+    {# Form for settings #}
+    <form>
+        <div class="row">
+            {# Checkboxes to select transaction type #}
+            <div class="col-md-6">
+                <label for="report-type">Report type</label>
+                <div id="report-type">
+                    <div class="form-check form-check-inline">
+                        <input checked class="form-check-input" name="report-options" type="radio" id="report-daily" value="day">
+                        <label class="form-check-label" for="report-daily">Daily</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" name="report-options" type="radio" id="report-weekly" value="week">
+                        <label class="form-check-label" for="report-weekly">Weekly</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" name="report-options" type="radio" id="report-monthly" value="month">
+                        <label class="form-check-label" for="report-monthly">Monthly</label>
+                    </div>
+                </div>
+            </div>
+            {# Dropdown to select material group #}
+            <div class="col-md-3">
+                <label for="material-group">Material Group</label>
+                <select id="material-group" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+            {# Dropdown to select material #}
+            <div class="col-md-3">
+                <label for="material">Material</label>
+                <select id="material" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+        </div>
+        <div class="row my-4">
+            {# Date selectors to select start/end date #}
+            <div class="col-md-6">
+                <label for="date-from">Start Date</label>
+                <input type="date" class="form-control vDateField" id="date-from" required>
+            </div>
+            <div class="col-md-6">
+                <label for="date-to">End Date</label>
+                <input type="date" class="form-control vDateField" id="date-to" required>
+            </div>
+        </div>
+    
+    </form>
+
+    {# Table for displaying results #}
+ 
+    <table
+        id="results-table"
+        data-toggle="table"
+        {% comment %} data-height="100%" {% endcomment %}
+        data-ajax="ajaxRequest"
+        data-search="true"
+        data-page-size="6"
+        {% comment %} data-side-pagination="client" {% endcomment %}
+        data-pagination="true"
+        data-show-custom-view="true"
+        data-custom-view="customViewFormatter"
+        data-show-custom-view-button="true"
+        {% comment %} data-sort-reset="true" {% endcomment %}
+        {% comment %} data-show-export="true" {% endcomment %}
+        {% comment %} data-export-data-type="all" {% endcomment %}
+        {% comment %} data-export-types="['csv', 'xlsx']" {% endcomment %}
+    >
+        <thead>
+            <tr>
+                <th data-field="start_of_period">Start Date</th>
+                <th data-field="end_of_period">End Date</th>
+                <th data-field="qty_opening">Opening</th>
+                <th data-field="qty_in">Purchase</th>
+                <th data-field="qty_out">Sale</th>
+                <th data-field="qty_closing">Closing</th>
+                {% comment %} <th data-field="net_weight" data-formatter="formatNumber" data-halign="right" data-align="right">Net Weight</th>
+                <th data-field="unit_price" data-formatter="formatNumber" data-halign="right" data-align="right">Unit Price</th>
+                <th data-field="net_value" data-formatter="formatNumber" data-halign="right" data-align="right">Net Value</th> {% endcomment %}
+            </tr>
+        </thead>
+    </table> 
+
+    <template id="reportTemplate">
+        <div class="table-report-row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col"></th>
+                        <th scope="col">Opening</th>
+                        <th scope="col">Purchases</th>
+                        <th scope="col">Sales</th>
+                        <th scope="col">Closing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan=3>%START_OF_PERIOD%</td>
+                        <td rowspan=3>%END_OF_PERIOD%</td>
+                        <td>quantity (kg)</td>
+                        <td>%QTY_OPENING%</td>
+                        <td>%QTY_IN%</td>
+                        <td>%QTY_OUT%</td>
+                        <td>%QTY_CLOSING%</td>
+                    </tr>
+                    <tr>
+                        <td>value ($)</td>
+                        <td>%VAL_OPENING%</td>
+                        <td>%VAL_IN%</td>
+                        <td>%VAL_OUT%</td>
+                        <td>%VAL_CLOSING%</td>
+                    </tr>
+                    <tr>
+                        <td>unit price ($/kg)</td>
+                        <td>%PRICE_OPENING%</td>
+                        <td>%PRICE_IN%</td>
+                        <td>%PRICE_OUT%</td>
+                        <td>%PRICE_CLOSING%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </template>
+
+{% endblock content %}
+
+{% block bodyscripts %}
+    {# tableExport scripts #}
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/js-xlsx/xlsx.core.min.js"></script>
+    {# Bootstrap Table scripts #}
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script> 
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/custom-view/bootstrap-table-custom-view.js"></script>       
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    
+
+    <script type="text/javascript" src="{% static 'js/summary_report.js' %}"></script>
+{% endblock bodyscripts %}
+
+{% comment %} 
+
+    https://bootstrap-table.com/
+
+{% endcomment %}
