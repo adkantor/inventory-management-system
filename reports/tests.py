@@ -1,50 +1,55 @@
 import datetime
 import json
 import uuid
+import pytz
 
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.conf import settings
 
 from inventories.models import MaterialGroup, Material, Transaction
 
-from .models import datetime_range, daily_material_report
+from .models import (
+    Resolution,
+    datetime_range, generate_report
+)
 
 client = Client()
+tz = pytz.timezone(settings.TIME_ZONE)
 
-
-class ReportSupportFunctionsTest(TestCase):
+class ReportSupportFunctionsTests(TestCase):
 
     def test_datetime_range_daily(self):
         rng = datetime_range(
-            start=datetime.date(2021, 7, 1),
-            end=datetime.date(2021, 7, 3),
-            resolution='days'
+            start=datetime.datetime(2021, 7, 1),
+            end=datetime.datetime(2021, 7, 3),
+            resolution=Resolution.DAY
         )
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 1), datetime.date(2021, 7, 1)))
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 2), datetime.date(2021, 7, 2)))
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 3), datetime.date(2021, 7, 3)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 7, 1), datetime.datetime(2021, 7, 1)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 7, 2), datetime.datetime(2021, 7, 2)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 7, 3), datetime.datetime(2021, 7, 3)))
         self.assertRaises(StopIteration)
 
     def test_datetime_range_weekly(self):
         rng = datetime_range(
-            start=datetime.date(2021, 7, 8),
-            end=datetime.date(2021, 7, 20),
-            resolution='weeks'
+            start=datetime.datetime(2021, 7, 8),
+            end=datetime.datetime(2021, 7, 20),
+            resolution=Resolution.WEEK
         )
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 5), datetime.date(2021, 7, 11)))
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 12), datetime.date(2021, 7, 18)))
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 19), datetime.date(2021, 7, 25)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 7, 5), datetime.datetime(2021, 7, 11)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 7, 12), datetime.datetime(2021, 7, 18)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 7, 19), datetime.datetime(2021, 7, 25)))
         self.assertRaises(StopIteration)
 
     def test_datetime_range_monthly(self):
         rng = datetime_range(
-            start=datetime.date(2021, 7, 8),
-            end=datetime.date(2021, 9, 20),
-            resolution='months'
+            start=datetime.datetime(2021, 3, 20),
+            end=datetime.datetime(2021, 5, 15),
+            resolution=Resolution.MONTH
         )
-        self.assertEqual(next(rng), (datetime.date(2021, 7, 1), datetime.date(2021, 7, 31)))
-        self.assertEqual(next(rng), (datetime.date(2021, 8, 1), datetime.date(2021, 8, 31)))
-        self.assertEqual(next(rng), (datetime.date(2021, 9, 1), datetime.date(2021, 9, 30)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 3, 1), datetime.datetime(2021, 3, 31)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 4, 1), datetime.datetime(2021, 4, 30)))
+        self.assertEqual(next(rng), (datetime.datetime(2021, 5, 1), datetime.datetime(2021, 5, 31)))
         self.assertRaises(StopIteration)
 
 
@@ -62,7 +67,7 @@ class GetTransactionsTests(TestCase):
         self.t1 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=self.mat_11,
-            transaction_time=datetime.date(2021,2,3),
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
             gross_weight=10.0,
             tare_weight=2.0,
             unit_price=5.0,
@@ -72,7 +77,7 @@ class GetTransactionsTests(TestCase):
         self.t2 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=self.mat_12,
-            transaction_time=datetime.date(2021,3,4),
+            transaction_time=tz.localize(datetime.datetime(2021,3,4)),
             gross_weight=20.0,
             tare_weight=4.0,
             unit_price=10.0,
@@ -82,7 +87,7 @@ class GetTransactionsTests(TestCase):
         self.t2 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_OUT,
             material=self.mat_21,
-            transaction_time=datetime.date(2021,4,5),
+            transaction_time=tz.localize(datetime.datetime(2021,4,5)),
             gross_weight=30.0,
             tare_weight=5.0,
             unit_price=15.0,
@@ -298,7 +303,8 @@ class GetMaterialsTests(TestCase):
         self.assertEqual(uuid.UUID(json_data[1]['material_group_id']), self.mat_11.material_group.id) # alu cooler
 
 
-class SummaryReportsTests(TestCase):
+class GenerateReportTests(TestCase):
+    maxDiff = None
 
     @classmethod
     def setUp(self):
@@ -312,7 +318,7 @@ class SummaryReportsTests(TestCase):
         Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=mat_11,
-            transaction_time=datetime.date(2021,2,3),
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
             gross_weight=10.0,
             tare_weight=2.0,
             unit_price=5.0,
@@ -322,7 +328,7 @@ class SummaryReportsTests(TestCase):
         Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=mat_12,
-            transaction_time=datetime.date(2021,3,4),
+            transaction_time=tz.localize(datetime.datetime(2021,3,4)),
             gross_weight=20.0,
             tare_weight=4.0,
             unit_price=10.0,
@@ -332,7 +338,7 @@ class SummaryReportsTests(TestCase):
         Transaction.objects.create(
             transaction_type=Transaction.TYPE_OUT,
             material=mat_21,
-            transaction_time=datetime.date(2021,4,5),
+            transaction_time=tz.localize(datetime.datetime(2021,4,5)),
             gross_weight=30.0,
             tare_weight=5.0,
             unit_price=15.0,
@@ -340,20 +346,23 @@ class SummaryReportsTests(TestCase):
         )
 
     def test_daily_material_report_1(self):
-        alu = Material.objects.get(name = 'alu cooler')
-        report = daily_material_report(datetime.date(2021,2,1), datetime.date(2021,2,2), alu)
+        date_from = tz.localize(datetime.datetime(2021,2,1))
+        date_to = tz.localize(datetime.datetime(2021,2,2))
+        resolution = Resolution.DAY
+        filter_by = Material.objects.get(name = 'alu cooler')
+        report = generate_report(date_from, date_to, resolution, filter_by)
         expected = [
             {
-                'start_of_period': datetime.date(2021,2,1),
-                'end_of_period': datetime.date(2021,2,1),
+                'start_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
                 'qty_opening': 0,
                 'qty_in': 0,
                 'qty_out': 0,
                 'qty_closing': 0,
             },
             {
-                'start_of_period': datetime.date(2021,2,2),
-                'end_of_period': datetime.date(2021,2,2),
+                'start_of_period': datetime.date(2021,2,2).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,2).strftime('%Y-%m-%d'),
                 'qty_opening': 0,
                 'qty_in': 0,
                 'qty_out': 0,
@@ -363,28 +372,31 @@ class SummaryReportsTests(TestCase):
         self.assertListEqual(report, expected)
 
     def test_daily_material_report_2(self):
-        alu = Material.objects.get(name = 'alu cooler')
-        report = daily_material_report(datetime.date(2021,2,2), datetime.date(2021,2,4), alu)
+        date_from = tz.localize(datetime.datetime(2021,2,2))
+        date_to = tz.localize(datetime.datetime(2021,2,4))
+        resolution = Resolution.DAY
+        filter_by = Material.objects.get(name = 'alu cooler')
+        report = generate_report(date_from, date_to, resolution, filter_by)
         expected = [
             {
-                'start_of_period': datetime.date(2021,2,2),
-                'end_of_period': datetime.date(2021,2,2),
+                'start_of_period': datetime.date(2021,2,2).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,2).strftime('%Y-%m-%d'),
                 'qty_opening': 0,
                 'qty_in': 0,
                 'qty_out': 0,
                 'qty_closing': 0,
             },
             {
-                'start_of_period': datetime.date(2021,2,3),
-                'end_of_period': datetime.date(2021,2,3),
+                'start_of_period': datetime.date(2021,2,3).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,3).strftime('%Y-%m-%d'),
                 'qty_opening': 0,
                 'qty_in': 8,
                 'qty_out': 0,
                 'qty_closing': 8,
             },           
             {
-                'start_of_period': datetime.date(2021,2,4),
-                'end_of_period': datetime.date(2021,2,4),
+                'start_of_period': datetime.date(2021,2,4).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,4).strftime('%Y-%m-%d'),
                 'qty_opening': 8,
                 'qty_in': 0,
                 'qty_out': 0,
@@ -394,28 +406,31 @@ class SummaryReportsTests(TestCase):
         self.assertListEqual(report, expected)
 
     def test_daily_material_report_3(self):
-        steel = Material.objects.get(name = 'steel can')
-        report = daily_material_report(datetime.date(2021,4,4), datetime.date(2021,4,6), steel)
+        date_from = tz.localize(datetime.datetime(2021,4,4))
+        date_to = tz.localize(datetime.datetime(2021,4,6))
+        resolution = Resolution.DAY
+        filter_by = Material.objects.get(name = 'steel can')
+        report = generate_report(date_from, date_to, resolution, filter_by)
         expected = [
             {
-                'start_of_period': datetime.date(2021,4,4),
-                'end_of_period': datetime.date(2021,4,4),
+                'start_of_period': datetime.date(2021,4,4).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,4).strftime('%Y-%m-%d'),
                 'qty_opening': 0,
                 'qty_in': 0,
                 'qty_out': 0,
                 'qty_closing': 0,
             },
             {
-                'start_of_period': datetime.date(2021,4,5),
-                'end_of_period': datetime.date(2021,4,5),
+                'start_of_period': datetime.date(2021,4,5).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,5).strftime('%Y-%m-%d'),
                 'qty_opening': 0,
                 'qty_in': 0,
                 'qty_out': 25,
                 'qty_closing': -25,
             },           
             {
-                'start_of_period': datetime.date(2021,4,6),
-                'end_of_period': datetime.date(2021,4,6),
+                'start_of_period': datetime.date(2021,4,6).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,6).strftime('%Y-%m-%d'),
                 'qty_opening': -25,
                 'qty_in': 0,
                 'qty_out': 0,
@@ -423,6 +438,681 @@ class SummaryReportsTests(TestCase):
             },   
         ]
         self.assertListEqual(report, expected)
+
+
+    def test_weekly_material_report_1(self):
+        date_from = tz.localize(datetime.datetime(2021,1,7))
+        date_to = tz.localize(datetime.datetime(2021,1,14))
+        resolution = Resolution.WEEK
+        filter_by = Material.objects.get(name = 'alu cooler')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,4).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,10).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,1,11).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,17).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            }            
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_weekly_material_report_2(self):
+        date_from = tz.localize(datetime.datetime(2021,1,29))
+        date_to = tz.localize(datetime.datetime(2021,2,10))
+        resolution = Resolution.WEEK
+        filter_by = Material.objects.get(name = 'alu cooler')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,25).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,7).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 8,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },           
+            {
+                'start_of_period': datetime.date(2021,2,8).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,14).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_weekly_material_report_3(self):
+        date_from = tz.localize(datetime.datetime(2021,4,1))
+        date_to = tz.localize(datetime.datetime(2021,4,15))
+        resolution = Resolution.WEEK
+        filter_by = Material.objects.get(name = 'steel can')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,3,29).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,4).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,4,5).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,11).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 25,
+                'qty_closing': -25,
+            },           
+            {
+                'start_of_period': datetime.date(2021,4,12).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,18).strftime('%Y-%m-%d'),
+                'qty_opening': -25,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': -25,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+
+    def test_monthly_material_report_1(self):
+        date_from = tz.localize(datetime.datetime(2021,1,7))
+        date_to = tz.localize(datetime.datetime(2021,1,14))
+        resolution = Resolution.MONTH
+        filter_by = Material.objects.get(name = 'alu cooler')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },         
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_monthly_material_report_2(self):
+        date_from = tz.localize(datetime.datetime(2021,1,29))
+        date_to = tz.localize(datetime.datetime(2021,3,10))
+        resolution = Resolution.MONTH
+        filter_by = Material.objects.get(name = 'alu cooler')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,28).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 8,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },           
+            {
+                'start_of_period': datetime.date(2021,3,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,31).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_monthly_material_report_3(self):
+        date_from = tz.localize(datetime.datetime(2021,3,20))
+        date_to = tz.localize(datetime.datetime(2021,5,15))
+        resolution = Resolution.MONTH
+        filter_by = Material.objects.get(name = 'steel can')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,3,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,4,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,30).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 25,
+                'qty_closing': -25,
+            },           
+            {
+                'start_of_period': datetime.date(2021,5,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,5,31).strftime('%Y-%m-%d'),
+                'qty_opening': -25,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': -25,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+
+    def test_daily_material_group_report_1(self):
+        date_from = tz.localize(datetime.datetime(2021,2,1))
+        date_to = tz.localize(datetime.datetime(2021,2,2))
+        resolution = Resolution.DAY
+        filter_by = MaterialGroup.objects.get(name = 'aluminium')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,2,2).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,2).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            }            
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_daily_material_group_report_2(self):
+        date_from = tz.localize(datetime.datetime(2021,3,3))
+        date_to = tz.localize(datetime.datetime(2021,3,5))
+        resolution = Resolution.DAY
+        filter_by = MaterialGroup.objects.get(name = 'aluminium')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,3,3).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,3).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },
+            {
+                'start_of_period': datetime.date(2021,3,4).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,4).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 16,
+                'qty_out': 0,
+                'qty_closing': 24,
+            },           
+            {
+                'start_of_period': datetime.date(2021,3,5).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,5).strftime('%Y-%m-%d'),
+                'qty_opening': 24,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 24,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_daily_material_group_report_3(self):
+        date_from = tz.localize(datetime.datetime(2021,4,4))
+        date_to = tz.localize(datetime.datetime(2021,4,6))
+        resolution = Resolution.DAY
+        filter_by = MaterialGroup.objects.get(name = 'steel')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,4,4).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,4).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,4,5).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,5).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 25,
+                'qty_closing': -25,
+            },           
+            {
+                'start_of_period': datetime.date(2021,4,6).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,6).strftime('%Y-%m-%d'),
+                'qty_opening': -25,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': -25,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+
+    def test_weekly_material_group_report_1(self):
+        date_from = tz.localize(datetime.datetime(2021,1,7))
+        date_to = tz.localize(datetime.datetime(2021,1,14))
+        resolution = Resolution.WEEK
+        filter_by = MaterialGroup.objects.get(name = 'aluminium')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,4).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,10).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,1,11).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,17).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            }            
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_weekly_material_group_report_2(self):
+        date_from = tz.localize(datetime.datetime(2021,2,25))
+        date_to = tz.localize(datetime.datetime(2021,3,10))
+        resolution = Resolution.WEEK
+        filter_by = MaterialGroup.objects.get(name = 'aluminium')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,2,22).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,28).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },
+            {
+                'start_of_period': datetime.date(2021,3,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,7).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 16,
+                'qty_out': 0,
+                'qty_closing': 24,
+            },           
+            {
+                'start_of_period': datetime.date(2021,3,8).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,14).strftime('%Y-%m-%d'),
+                'qty_opening': 24,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 24,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_weekly_material_group_report_3(self):
+        date_from = tz.localize(datetime.datetime(2021,4,1),)
+        date_to = tz.localize(datetime.datetime(2021,4,15))
+        resolution = Resolution.WEEK
+        filter_by = MaterialGroup.objects.get(name = 'steel')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,3,29).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,4).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,4,5).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,11).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 25,
+                'qty_closing': -25,
+            },           
+            {
+                'start_of_period': datetime.date(2021,4,12).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,18).strftime('%Y-%m-%d'),
+                'qty_opening': -25,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': -25,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+
+    def test_monthly_material_group_report_1(self):
+        date_from = tz.localize(datetime.datetime(2021,1,7))
+        date_to = tz.localize(datetime.datetime(2021,1,14))
+        resolution = Resolution.MONTH
+        filter_by = MaterialGroup.objects.get(name = 'aluminium')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },         
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_monthly_material_group_report_2(self):
+        date_from = tz.localize(datetime.datetime(2021,1,29))
+        date_to = tz.localize(datetime.datetime(2021,3,10))
+        resolution = Resolution.MONTH
+        filter_by = MaterialGroup.objects.get(name = 'aluminium')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,1,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,1,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,2,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,2,28).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 8,
+                'qty_out': 0,
+                'qty_closing': 8,
+            },           
+            {
+                'start_of_period': datetime.date(2021,3,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,31).strftime('%Y-%m-%d'),
+                'qty_opening': 8,
+                'qty_in': 16,
+                'qty_out': 0,
+                'qty_closing': 24,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+    def test_monthly_material_group_report_3(self):
+        date_from = tz.localize(datetime.datetime(2021,3,20))
+        date_to = tz.localize(datetime.datetime(2021,5,15))
+        resolution = Resolution.MONTH
+        filter_by = MaterialGroup.objects.get(name = 'steel')
+        report = generate_report(date_from, date_to, resolution, filter_by)
+        expected = [
+            {
+                'start_of_period': datetime.date(2021,3,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,3,31).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': 0,
+            },
+            {
+                'start_of_period': datetime.date(2021,4,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,4,30).strftime('%Y-%m-%d'),
+                'qty_opening': 0,
+                'qty_in': 0,
+                'qty_out': 25,
+                'qty_closing': -25,
+            },           
+            {
+                'start_of_period': datetime.date(2021,5,1).strftime('%Y-%m-%d'),
+                'end_of_period': datetime.date(2021,5,31).strftime('%Y-%m-%d'),
+                'qty_opening': -25,
+                'qty_in': 0,
+                'qty_out': 0,
+                'qty_closing': -25,
+            },   
+        ]
+        self.assertListEqual(report, expected)
+
+
+class GetSummaryTests(TestCase):
+    
+    @classmethod
+    def setUp(self):
+
+        self.mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
+        self.mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
+        self.mat_11 = Material.objects.get_or_create(name='alu cooler', material_group=self.mat_group_1)[0]
+        self.mat_12 = Material.objects.get_or_create(name='alu can', material_group=self.mat_group_1)[0]
+        self.mat_21 = Material.objects.get_or_create(name='steel can', material_group=self.mat_group_2)[0]
+        
+        self.t1 = Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=self.mat_11,
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
+            gross_weight=10.0,
+            tare_weight=2.0,
+            unit_price=5.0,
+            notes='some notes'
+        )
+
+        self.t2 = Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=self.mat_12,
+            transaction_time=tz.localize(datetime.datetime(2021,3,4)),
+            gross_weight=20.0,
+            tare_weight=4.0,
+            unit_price=10.0,
+            notes='some notes'
+        )
+
+        self.t2 = Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=self.mat_21,
+            transaction_time=tz.localize(datetime.datetime(2021,4,5)),
+            gross_weight=30.0,
+            tare_weight=5.0,
+            unit_price=15.0,
+            notes='some notes'
+        )
+
+
+    def test_get_daily_report_all(self): 
+        payload = {
+            'resolution': 'day',
+            'date_from': '2021-03-01',
+            'date_to': '2021-03-31'
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 31)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+
+    def test_get_weekly_report_all(self): 
+        payload = {
+            'resolution': 'week',
+            'date_from': '2021-03-01',
+            'date_to': '2021-03-31'
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 5)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+
+    def test_get_monthly_report_all(self): 
+        payload = {
+            'resolution': 'month',
+            'date_from': '2021-03-01',
+            'date_to': '2021-04-15'
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 2)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+    def test_get_daily_material_report(self): 
+        payload = {
+            'resolution': 'day',
+            'date_from': '2021-03-01',
+            'date_to': '2021-03-31',
+            'material': self.mat_11.pk
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 31)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+    def test_get_weekly_material_report(self): 
+        payload = {
+            'resolution': 'week',
+            'date_from': '2021-03-01',
+            'date_to': '2021-03-31',
+            'material': self.mat_11.pk
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 5)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+
+    def test_get_monthly_material_report(self): 
+        payload = {
+            'resolution': 'month',
+            'date_from': '2021-03-01',
+            'date_to': '2021-04-15',
+            'material': self.mat_11.pk
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 2)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+    def test_get_daily_material_group_report(self): 
+        payload = {
+            'resolution': 'day',
+            'date_from': '2021-03-01',
+            'date_to': '2021-03-31',
+            'material_group': self.mat_group_1.pk
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 31)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+    def test_get_weekly_material_group_report(self): 
+        payload = {
+            'resolution': 'week',
+            'date_from': '2021-03-01',
+            'date_to': '2021-03-31',
+            'material_group': self.mat_group_1.pk
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 5)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
+
+    def test_get_monthly_material_group_report(self): 
+        payload = {
+            'resolution': 'month',
+            'date_from': '2021-03-01',
+            'date_to': '2021-04-15',
+            'material_group': self.mat_group_1.pk
+        }
+        response = client.get(
+            reverse('get_summary'),
+            data=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        self.assertEqual(len(data), 2)        
+        for d in data:
+            self.assertTrue(isinstance(d, dict))
+
 
 
 

@@ -1,14 +1,17 @@
 # -*- coding: iso-8859-2 -*-
 
 import datetime
+import pytz
 
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.conf import settings
 
 from .models import GoodsReceiptNote, GoodsDispatchNote
 from partners.models import Vendor, Customer
 from inventories.models import MaterialGroup, Material, Transaction
 
+tz = pytz.timezone(settings.TIME_ZONE)
 
 class GoodsReceiptNoteTests(TestCase):
     
@@ -34,7 +37,7 @@ class GoodsReceiptNoteTests(TestCase):
         self.transaction_1 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=self.mat_1,
-            transaction_time=datetime.date(2021,2,3),
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
             gross_weight=10.0,
             tare_weight=2.0,
             unit_price=5.0,
@@ -44,7 +47,7 @@ class GoodsReceiptNoteTests(TestCase):
         self.transaction_2 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=self.mat_2,
-            transaction_time=datetime.date(2021,2,3),
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
             gross_weight=10.0,
             tare_weight=2.0,
             unit_price=5.0,
@@ -155,7 +158,7 @@ class GoodsDispatchNoteTests(TestCase):
         self.transaction_1 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_OUT,
             material=self.mat_1,
-            transaction_time=datetime.date(2021,2,3),
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
             gross_weight=10.0,
             tare_weight=2.0,
             unit_price=5.0,
@@ -165,7 +168,7 @@ class GoodsDispatchNoteTests(TestCase):
         self.transaction_2 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_OUT,
             material=self.mat_2,
-            transaction_time=datetime.date(2021,2,3),
+            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
             gross_weight=10.0,
             tare_weight=2.0,
             unit_price=5.0,
