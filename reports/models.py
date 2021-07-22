@@ -3,7 +3,7 @@ from enum import Enum
 
 from inventories.models import (
     Transaction, MaterialGroup, Material,
-    balance, movement_between
+    balance, movement_between, weighted_avg_price, period_weighted_avg_price
 )
 
 class Resolution(Enum):
@@ -78,13 +78,21 @@ def generate_report(date_from, date_to, resolution, filter_by=None):
     assert isinstance(filter_by, (MaterialGroup, Material)) or filter_by is None
     
     qty_closing = None
+    price_closing = None
     report = []
     for start_of_period, end_of_period in datetime_range(start=date_from, end=date_to, resolution=resolution):
-        print(start_of_period, end_of_period)
-        qty_opening = qty_closing if qty_closing is not None else balance(start_of_period - datetime.timedelta(days=1), filter_by)
+        qty_opening = qty_closing if qty_closing is not None else balance(start_of_period - datetime.timedelta(microseconds=1), filter_by)
         qty_in = movement_between(Transaction.TYPE_IN, start_of_period, end_of_period, filter_by)
         qty_out = movement_between(Transaction.TYPE_OUT, start_of_period, end_of_period, filter_by)
         qty_closing = qty_opening + qty_in - qty_out
+        price_opening = price_closing if price_closing is not None else weighted_avg_price(start_of_period - datetime.timedelta(microseconds=1), filter_by)
+        price_in = period_weighted_avg_price(Transaction.TYPE_IN, start_of_period, end_of_period, filter_by)
+        price_out = period_weighted_avg_price(Transaction.TYPE_OUT, start_of_period, end_of_period, filter_by)
+        price_closing = weighted_avg_price(end_of_period, filter_by)
+        val_opening = qty_opening * price_opening
+        val_in = qty_in * price_in
+        val_out = qty_out * price_out
+        val_closing = qty_closing * price_closing
         data = {
             'start_of_period': start_of_period.strftime('%Y-%m-%d'),
             'end_of_period': end_of_period.strftime('%Y-%m-%d'),
@@ -92,6 +100,14 @@ def generate_report(date_from, date_to, resolution, filter_by=None):
             'qty_in': qty_in,
             'qty_out': qty_out,
             'qty_closing': qty_closing,
+            'val_opening': val_opening,
+            'val_in': val_in,
+            'val_out': val_out,
+            'val_closing': val_closing,
+            'price_opening': price_opening,
+            'price_in': price_in,
+            'price_out': price_out,
+            'price_closing': price_closing,
         }
         report.append(data)
     print(report)

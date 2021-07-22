@@ -331,3 +331,61 @@ def movement_between(transaction_type, date_from, date_to, filter_by=None):
             net_weight=net_weight_exp
     ).aggregate(Sum('net_weight'))
     return result['net_weight__sum'] or 0 
+
+
+def weighted_avg_price(date, filter_by=None):
+    assert isinstance(filter_by, (MaterialGroup, Material)) or filter_by is None
+    
+    net_weight_exp = ExpressionWrapper((F('gross_weight') - F('tare_weight')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
+    q_date_to = Q(transaction_time__lte=date)
+    if isinstance(filter_by, Material):
+        q_filter = Q(material=filter_by)
+    elif isinstance(filter_by, MaterialGroup):
+        q_filter = Q(material__material_group=filter_by)
+    else:
+        q_filter = Q()
+
+    raw = Transaction.objects\
+        .filter(q_filter & q_date_to)\
+        .annotate(net_weight=net_weight_exp)\
+        .order_by('transaction_time')\
+        .values('transaction_type', 'net_weight', 'unit_price')
+
+    b = 0   # balance
+    p = 0   # price
+    wap = 0 # weighted_average_price
+    for transaction in raw:
+        p = transaction['unit_price'] if transaction['transaction_type'] == Transaction.TYPE_IN else wap
+        w = transaction['net_weight'] if transaction['transaction_type'] == Transaction.TYPE_IN else -transaction['net_weight']
+        wap = (b * wap + w * p) / (b + w)
+        b += w
+    
+    return round(wap, 2)
+
+
+def period_weighted_avg_price(transaction_type, date_from, date_to, filter_by=None):
+    assert transaction_type in (Transaction.TYPE_IN, Transaction.TYPE_OUT)
+    assert isinstance(filter_by, (MaterialGroup, Material)) or filter_by is None
+    
+    net_weight_exp = ExpressionWrapper((F('gross_weight') - F('tare_weight')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
+    q_type = Q(transaction_type=transaction_type)
+    q_date_from = Q(transaction_time__gte=date_from)
+    q_date_to = Q(transaction_time__lte=date_to)
+    if isinstance(filter_by, Material):
+        q_filter = Q(material=filter_by)
+    elif isinstance(filter_by, MaterialGroup):
+        q_filter = Q(material__material_group=filter_by)
+    else:
+        q_filter = Q()
+
+    raw = Transaction.objects\
+        .filter(q_type & q_filter & q_date_from & q_date_to)\
+        .annotate(net_weight=net_weight_exp)\
+        .order_by('transaction_time')\
+        .values('net_weight', 'unit_price')
+    try:
+        wap = sum([tr['net_weight'] * tr['unit_price'] for tr in raw]) / sum([tr['net_weight'] for tr in raw])
+    except ZeroDivisionError:
+        wap = 0
+    
+    return round(wap, 2)
