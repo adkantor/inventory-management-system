@@ -230,7 +230,8 @@ function getCheckedRadioOptionValue(radioGroup) {
 // --------------------------
 
 function formatNumber(num) {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    x = (Math.round(num * 100) / 100).toFixed(2)
+    return x.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
 function customViewFormatter (data) {
@@ -241,27 +242,19 @@ function customViewFormatter (data) {
       view += template
         .replace('%START_OF_PERIOD%', row.start_of_period)
         .replace('%END_OF_PERIOD%', row.end_of_period)
-        .replace('%QTY_OPENING%', row.qty_opening)
-        .replace('%QTY_IN%', row.qty_in)
-        .replace('%QTY_OUT%', row.qty_out)
-        .replace('%QTY_CLOSING%', row.qty_closing);
+        .replace('%QTY_OPENING%', formatNumber(row.qty_opening))
+        .replace('%QTY_IN%', formatNumber(row.qty_in))
+        .replace('%QTY_OUT%', formatNumber(row.qty_out))
+        .replace('%QTY_CLOSING%', formatNumber(row.qty_closing))
+        .replace('%VAL_OPENING%', formatNumber(row.val_opening))
+        .replace('%VAL_IN%', formatNumber(row.val_in))
+        .replace('%VAL_OUT%', formatNumber(row.val_out))
+        .replace('%VAL_CLOSING%', formatNumber(row.val_closing))
+        .replace('%PRICE_OPENING%', formatNumber(row.price_opening))
+        .replace('%PRICE_IN%', formatNumber(row.price_in))
+        .replace('%PRICE_OUT%', formatNumber(row.price_out))
+        .replace('%PRICE_CLOSING%', formatNumber(row.price_closing));
     })
 
     return `<div class="row mx-0">${view}</div>`
   }
-
-// function customSort(sortName, sortOrder, data) {
-//     var order = sortOrder === 'desc' ? -1 : 1
-//     data.sort(function (a, b) {
-//         var aa = +((a[sortName] + '').replace(/[^\d]/g, ''))
-//         var bb = +((b[sortName] + '').replace(/[^\d]/g, ''))
-//         if (aa < bb) {
-//             return order * -1
-//         }
-//         if (aa > bb) {
-//             return order
-//         }
-//         return 0
-//     })
-// }
-

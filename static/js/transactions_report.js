@@ -231,22 +231,6 @@ function ajaxRequest(params) {
 // --------------------------
 
 function formatNumber(num) {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    x = (Math.round(num * 100) / 100).toFixed(2)
+    return x.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
-
-
-// function customSort(sortName, sortOrder, data) {
-//     var order = sortOrder === 'desc' ? -1 : 1
-//     data.sort(function (a, b) {
-//         var aa = +((a[sortName] + '').replace(/[^\d]/g, ''))
-//         var bb = +((b[sortName] + '').replace(/[^\d]/g, ''))
-//         if (aa < bb) {
-//             return order * -1
-//         }
-//         if (aa > bb) {
-//             return order
-//         }
-//         return 0
-//     })
-// }
-
