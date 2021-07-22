@@ -73,7 +73,7 @@
         data-toggle="table"
         {% comment %} data-height="100%" {% endcomment %}
         data-ajax="ajaxRequest"
-        data-search="true"
+        {% comment %} data-search="true" {% endcomment %}
         data-page-size="6"
         {% comment %} data-side-pagination="client" {% endcomment %}
         data-pagination="true"
@@ -87,56 +87,63 @@
     >
         <thead>
             <tr>
-                <th data-field="start_of_period">Start Date</th>
-                <th data-field="end_of_period">End Date</th>
-                <th data-field="qty_opening">Opening</th>
-                <th data-field="qty_in">Purchase</th>
-                <th data-field="qty_out">Sale</th>
-                <th data-field="qty_closing">Closing</th>
-                {% comment %} <th data-field="net_weight" data-formatter="formatNumber" data-halign="right" data-align="right">Net Weight</th>
-                <th data-field="unit_price" data-formatter="formatNumber" data-halign="right" data-align="right">Unit Price</th>
-                <th data-field="net_value" data-formatter="formatNumber" data-halign="right" data-align="right">Net Value</th> {% endcomment %}
+                <th data-field="start_of_period" data-halign="center" data-align="center">Start Date</th>
+                <th data-field="end_of_period" data-halign="center" data-align="center">End Date</th>
+                <th data-field="qty_opening" data-formatter="formatNumber" data-halign="right" data-align="right">Opening Qty</th>
+                <th data-field="qty_in" data-formatter="formatNumber" data-halign="right" data-align="right">Purchased Qty</th>
+                <th data-field="qty_out" data-formatter="formatNumber" data-halign="right" data-align="right">Sold Qty</th>
+                <th data-field="qty_closing" data-formatter="formatNumber" data-halign="right" data-align="right">Closing Qty</th>
+                
+                <th data-field="val_opening" data-formatter="formatNumber" data-halign="right" data-align="right">Opening Value</th>
+                <th data-field="val_in" data-formatter="formatNumber" data-halign="right" data-align="right">Purchased Value</th>
+                <th data-field="val_out" data-formatter="formatNumber" data-halign="right" data-align="right">Sold Value</th>
+                <th data-field="val_closing" data-formatter="formatNumber" data-halign="right" data-align="right">Closing Value</th>
+
+                <th data-field="price_opening" data-formatter="formatNumber" data-halign="right" data-align="right">Opening Price</th>
+                <th data-field="price_in" data-formatter="formatNumber" data-halign="right" data-align="right">Purchase Price</th>
+                <th data-field="price_out" data-formatter="formatNumber" data-halign="right" data-align="right">Unit Price of sold items</th>
+                <th data-field="price_closing" data-formatter="formatNumber" data-halign="right" data-align="right">Closing Price</th>
             </tr>
         </thead>
     </table> 
 
     <template id="reportTemplate">
-        <div class="table-report-row">
+        <div class="table-report-row bg-light p-3">
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
+                        <th scope="col" class="text-center">Start Date</th>
+                        <th scope="col" class="text-center">End Date</th>
                         <th scope="col"></th>
-                        <th scope="col">Opening</th>
-                        <th scope="col">Purchases</th>
-                        <th scope="col">Sales</th>
-                        <th scope="col">Closing</th>
+                        <th scope="col" class="text-end">Opening</th>
+                        <th scope="col" class="text-end">Purchases</th>
+                        <th scope="col" class="text-end">Sales</th>
+                        <th scope="col" class="text-end">Closing</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan=3>%START_OF_PERIOD%</td>
-                        <td rowspan=3>%END_OF_PERIOD%</td>
+                        <td  class="text-center"rowspan=3>%START_OF_PERIOD%</td>
+                        <td  class="text-center"rowspan=3>%END_OF_PERIOD%</td>
                         <td>quantity (kg)</td>
-                        <td>%QTY_OPENING%</td>
-                        <td>%QTY_IN%</td>
-                        <td>%QTY_OUT%</td>
-                        <td>%QTY_CLOSING%</td>
+                        <td class="text-end">%QTY_OPENING%</td>
+                        <td class="text-end">%QTY_IN%</td>
+                        <td class="text-end">%QTY_OUT%</td>
+                        <td class="text-end">%QTY_CLOSING%</td>
                     </tr>
                     <tr>
                         <td>value ($)</td>
-                        <td>%VAL_OPENING%</td>
-                        <td>%VAL_IN%</td>
-                        <td>%VAL_OUT%</td>
-                        <td>%VAL_CLOSING%</td>
+                        <td class="text-end">%VAL_OPENING%</td>
+                        <td class="text-end">%VAL_IN%</td>
+                        <td class="text-end">%VAL_OUT%</td>
+                        <td class="text-end">%VAL_CLOSING%</td>
                     </tr>
                     <tr>
                         <td>unit price ($/kg)</td>
-                        <td>%PRICE_OPENING%</td>
-                        <td>%PRICE_IN%</td>
-                        <td>%PRICE_OUT%</td>
-                        <td>%PRICE_CLOSING%</td>
+                        <td class="text-end">%PRICE_OPENING%</td>
+                        <td class="text-end">%PRICE_IN%</td>
+                        <td class="text-end">%PRICE_OUT%</td>
+                        <td class="text-end">%PRICE_CLOSING%</td>
                     </tr>
                 </tbody>
             </table>
