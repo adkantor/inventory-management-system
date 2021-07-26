@@ -1,0 +1,41 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block headerscripts %}
+    <link href="http://cdn.bokeh.org/bokeh/release/bokeh-2.3.3.min.css" rel="stylesheet" type="text/css">
+    <link href="http://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.3.min.css" rel="stylesheet" type="text/css">
+{% endblock headerscripts %}
+
+{% block content %}
+    
+    <div class=container>
+        <div class="row">
+            <div class="col">
+                <h2>Stock levels</h2>
+                <div id="plot-content-stock-levels"></div>
+            </div>
+            <div class="col">
+                <h2>Last transactions</h2>
+                {# TODO rogzites datuma szerint utolso 10 #}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Weekly Sales and Purchases</h2>
+                <div id="plot-content-financials"></div>
+            </div>
+            <div class="col">
+                <h2>Active users</h2>
+                {# TODO osszes user felsorolva, aktivak elol, 'active' + belepes ideje - tobbiek 'inactive' + kilepes ideje #}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block bodyscripts %}
+    <script src="http://cdn.bokeh.org/bokeh/release/bokeh-2.3.3.min.js"></script>
+    <script src="http://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.3.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/dashboard.js' %}"></script>
+{% endblock bodyscripts %}

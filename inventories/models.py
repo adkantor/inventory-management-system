@@ -309,6 +309,30 @@ def balance(date, filter_by=None):
     
     return cum_in_to_date - cum_out_to_date
 
+def sales_and_purchases(date_from, date_to, filter_by=None):
+    assert isinstance(filter_by, (MaterialGroup, Material)) or filter_by is None
+
+    net_value_exp = ExpressionWrapper(((F('gross_weight') - F('tare_weight')) * F('unit_price')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
+    q_type_in = Q(transaction_type=Transaction.TYPE_IN)
+    q_type_out =  Q(transaction_type=Transaction.TYPE_OUT)   
+    if isinstance(filter_by, Material):
+        q_filter = Q(material=filter_by)
+    elif isinstance(filter_by, MaterialGroup):
+        q_filter = Q(material__material_group=filter_by)
+    else:
+        q_filter = Q()
+    q_date_from = Q(transaction_time__gte=date_from)
+    q_date_to = Q(transaction_time__lte=date_to)
+
+    temp_result = Transaction.objects.filter(
+        q_filter & q_date_from & q_date_to
+    ).annotate(net_value=net_value_exp)
+    
+    sales = temp_result.filter(q_type_out).aggregate(Sum('net_value'))['net_value__sum'] or 0
+    purchases = temp_result.filter(q_type_in).aggregate(Sum('net_value'))['net_value__sum'] or 0
+    
+    return (sales, -purchases)
+
 
 def movement_between(transaction_type, date_from, date_to, filter_by=None):
     assert isinstance(filter_by, (MaterialGroup, Material)) or filter_by is None
@@ -360,7 +384,7 @@ def weighted_avg_price(date, filter_by=None):
         wap = (b * wap + w * p) / (b + w)
         b += w
     
-    return round(wap, 2)
+    return wap
 
 
 def period_weighted_avg_price(transaction_type, date_from, date_to, filter_by=None):
@@ -388,4 +412,4 @@ def period_weighted_avg_price(transaction_type, date_from, date_to, filter_by=No
     except ZeroDivisionError:
         wap = 0
     
-    return round(wap, 2)
+    return wap

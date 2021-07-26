@@ -1,14 +1,25 @@
 import datetime
 import pytz
+from math import pi
 
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+from django.shortcuts import render
 from django.conf import settings
 
+from bokeh.plotting import figure, output_file, show
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
+from bokeh.models.widgets import Panel, Tabs
+from bokeh.models.ranges import Range1d
+from bokeh.embed import components
+
 from inventories.models import Transaction, MaterialGroup, Material
-from reports.models import Resolution, generate_report
+from reports.models import Resolution, summary_report, stock_level_report, weekly_sales_and_purchases_report
 
 tz = pytz.timezone(settings.TIME_ZONE)
+
+class DashboardView(TemplateView):
+    template_name='reports/dashboard.html'
 
 class TransactionsView(TemplateView):
     template_name='reports/transactions.html'
@@ -107,7 +118,6 @@ def get_transactions(request):
     return JsonResponse(result, safe=False) 
 
 def get_summary(request):
-    print("REQUEST RECEIVED: get_summary")
     # only GET method is accepted
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400) 
@@ -118,7 +128,6 @@ def get_summary(request):
     # resolution
     if data.get('resolution') is not None:
         try:
-            print(data['resolution'])
             resolution = Resolution(data['resolution'])
         except ValueError:
             return JsonResponse({"error": "Resolution not found."}, status=404)
@@ -126,13 +135,11 @@ def get_summary(request):
         return JsonResponse({"error": "Resolution missing."}, status=400)
     # material group / material
     if data.get('material') is not None:
-        print(data['material'])
         try:
             filter_by = Material.objects.get(pk=data['material']) 
         except Material.DoesNotExist:
             return JsonResponse({"error": "Material not found."}, status=404)
     elif data.get('material_group') is not None:
-        print(data['material_group'])
         try:
             filter_by = MaterialGroup.objects.get(pk=data['material_group']) 
         except MaterialGroup.DoesNotExist:
@@ -152,7 +159,6 @@ def get_summary(request):
         return JsonResponse({"error": "Invalid date"}, status=400)
     # end date
     if data.get('date_to') is not None:
-        print(data['date_to'])
         try:
             date_to = datetime.datetime.fromisoformat(data['date_to'])
             if date_to.tzinfo is None:
@@ -162,6 +168,153 @@ def get_summary(request):
     else:
         return JsonResponse({"error": "Invalid date"}, status=400)
 
-    result = generate_report(date_from, date_to, resolution, filter_by)
+    result = summary_report(date_from, date_to, resolution, filter_by)
 
     return JsonResponse(result, safe=False)
+
+
+def get_stock_levels(request):
+    # only GET method is accepted
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400) 
+
+    date_from = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=30))
+    date_to = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1, microseconds=-1))
+    report = stock_level_report(date_from, date_to, by_material_group=True)
+    
+    chart_tabs = Tabs()
+    dates = report['dates']
+    for key, values in report.items():
+        if key == 'dates':
+            continue
+        assert len(values) == len(dates)
+
+        source = ColumnDataSource(
+            data=dict(
+                dates=dates,
+                values=values,
+            )
+        )
+
+        hover = HoverTool(
+            tooltips=[
+                ("Date",    "@dates{%F}"),
+                ("Balance", "@values{0,0}"),
+            ],
+            formatters={
+                "@dates":   "datetime",
+                "@values":  "numeral",
+            },
+            mode='vline'
+        )
+
+        plot = figure(
+            x_axis_type="datetime",
+            y_axis_label='kg',
+            y_range=Range1d(
+                min(values) * 1.1 if min(values) < 0 else 0, 
+                max(values) * 1.1 if max(values) > 0 else 10
+            ),
+            width_policy='max',
+            height_policy='max',
+            max_height=200,
+            toolbar_location="below",
+            tools=[hover],
+        )
+        # plot.line('dates', 'values', source=source, line_width=2)
+        plot.vbar(x='dates', top='values', source=source, width=24*60*60*1000*0.7, fill_alpha=0.7)
+        plot.xaxis.formatter.days = '%b %d'
+        plot.xaxis.major_label_orientation = pi/2
+        plot.yaxis.formatter = NumeralTickFormatter(format="0,0")
+        tab = Panel(child=plot, title=key)   
+        chart_tabs.tabs.append(tab)
+
+    script, div = components(chart_tabs)
+
+    return render(request, 'reports/dashboard_content.html', 
+        {'div': div, 'script':script}
+    )
+
+
+def get_weekly_sales_and_purchases(request):
+    # only GET method is accepted
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400) 
+
+    date_from = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=30))
+    # min_timestamp = date_from.timestamp() * 1000
+    date_to = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1, microseconds=-1))
+    # max_timestamp = date_to.timestamp() * 1000
+    report = weekly_sales_and_purchases_report(date_from, date_to)
+
+    source = ColumnDataSource(
+        data=report
+    )
+    source.data['profit'] = [s + p for s, p in zip(report['sales'], report['purchases'])]
+
+    hover = HoverTool(
+        tooltips=[
+            ("Week",        "@week"),
+            ("Sales",       "@sales{0,0}"),
+            ("Purchases",   "@purchases{0,0}"),
+            ("Profit",      "@profit{0,0}")
+        ],
+        formatters={
+            "@sales":       "numeral",
+            "@purchases":   "numeral",
+            "@profit":      "numeral",
+        },
+        mode='vline',
+        names=['profit']
+    )
+
+    plot = figure(
+        y_axis_label='$',
+        x_range=report['week'],
+        y_range=Range1d(
+            min(report['purchases']) * 1.1 if min(report['purchases']) < 0 else 0, 
+            max(report['sales']) * 1.1 if max(report['sales']) > 0 else 10
+        ),
+        width_policy='max',
+        height_policy='max',
+        max_height=200,
+        toolbar_location="below",
+        tools=[hover],
+    )
+    
+    plot.vbar(        
+        x='week', top='sales', source=source, 
+        width=0.7, 
+        fill_color='green', 
+        fill_alpha=0.6,
+        line_color='green',
+        name='sales'
+    )
+    plot.vbar(
+        x='week', top='purchases', source=source, 
+        width=0.7, 
+        fill_color='purple', 
+        fill_alpha=0.6,
+        line_color='purple',
+        name='purchases'
+    )
+    plot.line(
+        x='week', y='profit', source=source,
+        line_width=3,
+        color="blue",
+        name='profit_line'
+    )
+    plot.circle(
+        x='week', y='profit', source=source,
+        line_color="blue", 
+        fill_color="white", 
+        size=5,
+        name='profit'
+    )
+    plot.yaxis.formatter = NumeralTickFormatter(format="0,0")
+
+    script, div = components(plot)
+
+    return render(request, 'reports/dashboard_content.html', 
+        {'div': div, 'script':script}
+    )

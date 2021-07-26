@@ -7,7 +7,7 @@ from django.conf import settings
 
 from .models import (
     MaterialGroup, Material, Transaction,
-    balance, movement_between, weighted_avg_price, period_weighted_avg_price
+    balance, sales_and_purchases, movement_between, weighted_avg_price, period_weighted_avg_price
 )
 
 tz = pytz.timezone(settings.TIME_ZONE)
@@ -221,8 +221,18 @@ class CalculationTests(TestCase):
         self.goods_receipt_1 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=mat,
-            transaction_time=tz.localize(datetime.datetime(2021,2,3)),
-            gross_weight=102.0,
+            transaction_time=tz.localize(datetime.datetime(2021,2,3,2,1)),
+            gross_weight=32.0,
+            tare_weight=2.0,
+            unit_price=10.0,
+            notes='some notes'
+        )
+
+        self.goods_receipt_2 = Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat,
+            transaction_time=tz.localize(datetime.datetime(2021,2,3,4,5)),
+            gross_weight=72.0,
             tare_weight=2.0,
             unit_price=10.0,
             notes='some notes'
@@ -234,11 +244,11 @@ class CalculationTests(TestCase):
             transaction_time=tz.localize(datetime.datetime(2021,3,4)),
             gross_weight=54.0,
             tare_weight=4.0,
-            unit_price=20.0,
+            unit_price=30.0,
             notes='some notes'
         )
 
-        self.goods_receipt_2 = Transaction.objects.create(
+        self.goods_receipt_3 = Transaction.objects.create(
             transaction_type=Transaction.TYPE_IN,
             material=mat,
             transaction_time=tz.localize(datetime.datetime(2021,6,3)),
@@ -250,58 +260,133 @@ class CalculationTests(TestCase):
 
     def test_material_group_balance(self):
         alu = MaterialGroup.objects.get(name = 'aluminium')
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,2)), filter_by=alu), 0)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,3)), filter_by=alu), 100)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,4)), filter_by=alu), 100)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,3)), filter_by=alu), 100)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,4)), filter_by=alu), 50)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,5)), filter_by=alu), 50)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,2,23,59)), filter_by=alu), 0)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), 100)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,4,23,59)), filter_by=alu), 100)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,3,23,59)), filter_by=alu), 100)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,4,23,59)), filter_by=alu), 50)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,5,23,59)), filter_by=alu), 50)
 
     def test_material_balance(self):
         alu = Material.objects.get(name = 'alu cooler')
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,2)), filter_by=alu), 0)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,3)), filter_by=alu), 100)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,4)), filter_by=alu), 100)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,3)), filter_by=alu), 100)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,4)), filter_by=alu), 50)
-        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,5)), filter_by=alu), 50)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,2,23,59)), filter_by=alu), 0)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), 100)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,2,4,23,59)), filter_by=alu), 100)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,3,23,59)), filter_by=alu), 100)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,4,23,59)), filter_by=alu), 50)
+        self.assertEqual(balance(tz.localize(datetime.datetime(2021,3,5,23,59)), filter_by=alu), 50)
+
+    def test_material_group_sales_and_purchases(self):
+        alu = MaterialGroup.objects.get(name = 'aluminium')
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,2,23,59)), filter_by=alu), (0, 0))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), (0, -1000))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,2,3)), tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), (0, -1000))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,2,4)), tz.localize(datetime.datetime(2021,2,4,23,59)), filter_by=alu), (0, 0))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,3,4)), tz.localize(datetime.datetime(2021,3,4,23,59)), filter_by=alu), (1500, 0))
+
+    def test_material_sales_and_purchases(self):
+        alu = Material.objects.get(name = 'alu cooler')
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,2,23,59)), filter_by=alu), (0, 0))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), (0, -1000))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,2,3)), tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), (0, -1000))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,2,4)), tz.localize(datetime.datetime(2021,2,4,23,59)), filter_by=alu), (0, 0))
+        self.assertEqual(sales_and_purchases(tz.localize(datetime.datetime(2021,3,4)), tz.localize(datetime.datetime(2021,3,4,23,59)), filter_by=alu), (1500, 0))
 
     def test_material_group_movement(self):
         alu = MaterialGroup.objects.get(name = 'aluminium')
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,2)), filter_by=alu), 0)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,3)), filter_by=alu), 100)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 100)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,3)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 100)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,4)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,2,23,59)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), 100)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 100)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,3)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 100)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,4)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 0)
 
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,3)), filter_by=alu), 0)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,4)), filter_by=alu), 50)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 50)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,4)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 50)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,5)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,3,23,59)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,4,23,59)), filter_by=alu), 50)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 50)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,4)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 50)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,5)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 0)
 
     def test_material_movement(self):
         alu = Material.objects.get(name = 'alu cooler')
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,2)), filter_by=alu), 0)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,3)), filter_by=alu), 100)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 100)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,3)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 100)
-        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,4)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,2,23,59)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,2,3,23,59)), filter_by=alu), 100)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 100)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,3)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 100)
+        self.assertEqual(movement_between(Transaction.TYPE_IN, tz.localize(datetime.datetime(2021,2,4)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 0)
 
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,3)), filter_by=alu), 0)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,4)), filter_by=alu), 50)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 50)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,4)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 50)
-        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,5)), tz.localize(datetime.datetime(2021,5,31)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,3,23,59)), filter_by=alu), 0)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,3,4,23,59)), filter_by=alu), 50)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,1,1)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 50)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,4)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 50)
+        self.assertEqual(movement_between(Transaction.TYPE_OUT, tz.localize(datetime.datetime(2021,3,5)), tz.localize(datetime.datetime(2021,5,31,23,59)), filter_by=alu), 0)
 
-    def test_weighted_avg_price(self):
+    def test_material_group_weighted_avg_price(self):
+        alu = MaterialGroup.objects.get(name = 'aluminium')
+        self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,2,1)), filter_by=alu), 0)
+        self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,2,4)), filter_by=alu), 10)
+        self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,3,5)), filter_by=alu), 10)
+        self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,6,5)), filter_by=alu), 13.75)
+
+    def test_material_weighted_avg_price(self):
         alu = Material.objects.get(name = 'alu cooler')
         self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,2,1)), filter_by=alu), 0)
         self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,2,4)), filter_by=alu), 10)
         self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,3,5)), filter_by=alu), 10)
         self.assertEqual(weighted_avg_price(tz.localize(datetime.datetime(2021,6,5)), filter_by=alu), 13.75)
-    
-    def test_period_weighted_avg_price(self):
+
+    def test_material_group_period_weighted_avg_price(self):
+        alu = MaterialGroup.objects.get(name = 'aluminium')
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_IN, 
+                tz.localize(datetime.datetime(2021,2,1)), 
+                tz.localize(datetime.datetime(2021,2,2) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 0)
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_IN, 
+                tz.localize(datetime.datetime(2021,2,1)), 
+                tz.localize(datetime.datetime(2021,2,4) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 10)
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_IN, 
+                tz.localize(datetime.datetime(2021,2,1)), 
+                tz.localize(datetime.datetime(2021,6,5) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 13)
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_IN, 
+                tz.localize(datetime.datetime(2021,3,1)), 
+                tz.localize(datetime.datetime(2021,6,5) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 15)
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_OUT, 
+                tz.localize(datetime.datetime(2021,3,1)), 
+                tz.localize(datetime.datetime(2021,3,4) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 0)
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_OUT, 
+                tz.localize(datetime.datetime(2021,3,1)), 
+                tz.localize(datetime.datetime(2021,3,5) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 30)
+        self.assertEqual(
+            period_weighted_avg_price(
+                Transaction.TYPE_OUT, 
+                tz.localize(datetime.datetime(2021,3,5)), 
+                tz.localize(datetime.datetime(2021,3,10) - datetime.timedelta(microseconds=1)), 
+                filter_by=alu
+            ), 0)   
+
+    def test_material_period_weighted_avg_price(self):
         alu = Material.objects.get(name = 'alu cooler')
         self.assertEqual(
             period_weighted_avg_price(
@@ -344,7 +429,7 @@ class CalculationTests(TestCase):
                 tz.localize(datetime.datetime(2021,3,1)), 
                 tz.localize(datetime.datetime(2021,3,5) - datetime.timedelta(microseconds=1)), 
                 filter_by=alu
-            ), 20)
+            ), 30)
         self.assertEqual(
             period_weighted_avg_price(
                 Transaction.TYPE_OUT, 

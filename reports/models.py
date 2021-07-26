@@ -3,7 +3,7 @@ from enum import Enum
 
 from inventories.models import (
     Transaction, MaterialGroup, Material,
-    balance, movement_between, weighted_avg_price, period_weighted_avg_price
+    balance, movement_between, sales_and_purchases, weighted_avg_price, period_weighted_avg_price
 )
 
 class Resolution(Enum):
@@ -71,7 +71,7 @@ def datetime_range(start=None, end=None, resolution=Resolution.DAY):
 #         report.append(data)
 #     return report
 
-def generate_report(date_from, date_to, resolution, filter_by=None):
+def summary_report(date_from, date_to, resolution, filter_by=None):
     assert isinstance(date_from, datetime.datetime)
     assert isinstance(date_to, datetime.datetime)
     assert isinstance(resolution, Resolution)
@@ -94,21 +94,72 @@ def generate_report(date_from, date_to, resolution, filter_by=None):
         val_out = qty_out * price_out
         val_closing = qty_closing * price_closing
         data = {
-            'start_of_period': start_of_period.strftime('%Y-%m-%d'),
-            'end_of_period': end_of_period.strftime('%Y-%m-%d'),
-            'qty_opening': qty_opening,
-            'qty_in': qty_in,
-            'qty_out': qty_out,
-            'qty_closing': qty_closing,
-            'val_opening': val_opening,
-            'val_in': val_in,
-            'val_out': val_out,
-            'val_closing': val_closing,
-            'price_opening': price_opening,
-            'price_in': price_in,
-            'price_out': price_out,
-            'price_closing': price_closing,
+            'start_of_period':  start_of_period.strftime('%Y-%m-%d'),
+            'end_of_period':    end_of_period.strftime('%Y-%m-%d'),
+            'qty_opening':      round(float(qty_opening), 2),
+            'qty_in':           round(float(qty_in), 2),
+            'qty_out':          round(float(qty_out), 2),
+            'qty_closing':      round(float(qty_closing), 2),
+            'val_opening':      round(float(val_opening), 2),
+            'val_in':           round(float(val_in), 2),
+            'val_out':          round(float(val_out), 2),
+            'val_closing':      round(float(val_closing), 2),
+            'price_opening':    round(float(price_opening), 2),
+            'price_in':         round(float(price_in), 2),
+            'price_out':        round(float(price_out), 2),
+            'price_closing':    round(float(price_closing), 2),
         }
         report.append(data)
-    print(report)
+
     return report
+
+
+def stock_level_report(date_from, date_to, by_material_group=False):
+    """
+    Returns : {
+        'dates': [list_of_datetime_objects],
+        'material_or_materialgroup_name_1': [list_of_daily_balances],
+        'material_or_materialgroup_name_2': [list_of_daily_balances],
+        ...
+        'material_or_materialgroup_name_n': [list_of_daily_balances],
+    }
+    """
+    result = {}
+    # get dates
+    dt_range = list(datetime_range(date_from, date_to))
+    dates = [d for _, d in dt_range]
+    result['dates'] = dates
+    # get balances
+    filters = MaterialGroup.objects.order_by('name').all() if by_material_group else Material.objects.order_by('name').all()
+
+    for filter_by in filters:
+        name = filter_by.name
+        balances = [float(balance(d, filter_by=filter_by)) for _, d in dt_range]
+        result[name] = balances
+
+    return result
+
+def weekly_sales_and_purchases_report(date_from, date_to):
+    """
+    Returns : {
+        'dates': [list_of_datetime_objects],
+        'week': [list_of_week_strings],
+        'sales': [list_of_daily_revenues],
+        'purchases': [list_of_daily_costs],
+    }
+    """
+    result = {}
+    # get dates
+    dt_range = list(datetime_range(date_from, date_to, resolution=Resolution.WEEK))
+    weeks = [f'W{d.date().isocalendar()[1]}' for d, _ in dt_range]
+    result['week'] = weeks
+    # get financials
+    sales, purchases = [], []
+    for df, dt in dt_range:
+        temp = sales_and_purchases(df, dt)
+        sales.append(float(temp[0]))
+        purchases.append(float(temp[1]))
+    result['sales'] = sales
+    result['purchases'] = purchases
+
+    return result

@@ -1,16 +1,20 @@
 from django.urls import path
 
 from .views import (
-    TransactionsView, SummaryView, 
-    get_transactions, get_summary, get_material_groups, get_materials
+    DashboardView, TransactionsView, SummaryView, 
+    get_stock_levels, get_weekly_sales_and_purchases,
+    get_summary, get_transactions, get_material_groups, get_materials
 )
 
 urlpatterns = [
+    path('', DashboardView.as_view(), name='dashboard'),
     path('transactions/', TransactionsView.as_view(), name='transactions'),
     path('summary/', SummaryView.as_view(), name='summary'),
     # API routes
-    path('get-transactions/', get_transactions, name='get_transactions'),
+    path('get-stock-levels/', get_stock_levels, name='get_stock_levels'), 
+    path('get-financials/', get_weekly_sales_and_purchases, name='get_financials'), 
     path('get-summary/', get_summary, name='get_summary'), 
+    path('get-transactions/', get_transactions, name='get_transactions'),    
     path('get-material-groups/', get_material_groups, name='get_material_groups'), 
     path('get-materials/<str:material_group_id>', get_materials, name='get_materials'), 
 ]
