@@ -6,6 +6,7 @@
 {% block headerscripts %}
     <link href="http://cdn.bokeh.org/bokeh/release/bokeh-2.3.3.min.css" rel="stylesheet" type="text/css">
     <link href="http://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.3.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 {% endblock headerscripts %}
 
 {% block content %}
@@ -27,8 +28,8 @@
                 <div id="plot-content-weekly-financials"></div>
             </div>
             <div class="col">
-                <h2>Active users</h2>
-                {# TODO osszes user felsorolva, aktivak elol, 'active' + belepes ideje - tobbiek 'inactive' + kilepes ideje #}
+                <h2>User statuses</h2>
+                <div id="table-content-user-statuses"></div>
             </div>
         </div>
     </div>

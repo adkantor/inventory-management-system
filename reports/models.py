@@ -199,9 +199,3 @@ def sales_and_purchases_report(date_from, date_to, by_material_group=False, norm
         result['purchases'] = normalized(result['purchases'])
 
     return result
-
-
-    # https://malouche.github.io/notebooks/donut_with_bokeh2.html
-    # http://5.9.10.113/66331363/multi-level-pie-chart-bokeh
-    # https://docs.bokeh.org/en/latest/docs/reference/models/glyphs/wedge.html?highlight=wedge#bokeh.models.glyphs.Wedge
-    # https://docs.bokeh.org/en/latest/docs/user_guide/tools.html

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateStockLevels();
     updateWeeklyFinancials();
     updateSummaryFinancials();
+    updateUserStatuses();
 });
 
 function updateStockLevels() {
@@ -25,7 +26,6 @@ function updateStockLevels() {
     .catch(error => {
         console.log('Error:', error);
     });
-
 }
 
 function updateWeeklyFinancials() {
@@ -47,7 +47,6 @@ function updateWeeklyFinancials() {
     .catch(error => {
         console.log('Error:', error);
     });
-
 }
 
 function updateSummaryFinancials() {
@@ -64,6 +63,28 @@ function updateSummaryFinancials() {
     .then(response => response.text())
     .then(data => {
         $('#plot-content-summary-financials').html(data);
+    })
+    // Catch any errors and log them to the console
+    .catch(error => {
+        console.log('Error:', error);
+    });
+}
+
+function updateUserStatuses() {
+    console.log('updateUserStatuses');
+    const url = (() => {
+        let u = new URL('http://127.0.0.1:8000/reports/get-user-statuses/');
+        return u;
+    })();
+
+    // make GET request
+    fetch(url, {
+        method: 'GET',
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        $('#table-content-user-statuses').html(data);
     })
     // Catch any errors and log them to the console
     .catch(error => {

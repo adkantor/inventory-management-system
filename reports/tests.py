@@ -6,6 +6,7 @@ import pytz
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from inventories.models import MaterialGroup, Material, Transaction
 
@@ -1810,6 +1811,11 @@ class SummaryFinancialsTests(TestCase):
         self.assertListEqual(report['sales'], [200/1500, 50/1500, 450/1500, 800/1500])
         # check purchases
         self.assertListEqual(report['purchases'], [160/1275, 40/1275, 375/1275, 700/1275])
+
+
+
+
+
 
     # def test_get_nonexisting_post_raises_error(self):
 

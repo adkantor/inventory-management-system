@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
@@ -416,4 +417,16 @@ def get_summary_sales_and_purchases(request):
 
     return render(request, 'reports/dashboard_content.html', 
         {'div': div, 'script':script}
+    )
+
+def get_user_statuses(request):
+    # only GET method is accepted
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400) 
+
+    User = get_user_model()
+    report = User.statuses()
+    print(report)
+    return render(request, 'reports/dashboard_table.html', 
+        {'report': report}
     )

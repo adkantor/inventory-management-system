@@ -31,3 +31,24 @@ class CustomUserTests(TestCase):
         self.assertTrue(u1.is_active)
         self.assertTrue(u1.is_staff)
         self.assertTrue(u1.is_superuser)
+
+    def test_statuses(self):
+        User = get_user_model()
+        User.objects.create_user(
+            username='boss',
+            email='boss@email.com',
+            password='test1'
+        )
+        User.objects.create_user(
+            username='staff',
+            email='staff@email.com',
+            password='test2'
+        )
+        User.objects.create_user(
+            username='inactive',
+            email='inactive@email.com',
+            password='test3',
+            is_active=False
+        )
+        result = User.statuses()
+        self.assertEqual(len(result), 2)
