@@ -11,7 +11,8 @@ from inventories.models import MaterialGroup, Material, Transaction
 
 from .models import (
     Resolution,
-    datetime_range, summary_report, stock_level_report, weekly_sales_and_purchases_report
+    datetime_range, normalized, summary_report, stock_level_report, 
+    weekly_sales_and_purchases_report, sales_and_purchases_report
 )
 
 client = Client()
@@ -72,6 +73,20 @@ class ReportSupportFunctionsTests(TestCase):
         self.assertEqual(next(rng), (datetime.datetime(2021, 5, 1), datetime.datetime(2021, 6, 1) - datetime.timedelta(microseconds=1)))
         self.assertRaises(StopIteration)
 
+    def test_normalize(self):
+        # (input, expected)
+        cases = [
+            ([], []),
+            ([0], []),
+            ([1], [1]),
+            ([10, -10], []),
+            ([100], [1]),
+            ([40, 60, 100], [0.2, 0.3, 0.5]),
+        ]
+        for input, expected in cases:
+            with self.subTest(input=input, expected=expected):
+                result = normalized(input)
+                self.assertListEqual(result, expected)
 
 class GetTransactionsTests(TestCase):
     
@@ -1581,7 +1596,7 @@ class StockLevelsTests(TestCase):
         self.assertListEqual(report['steel can'], [0, 0, 0])
 
 
-class FinancialsTests(TestCase):
+class WeeklyFinancialsTests(TestCase):
     maxDiff = None
 
     @classmethod
@@ -1636,7 +1651,7 @@ class FinancialsTests(TestCase):
         # check purchases
         self.assertListEqual(report['purchases'], [0, 0, 0, -40])
 
-    def test_financials_sales(self):
+    def test_weekly_sales(self):
         date_from = tz.localize(datetime.datetime(2021,3,29))
         date_to = tz.localize(datetime.datetime(2021,4,29))
         report = weekly_sales_and_purchases_report(date_from, date_to)
@@ -1649,6 +1664,152 @@ class FinancialsTests(TestCase):
         # check purchases
         self.assertListEqual(report['purchases'], [0, 0, 0, 0, 0])
 
+
+class SummaryFinancialsTests(TestCase):
+    maxDiff = None
+
+    @classmethod
+    def setUp(self):
+
+        mat_group_1 = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
+        mat_group_2 = MaterialGroup.objects.get_or_create(name = 'steel')[0]
+        mat_11 = Material.objects.get_or_create(name='alu cooler', material_group=mat_group_1)[0]
+        mat_12 = Material.objects.get_or_create(name='alu can', material_group=mat_group_1)[0]
+        mat_21 = Material.objects.get_or_create(name='steel can', material_group=mat_group_2)[0]
+        mat_22 = Material.objects.get_or_create(name='steel pipe', material_group=mat_group_2)[0]
+        
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat_11,
+            transaction_time=tz.localize(datetime.datetime(2021,7,3)),
+            gross_weight=10.0,
+            tare_weight=2.0,
+            unit_price=5.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat_12,
+            transaction_time=tz.localize(datetime.datetime(2021,7,4)),
+            gross_weight=20.0,
+            tare_weight=4.0,
+            unit_price=10.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat_21,
+            transaction_time=tz.localize(datetime.datetime(2021,7,5)),
+            gross_weight=30.0,
+            tare_weight=5.0,
+            unit_price=15.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_IN,
+            material=mat_22,
+            transaction_time=tz.localize(datetime.datetime(2021,7,6)),
+            gross_weight=40.0,
+            tare_weight=5.0,
+            unit_price=20.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=mat_11,
+            transaction_time=tz.localize(datetime.datetime(2021,7,7)),
+            gross_weight=5.0,
+            tare_weight=0.0,
+            unit_price=10.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=mat_12,
+            transaction_time=tz.localize(datetime.datetime(2021,7,8)),
+            gross_weight=10.0,
+            tare_weight=0.0,
+            unit_price=20.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=mat_21,
+            transaction_time=tz.localize(datetime.datetime(2021,7,9)),
+            gross_weight=15.0,
+            tare_weight=0.0,
+            unit_price=30.0,
+            notes='some notes'
+        )
+
+        Transaction.objects.create(
+            transaction_type=Transaction.TYPE_OUT,
+            material=mat_22,
+            transaction_time=tz.localize(datetime.datetime(2021,7,10)),
+            gross_weight=20.0,
+            tare_weight=0.0,
+            unit_price=40.0,
+            notes='some notes'
+        )
+
+
+    def test_report_by_material_group(self):
+        date_from = tz.localize(datetime.datetime(2021,7,1))
+        date_to = tz.localize(datetime.datetime(2021,8,1) - datetime.timedelta(microseconds=1))
+        report = sales_and_purchases_report(date_from, date_to, by_material_group=True)
+        # check keys
+        self.assertListEqual(list(report.keys()), ['item', 'sales', 'purchases'])
+        # check items
+        self.assertListEqual(report['item'], ['aluminium', 'steel', 'undefined'])
+        # check sales
+        self.assertListEqual(report['sales'], [250, 1250, 0])
+        # check purchases
+        self.assertListEqual(report['purchases'], [200, 1075, 0])
+
+    def test_report_by_material_group_normalized(self):
+        date_from = tz.localize(datetime.datetime(2021,7,1))
+        date_to = tz.localize(datetime.datetime(2021,8,1) - datetime.timedelta(microseconds=1))
+        report = sales_and_purchases_report(date_from, date_to, by_material_group=True, normalize=True)
+        # check keys
+        self.assertListEqual(list(report.keys()), ['item', 'sales', 'purchases'])
+        # check items
+        self.assertListEqual(report['item'], ['aluminium', 'steel', 'undefined'])
+        # check sales
+        self.assertListEqual(report['sales'], [250/1500, 1250/1500, 0])
+        # check purchases
+        self.assertListEqual(report['purchases'], [200/1275, 1075/1275, 0])
+
+    def test_report_by_material(self):
+        date_from = tz.localize(datetime.datetime(2021,7,1))
+        date_to = tz.localize(datetime.datetime(2021,8,1) - datetime.timedelta(microseconds=1))
+        report = sales_and_purchases_report(date_from, date_to, by_material_group=False)
+        # check keys
+        self.assertListEqual(list(report.keys()), ['item', 'sales', 'purchases'])
+        # check items
+        self.assertListEqual(report['item'], ['alu can', 'alu cooler', 'steel can', 'steel pipe'])
+        # check sales
+        self.assertListEqual(report['sales'], [200, 50, 450, 800])
+        # check purchases
+        self.assertListEqual(report['purchases'], [160, 40, 375, 700])
+
+    def test_report_by_material_normalized(self):
+        date_from = tz.localize(datetime.datetime(2021,7,1))
+        date_to = tz.localize(datetime.datetime(2021,8,1) - datetime.timedelta(microseconds=1))
+        report = sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=True)
+        # check keys
+        self.assertListEqual(list(report.keys()), ['item', 'sales', 'purchases'])
+        # check items
+        self.assertListEqual(report['item'], ['alu can', 'alu cooler', 'steel can', 'steel pipe'])
+        # check sales
+        self.assertListEqual(report['sales'], [200/1500, 50/1500, 450/1500, 800/1500])
+        # check purchases
+        self.assertListEqual(report['purchases'], [160/1275, 40/1275, 375/1275, 700/1275])
 
     # def test_get_nonexisting_post_raises_error(self):
 

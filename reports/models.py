@@ -52,6 +52,18 @@ def datetime_range(start=None, end=None, resolution=Resolution.DAY):
             end_of_period = start_of_period + monthdelta(start_of_period, months=1) - datetime.timedelta(microseconds=1)
 
 
+def normalized(data):
+    assert isinstance(data, list)
+
+    if len(data) == 0:
+        return []
+
+    sum_of_data = sum(data)
+    if sum_of_data == 0:
+        return []
+    
+    return [x / sum_of_data for x in data]
+
 # def daily_material_report(date_from, date_to, material):
 #     qty_closing = None
 #     report = []
@@ -131,7 +143,6 @@ def stock_level_report(date_from, date_to, by_material_group=False):
     result['dates'] = dates
     # get balances
     filters = MaterialGroup.objects.order_by('name').all() if by_material_group else Material.objects.order_by('name').all()
-
     for filter_by in filters:
         name = filter_by.name
         balances = [float(balance(d, filter_by=filter_by)) for _, d in dt_range]
@@ -142,7 +153,6 @@ def stock_level_report(date_from, date_to, by_material_group=False):
 def weekly_sales_and_purchases_report(date_from, date_to):
     """
     Returns : {
-        'dates': [list_of_datetime_objects],
         'week': [list_of_week_strings],
         'sales': [list_of_daily_revenues],
         'purchases': [list_of_daily_costs],
@@ -163,3 +173,35 @@ def weekly_sales_and_purchases_report(date_from, date_to):
     result['purchases'] = purchases
 
     return result
+
+
+def sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=False):
+    """
+    Returns : {
+        'item': [list_of_material_or_material_groups],
+        'sales': [list_of_period_sales_per_item],
+        'purchases': [list_of_period_purchaases_per_item],
+    }
+    """
+    result = {}
+    result['item'] = []
+    result['sales'] = []
+    result['purchases'] = []
+    filters = MaterialGroup.objects.order_by('name').all() if by_material_group else Material.objects.order_by('name').all()
+    for filter in filters:
+        sales, purchases = sales_and_purchases(date_from, date_to, filter_by=filter)
+        result['item'].append(filter.name)
+        result['sales'].append(float(sales))
+        result['purchases'].append(float(-purchases)) 
+    
+    if normalize: 
+        result['sales'] = normalized(result['sales'])
+        result['purchases'] = normalized(result['purchases'])
+
+    return result
+
+
+    # https://malouche.github.io/notebooks/donut_with_bokeh2.html
+    # http://5.9.10.113/66331363/multi-level-pie-chart-bokeh
+    # https://docs.bokeh.org/en/latest/docs/reference/models/glyphs/wedge.html?highlight=wedge#bokeh.models.glyphs.Wedge
+    # https://docs.bokeh.org/en/latest/docs/user_guide/tools.html

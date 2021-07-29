@@ -12,9 +12,15 @@ from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
 from bokeh.models.widgets import Panel, Tabs
 from bokeh.models.ranges import Range1d
 from bokeh.embed import components
+from bokeh.palettes import Category20c
+from bokeh.transform import cumsum
 
 from inventories.models import Transaction, MaterialGroup, Material
-from reports.models import Resolution, summary_report, stock_level_report, weekly_sales_and_purchases_report
+from reports.models import (
+    Resolution, 
+    summary_report, 
+    stock_level_report, weekly_sales_and_purchases_report, sales_and_purchases_report
+)
 
 tz = pytz.timezone(settings.TIME_ZONE)
 
@@ -314,6 +320,99 @@ def get_weekly_sales_and_purchases(request):
     plot.yaxis.formatter = NumeralTickFormatter(format="0,0")
 
     script, div = components(plot)
+
+    return render(request, 'reports/dashboard_content.html', 
+        {'div': div, 'script':script}
+    )
+
+
+def get_summary_sales_and_purchases(request):
+
+    def get_plot(report_material_group, report_material, field):
+        hover = HoverTool(
+            # tooltips=f"@item: @{field}",
+            tooltips=[
+                ("Item",    "@item $swatch:color"),
+                ("Pct",     f"@{field}"),
+                ("fill color", "$swatch:color"),
+            ],
+            formatters={
+                f"@{field}":  "numeral",
+            },
+            names=['material_group', 'material'],
+            point_policy="follow_mouse"
+        )
+
+        plot = figure(
+            width_policy='max',
+            height_policy='max',
+            max_height=200,
+            toolbar_location="below",
+            tools=[hover],
+        )
+
+        # outer donut: by material group
+        source_material_group = ColumnDataSource(data=report_material_group)
+        source_material_group.data['angle'] = [x * 2 * pi for x in source_material_group.data[f'{field}']]
+        source_material_group.data['color'] = Category20c[len(source_material_group.data[f'{field}'])]
+        plot.annular_wedge(
+            x=0, y=0, source=source_material_group, 
+            inner_radius=0.15, 
+            outer_radius=0.25, 
+            direction="anticlock",
+            start_angle=cumsum('angle', include_zero=True), 
+            end_angle=cumsum('angle'),
+            line_color="white", 
+            fill_color='color', 
+            name='material_group'
+        )
+
+        # inner donut: by material
+        source_material = ColumnDataSource(data=report_material)
+        source_material.data['angle'] = [x * 2 * pi for x in source_material.data[f'{field}']]
+        source_material.data['color'] = Category20c[len(source_material.data[f'{field}'])]
+        plot.annular_wedge(
+            x=0, y=0, source=source_material, 
+            inner_radius=0.05, 
+            outer_radius=0.14, 
+            direction="anticlock",
+            start_angle=cumsum('angle', include_zero=True), 
+            end_angle=cumsum('angle'),
+            line_color="white", 
+            fill_color='color', 
+            name='material'
+        )
+
+        plot.axis.axis_label=None
+        plot.axis.visible=False
+        plot.grid.grid_line_color = None
+
+        return plot
+
+
+    # only GET method is accepted
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400) 
+
+    date_from = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=30))
+    # min_timestamp = date_from.timestamp() * 1000
+    date_to = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1, microseconds=-1))
+    # max_timestamp = date_to.timestamp() * 1000
+
+    chart_tabs = Tabs()
+
+    # get report data
+    report_material_group = sales_and_purchases_report(date_from, date_to, by_material_group=True, normalize=True)
+    report_material = sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=True)
+    # get plots
+    plot_sales = get_plot(report_material_group, report_material, 'sales')
+    plot_purchases = get_plot(report_material_group, report_material, 'purchases')
+    # get tabs
+    tab_sales = Panel(child=plot_sales, title='Sales')   
+    tab_purchases = Panel(child=plot_purchases, title='Purchases')   
+    chart_tabs.tabs = [tab_sales, tab_purchases]
+
+    script, div = components(chart_tabs)
 
     return render(request, 'reports/dashboard_content.html', 
         {'div': div, 'script':script}
