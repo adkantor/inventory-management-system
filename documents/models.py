@@ -29,7 +29,10 @@ class GoodsReceiptNote(models.Model):
     notes = models.TextField(max_length=255, blank=True)
     created_time = models.DateTimeField(auto_now_add=True, editable=False)
     last_modified = models.DateTimeField(auto_now=True, editable=False)
-    
+
+    @property
+    def vendor_name(self):
+        return self.vendor.name if self.vendor else None  
 
     @staticmethod
     def get_last_grn(year):
@@ -73,7 +76,10 @@ class GoodsDispatchNote(models.Model):
     notes = models.TextField(max_length=255, blank=True)
     created_time = models.DateTimeField(auto_now_add=True, editable=False)
     last_modified = models.DateTimeField(auto_now=True, editable=False)
-    
+
+    @property
+    def customer_name(self):
+        return self.customer.name if self.customer else None     
 
     @staticmethod
     def get_last_gdn(year):

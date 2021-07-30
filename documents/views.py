@@ -15,7 +15,7 @@ from .forms import (
 class GoodsReceiptNoteCreateView(CreateView):
     model = GoodsReceiptNote
     form_class = GoodsReceiptNoteHeaderForm
-    template_name = "documents/goods_receipt_note_new.html"
+    template_name = "documents/goods_movement_note_new.html"
     success_url = reverse_lazy("goods_receipt_note_list")
 
     def get(self, request, *args, **kwargs):
@@ -78,7 +78,7 @@ class GoodsReceiptNoteCreateView(CreateView):
 class GoodsReceiptNoteUpdateView(UpdateView):
     model = GoodsReceiptNote
     form_class = GoodsReceiptNoteHeaderForm
-    template_name = "documents/goods_receipt_note_edit.html"
+    template_name = "documents/goods_movement_note_edit.html"
     success_url = reverse_lazy("goods_receipt_note_list")
 
     def get(self, request, *args, **kwargs):
@@ -135,21 +135,21 @@ class GoodsReceiptNoteUpdateView(UpdateView):
 
 class GoodsReceiptNoteListView(ListView):
     model = GoodsReceiptNote
-    context_object_name = 'goods_receipt_note_list'
-    template_name = 'documents/goods_receipt_note_list.html'
+    context_object_name = 'goods_movement_note_list'
+    template_name = 'documents/goods_movement_note_list.html'
     ordering = ['-grn']
 
 
 class GoodsReceiptNoteDetailView(DetailView):
     model = GoodsReceiptNote
-    context_object_name = 'goods_receipt_note'
-    template_name = 'documents/goods_receipt_note_detail.html'
+    context_object_name = 'goods_movement_note'
+    template_name = 'documents/goods_movement_note_detail.html'
 
 
 class GoodsReceiptNoteDeleteView(DeleteView):
     model = GoodsReceiptNote
-    context_object_name = 'goods_receipt_note'
-    template_name = 'documents/goods_receipt_note_delete.html'
+    context_object_name = 'goods_movement_note'
+    template_name = 'documents/goods_movement_note_delete.html'
     success_url = reverse_lazy('goods_receipt_note_list')
 
 
@@ -158,7 +158,7 @@ class GoodsReceiptNoteDeleteView(DeleteView):
 class GoodsDispatchNoteCreateView(CreateView):
     model = GoodsDispatchNote
     form_class = GoodsDispatchNoteHeaderForm
-    template_name = "documents/goods_dispatch_note_new.html"
+    template_name = "documents/goods_movement_note_new.html"
     success_url = reverse_lazy("goods_dispatch_note_list")
 
     def get(self, request, *args, **kwargs):
@@ -221,7 +221,7 @@ class GoodsDispatchNoteCreateView(CreateView):
 class GoodsDispatchNoteUpdateView(UpdateView):
     model = GoodsDispatchNote
     form_class = GoodsDispatchNoteHeaderForm
-    template_name = "documents/goods_dispatch_note_edit.html"
+    template_name = "documents/goods_movement_note_edit.html"
     success_url = reverse_lazy("goods_dispatch_note_list")
 
     def get(self, request, *args, **kwargs):
@@ -273,24 +273,24 @@ class GoodsDispatchNoteUpdateView(UpdateView):
 
 class GoodsDispatchNoteListView(ListView):
     model = GoodsDispatchNote
-    context_object_name = 'goods_dispatch_note_list'
-    template_name = 'documents/goods_dispatch_note_list.html'
+    context_object_name = 'goods_movement_note_list'
+    template_name = 'documents/goods_movement_note_list.html'
     ordering = ['-gdn']
 
 
 class GoodsDispatchNoteDetailView(DetailView):
     model = GoodsDispatchNote
-    context_object_name = 'goods_dispatch_note'
-    template_name = 'documents/goods_dispatch_note_detail.html'
+    context_object_name = 'goods_movement_note'
+    template_name = 'documents/goods_movement_note_detail.html'
 
 
 class GoodsDispatchNoteDeleteView(DeleteView):
     model = GoodsDispatchNote
-    context_object_name = 'goods_dispatch_note'
-    template_name = 'documents/goods_dispatch_note_delete.html'
+    context_object_name = 'goods_movement_note'
+    template_name = 'documents/goods_movement_note_delete.html'
     success_url = reverse_lazy('goods_dispatch_note_list')
 
 # https://docs.djangoproject.com/en/3.2/topics/forms/formsets/
 # https://www.codementor.io/@ankurrathore/handling-multiple-instances-of-django-forms-in-templates-8guz5s0pc
 # https://stackoverflow.com/questions/59855371/django-inlineformset-factory-in-updateview-formset-data-is-not-update
-
+# https://simpleisbetterthancomplex.com/tutorial/2018/11/28/advanced-form-rendering-with-django-crispy-forms.html

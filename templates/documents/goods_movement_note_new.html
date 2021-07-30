@@ -1,0 +1,30 @@
+{% extends '_base_with_header.html' %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+
+
+{% block title %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'goods_dispatch' %}
+            New Goods Dispatch Note
+        {% elif url_name|startswith:'goods_receipt' %}
+            New Goods Receipt Note
+        {% endif %}
+    {% endwith %}
+{% endblock title %}
+
+{% block header %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'goods_dispatch' %}
+            New Goods Dispatch Note
+        {% elif url_name|startswith:'goods_receipt' %}
+            New Goods Receipt Note
+        {% endif %}
+    {% endwith %}
+{% endblock header %}
+
+
+{% block content %}
+    {{ block.super }}
+    {% crispy header_form %}
+{% endblock content %}

@@ -1,0 +1,101 @@
+{% extends '_base_with_header.html' %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+
+{% load static %}
+
+{% block headerscripts %}
+
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %} "/> {% endcomment %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %} "/> {% endcomment %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/> {% endcomment %}
+
+    {% comment %} <script type="text/javascript" src="/admin/jsi18n/"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'admin/js/actions.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'js/DateTimeShortcuts.js' %}"></script> {% endcomment %}
+
+    <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
+{% endblock headerscripts %}
+
+{% block title %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'goods_dispatch' %}
+            New Goods Dispatch Note
+        {% elif url_name|startswith:'goods_receipt' %}
+            New Goods Receipt Note
+        {% endif %}
+    {% endwith %}
+{% endblock title %}
+
+{% block header %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'goods_dispatch' %}
+            New Goods Dispatch Note
+        {% elif url_name|startswith:'goods_receipt' %}
+            New Goods Receipt Note
+        {% endif %}
+    {% endwith %}
+{% endblock header %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <form class="row g-3" action="{% url 'goods_dispatch_note_new' %}" method="post">
+        {% csrf_token %}
+        <table>{{ header_form.as_table }}</table>
+
+
+        <fieldset>
+
+          <legend>Transactions</legend>
+
+          <div>
+            {{ transaction_formset.management_form }}
+            {{ transaction_formset.non_field_errors }}
+            {{ transaction_formset.non_form_errors }}
+            {% for transaction in transaction_formset %}
+                <div class="link-formset">
+                    {{ transaction.errors }}
+                    {{ transaction.non_field_errors }}
+                    <table class="table table-borderless">
+                        <colgroup>
+                            <col class="col-md-2">
+                            <col class="col-md-10">
+                        </colgroup>
+                        {{ transaction.as_table }}
+                    </table>
+                </div>
+            {% endfor %}
+
+            {% for transaction in transaction_formset %}
+                <div class="link-formset">
+                    {% for field in transaction.visible_fields %}
+                        {{ field|as_crispy_field }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+          </div>
+
+        </fieldset>
+
+        <button class="btn btn-success ml-2" type="submit">Save</button>
+    </form>
+
+{% endblock content %}
+
+{% block bodyscripts %}
+    <script>
+        $('.link-formset').formset({
+            addText: 'Add Transaction',
+            deleteText: 'Remove Transaction',
+            prefix: 'transaction',
+            keepFieldValues: "input[name$='gross_weight'], input[name$='tare_weight'], input[name$='unit_price']",
+            //added: DateTimeShortcuts.init,
+        });
+    </script>
+{% endblock bodyscripts %}

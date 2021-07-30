@@ -1,6 +1,7 @@
 {% extends '_base_with_header.html' %}
 {% load custom_tags %}
 
+
 {% block title %}
     {% with url_name=request.resolver_match.url_name %}
         {% if url_name|startswith:'goods_dispatch' %}
@@ -20,6 +21,7 @@
         {% endif %}
     {% endwith %}
 {% endblock header %}
+
 
 {% block content %}
     {{ block.super }}

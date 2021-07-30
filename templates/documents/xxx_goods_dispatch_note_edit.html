@@ -1,18 +1,19 @@
 {% extends '_base.html' %}
+{% load crispy_forms_tags %}
 
 {% load static %}
 
 {% block headerscripts %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %} "/>
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %} "/>
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %} "/> {% endcomment %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %} "/> {% endcomment %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/> {% endcomment %}
 
-    <script type="text/javascript" src="/admin/jsi18n/"></script>
-    <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
-    <script type="text/javascript" src="{% static 'admin/js/actions.js' %}"></script>
-    <script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/DateTimeShortcuts.js' %}"></script>
+    {% comment %} <script type="text/javascript" src="/admin/jsi18n/"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'admin/js/actions.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'js/DateTimeShortcuts.js' %}"></script> {% endcomment %}
 
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
 
@@ -23,7 +24,7 @@
     <h1>Edit Goods Dispatch Note</h1>
     <form action="" method="post">
         {% csrf_token %}
-        {{ header_form.as_p }}
+        {{ header_form|crispy }}
 
         <fieldset>
 
@@ -57,7 +58,7 @@
             deleteText: 'Remove Transaction',
             prefix: 'transaction',
             keepFieldValues: "input[name$='gross_weight'], input[name$='tare_weight'], input[name$='unit_price']",
-            added: DateTimeShortcuts.init,
+            //added: DateTimeShortcuts.init,
         });
     </script>
 {% endblock bodyscripts %}
