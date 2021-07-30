@@ -2,25 +2,27 @@
 {% load crispy_forms_tags %}
 {% load custom_tags %}
 
-    {% block title %}
-        {% with url_name=request.resolver_match.url_name %}
-            {% if url_name|startswith:'material_group' %}
-                New Material Group
-            {% elif url_name|startswith:'material' %}
-                New Material
-            {% endif %}   
-        {% endwith %}
-    {% endblock title %}
 
-    {% block header %}
-        {% with url_name=request.resolver_match.url_name %}
-            {% if url_name|startswith:'material_group' %}
-                New Material Group
-            {% elif url_name|startswith:'material' %}
-                New Material
-            {% endif %}   
-        {% endwith %}
-    {% endblock header %}
+{% block title %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'material_group' %}
+            New Material Group
+        {% elif url_name|startswith:'material' %}
+            New Material
+        {% endif %}   
+    {% endwith %}
+{% endblock title %}
+
+{% block header %}
+    {% with url_name=request.resolver_match.url_name %}
+        {% if url_name|startswith:'material_group' %}
+            New Material Group
+        {% elif url_name|startswith:'material' %}
+            New Material
+        {% endif %}   
+    {% endwith %}
+{% endblock header %}
+
 
 {% block content %}
     {{ block.super }}

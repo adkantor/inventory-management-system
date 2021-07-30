@@ -5,7 +5,7 @@ from django.contrib.admin import widgets
 from .models import MaterialGroup, Material, Transaction
 
 
-# Material Groups
+# ------------   Material Groups   ------------
 
 class MaterialGroupListView(ListView):
     model = MaterialGroup
@@ -20,15 +20,16 @@ class MaterialGroupDetailView(DetailView):
 
 class MaterialGroupCreateView(CreateView):
     model = MaterialGroup
-    fields = ('name',)
+    context_object_name = 'item'
     template_name = 'inventories/inventory_new.html'
+    fields = ('name',)
     success_url = reverse_lazy('material_group_list')
 
 class MaterialGroupUpdateView(UpdateView):
     model = MaterialGroup
     context_object_name = 'item'
-    fields = ('name',)
     template_name = 'inventories/inventory_edit.html'
+    fields = ('name',)
     success_url = reverse_lazy('material_group_list')
 
 class MaterialGroupDeleteView(DeleteView):
@@ -38,7 +39,7 @@ class MaterialGroupDeleteView(DeleteView):
     success_url = reverse_lazy('material_group_list')
 
 
-# Materials
+# ------------   Materials   ------------
 
 class MaterialListView(ListView):
     model = Material
@@ -69,81 +70,82 @@ class MaterialDeleteView(DeleteView):
     success_url = reverse_lazy('material_list')
 
 
-# Transactions
+# ------------   Transactions   ------------
+# !!!!!!!!!!!!     NOT USED     !!!!!!!!!!!!
 
-class TransactionListView(ListView):
-    model = Transaction
-    context_object_name = 'transaction_list'
-    template_name = 'inventories/transaction_list.html'
-    ordering = ['-transaction_time']
+# class TransactionListView(ListView):
+#     model = Transaction
+#     context_object_name = 'transaction_list'
+#     template_name = 'inventories/transaction_list.html'
+#     ordering = ['-transaction_time']
 
-class TransactionDetailView(DetailView):
-    model = Transaction
-    context_object_name = 'transaction'
-    template_name = 'inventories/transaction_detail.html'
+# class TransactionDetailView(DetailView):
+#     model = Transaction
+#     context_object_name = 'transaction'
+#     template_name = 'inventories/transaction_detail.html'
 
-class TransactionDeleteView(DeleteView):
-    model = Transaction
-    context_object_name = 'transaction'
-    template_name = 'inventories/transaction_delete.html'
-    success_url = reverse_lazy('transaction_list')
+# class TransactionDeleteView(DeleteView):
+#     model = Transaction
+#     context_object_name = 'transaction'
+#     template_name = 'inventories/transaction_delete.html'
+#     success_url = reverse_lazy('transaction_list')
 
-class GoodsReceiptCreateView(CreateView):
-    model = Transaction
-    context_object_name = 'transaction'
-    fields = ('material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes', 'goods_receipt_note')
-    template_name = 'inventories/goods_receipt_new.html'
+# class GoodsReceiptCreateView(CreateView):
+#     model = Transaction
+#     context_object_name = 'transaction'
+#     fields = ('material', 'transaction_time', 'gross_weight', 'tare_weight',
+#               'unit_price', 'notes', 'goods_receipt_note')
+#     template_name = 'inventories/goods_receipt_new.html'
 
-    def get_form(self):
-        form = super(GoodsReceiptCreateView, self).get_form()
-        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime()
-        return form
+#     def get_form(self):
+#         form = super(GoodsReceiptCreateView, self).get_form()
+#         form.fields['transaction_time'].widget = widgets.AdminSplitDateTime()
+#         return form
 
-    def form_valid(self, form):
-        form.instance.transaction_type = Transaction.TYPE_IN
-        return super().form_valid(form)
+#     def form_valid(self, form):
+#         form.instance.transaction_type = Transaction.TYPE_IN
+#         return super().form_valid(form)
 
-class GoodsDispatchCreateView(CreateView):
-    model = Transaction
-    context_object_name = 'transaction'
-    fields = ('material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes', 'goods_dispatch_note')
-    template_name = 'inventories/goods_dispatch_new.html'
+# class GoodsDispatchCreateView(CreateView):
+#     model = Transaction
+#     context_object_name = 'transaction'
+#     fields = ('material', 'transaction_time', 'gross_weight', 'tare_weight',
+#               'unit_price', 'notes', 'goods_dispatch_note')
+#     template_name = 'inventories/goods_dispatch_new.html'
 
-    def get_form(self):
-        form = super(GoodsDispatchCreateView, self).get_form()
-        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime()
-        return form
+#     def get_form(self):
+#         form = super(GoodsDispatchCreateView, self).get_form()
+#         form.fields['transaction_time'].widget = widgets.AdminSplitDateTime()
+#         return form
 
-    def form_valid(self, form):
-        form.instance.transaction_type = Transaction.TYPE_OUT
-        return super().form_valid(form)   
+#     def form_valid(self, form):
+#         form.instance.transaction_type = Transaction.TYPE_OUT
+#         return super().form_valid(form)   
 
-class GoodsReceiptUpdateView(UpdateView):    
-    model = Transaction
-    context_object_name = 'transaction'
-    fields = ('transaction_type', 'material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes', 'goods_receipt_note')
-    template_name = 'inventories/goods_receipt_edit.html' 
+# class GoodsReceiptUpdateView(UpdateView):    
+#     model = Transaction
+#     context_object_name = 'transaction'
+#     fields = ('transaction_type', 'material', 'transaction_time', 'gross_weight', 'tare_weight',
+#               'unit_price', 'notes', 'goods_receipt_note')
+#     template_name = 'inventories/goods_receipt_edit.html' 
 
-    def get_form(self):
-        form = super(GoodsReceiptUpdateView, self).get_form()
-        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
-        form.fields['transaction_type'].widget.attrs['readonly'] = True
-        form.fields['transaction_type'].widget.attrs['disabled'] = True
-        return form
+#     def get_form(self):
+#         form = super(GoodsReceiptUpdateView, self).get_form()
+#         form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
+#         form.fields['transaction_type'].widget.attrs['readonly'] = True
+#         form.fields['transaction_type'].widget.attrs['disabled'] = True
+#         return form
 
-class GoodsDispatchUpdateView(UpdateView):    
-    model = Transaction
-    context_object_name = 'transaction'
-    fields = ('transaction_type', 'material', 'transaction_time', 'gross_weight', 'tare_weight',
-              'unit_price', 'notes', 'goods_dispatch_note')
-    template_name = 'inventories/goods_dispatch_edit.html' 
+# class GoodsDispatchUpdateView(UpdateView):    
+#     model = Transaction
+#     context_object_name = 'transaction'
+#     fields = ('transaction_type', 'material', 'transaction_time', 'gross_weight', 'tare_weight',
+#               'unit_price', 'notes', 'goods_dispatch_note')
+#     template_name = 'inventories/goods_dispatch_edit.html' 
 
-    def get_form(self):
-        form = super(GoodsDispatchUpdateView, self).get_form()
-        form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
-        form.fields['transaction_type'].widget.attrs['readonly'] = True
-        form.fields['transaction_type'].widget.attrs['disabled'] = True
-        return form
+#     def get_form(self):
+#         form = super(GoodsDispatchUpdateView, self).get_form()
+#         form.fields['transaction_time'].widget = widgets.AdminSplitDateTime(attrs={'required': True})
+#         form.fields['transaction_type'].widget.attrs['readonly'] = True
+#         form.fields['transaction_type'].widget.attrs['disabled'] = True
+#         return form

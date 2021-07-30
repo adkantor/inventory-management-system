@@ -3,8 +3,8 @@ from django.urls import path
 from .views import (
     MaterialGroupListView, MaterialGroupDetailView, MaterialGroupCreateView, MaterialGroupUpdateView, MaterialGroupDeleteView, 
     MaterialListView, MaterialDetailView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView,
-    TransactionListView, TransactionDetailView, TransactionDeleteView, 
-    GoodsReceiptCreateView, GoodsDispatchCreateView, GoodsReceiptUpdateView, GoodsDispatchUpdateView
+    # TransactionListView, TransactionDetailView, TransactionDeleteView, 
+    # GoodsReceiptCreateView, GoodsDispatchCreateView, GoodsReceiptUpdateView, GoodsDispatchUpdateView
 )
 
 urlpatterns = [
@@ -23,11 +23,11 @@ urlpatterns = [
     path('materials/<uuid:pk>/delete/', MaterialDeleteView.as_view(), name='material_delete'),
 
     # Transactions
-    path('transactions', TransactionListView.as_view(), name='transaction_list'),
-    path('transactions/<uuid:pk>', TransactionDetailView.as_view(), name='transaction_detail'),
-    path('transactions/goods_receipts/new/', GoodsReceiptCreateView.as_view(), name='goods_receipt_new'),
-    path('transactions/goods_dispatches/new/', GoodsDispatchCreateView.as_view(), name='goods_dispatch_new'),
-    path('transactions/goods_receipts/<uuid:pk>/edit/', GoodsReceiptUpdateView.as_view(), name='goods_receipt_edit'),
-    path('transactions/goods_dispatches/<uuid:pk>/edit/', GoodsDispatchUpdateView.as_view(), name='goods_dispatch_edit'),
-    path('transactions/<uuid:pk>/delete/', TransactionDeleteView.as_view(), name='transaction_delete'),
+    # path('transactions', TransactionListView.as_view(), name='transaction_list'),
+    # path('transactions/<uuid:pk>', TransactionDetailView.as_view(), name='transaction_detail'),
+    # path('transactions/goods_receipts/new/', GoodsReceiptCreateView.as_view(), name='goods_receipt_new'),
+    # path('transactions/goods_dispatches/new/', GoodsDispatchCreateView.as_view(), name='goods_dispatch_new'),
+    # path('transactions/goods_receipts/<uuid:pk>/edit/', GoodsReceiptUpdateView.as_view(), name='goods_receipt_edit'),
+    # path('transactions/goods_dispatches/<uuid:pk>/edit/', GoodsDispatchUpdateView.as_view(), name='goods_dispatch_edit'),
+    # path('transactions/<uuid:pk>/delete/', TransactionDeleteView.as_view(), name='transaction_delete'),
 ]
