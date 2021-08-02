@@ -56,6 +56,7 @@ class MaterialCreateView(CreateView):
     model = Material
     fields = ('name', 'material_group',)
     template_name = 'inventories/inventory_new.html'
+    success_url = reverse_lazy('material_list')
 
 class MaterialUpdateView(UpdateView):
     model = Material
