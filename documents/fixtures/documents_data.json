@@ -1,0 +1,2550 @@
+[
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "4e2a5a85-8d37-479b-8143-3cff188cc971",
+        "fields": {
+            "grn": "GRN2021/000001",
+            "date": "2021-07-01",
+            "print_date": null,
+            "vendor": "f3af9027-a878-470f-a1bb-9abd8e63d998",
+            "notes": "",
+            "created_time": "2021-07-01T10:30:13.915580+02:00",
+            "last_modified": "2021-07-01T10:30:13.915580+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "0339e0c8-f389-4c51-a0ae-2e083144d159",
+        "fields": {
+            "grn": "GRN2021/000002",
+            "date": "2021-07-01",
+            "print_date": null,
+            "vendor": "4fac5610-5859-49ec-9a2a-39c24507ff05",
+            "notes": "",
+            "created_time": "2021-07-01T12:12:13.405330+02:00",
+            "last_modified": "2021-07-01T12:12:13.405330+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "64783544-5907-4785-b624-2d9dfa352f30",
+        "fields": {
+            "grn": "GRN2021/000003",
+            "date": "2021-07-01",
+            "print_date": null,
+            "vendor": "327277ee-59bc-4af2-ba63-ccf6455f4f48",
+            "notes": "",
+            "created_time": "2021-07-01T13:50:21.497494+02:00",
+            "last_modified": "2021-07-01T13:50:21.497494+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "76a6489b-24b4-4806-b48f-9006d2f7469a",
+        "fields": {
+            "grn": "GRN2021/000004",
+            "date": "2021-07-01",
+            "print_date": null,
+            "vendor": "6af53364-bb5b-406a-8371-88286177e78f",
+            "notes": "",
+            "created_time": "2021-07-01T14:17:56.261504+02:00",
+            "last_modified": "2021-07-01T14:17:56.261504+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "2afe57bf-fdb4-4614-b9b3-d39d5aad0af2",
+        "fields": {
+            "grn": "GRN2021/000005",
+            "date": "2021-07-01",
+            "print_date": null,
+            "vendor": "9800031c-1a92-403e-8946-7ef6c6873b07",
+            "notes": "",
+            "created_time": "2021-07-01T14:58:31.198103+02:00",
+            "last_modified": "2021-07-01T14:58:31.198103+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "7ee12459-b487-45aa-8c06-77c6f04892d7",
+        "fields": {
+            "grn": "GRN2021/000006",
+            "date": "2021-07-02",
+            "print_date": null,
+            "vendor": "468a0a9c-a879-4d56-8423-e54a881b916b",
+            "notes": "",
+            "created_time": "2021-07-02T09:43:59.599418+02:00",
+            "last_modified": "2021-07-02T09:43:59.599418+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "721f9ac7-f0ab-48e8-ac89-d2fe107458cb",
+        "fields": {
+            "grn": "GRN2021/000007",
+            "date": "2021-07-02",
+            "print_date": null,
+            "vendor": "80835b0c-c8db-4309-9d33-d523baf4de7e",
+            "notes": "",
+            "created_time": "2021-07-02T13:14:37.268756+02:00",
+            "last_modified": "2021-07-02T13:14:37.268756+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "f66ee47f-0a41-4e10-8fb3-065585f5caed",
+        "fields": {
+            "grn": "GRN2021/000008",
+            "date": "2021-07-02",
+            "print_date": null,
+            "vendor": "b3cf0b28-e181-42de-8857-dc60c48d19a0",
+            "notes": "",
+            "created_time": "2021-07-02T14:41:27.285044+02:00",
+            "last_modified": "2021-07-02T14:41:27.285044+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "33b790be-2ca5-485f-8acb-5080987b212c",
+        "fields": {
+            "grn": "GRN2021/000009",
+            "date": "2021-07-03",
+            "print_date": null,
+            "vendor": "6b25cc1e-666d-498f-b8dd-beb95c01e0d4",
+            "notes": "",
+            "created_time": "2021-07-03T09:38:33.792262+02:00",
+            "last_modified": "2021-07-03T09:38:33.792262+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "1fecf165-ef77-4762-82a1-71dfaa5fbb2f",
+        "fields": {
+            "grn": "GRN2021/000010",
+            "date": "2021-07-03",
+            "print_date": null,
+            "vendor": "47d9c5e5-0b83-489a-b71f-6308e5674d4a",
+            "notes": "",
+            "created_time": "2021-07-03T13:50:45.422385+02:00",
+            "last_modified": "2021-07-03T13:50:45.422385+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "76c33cc5-70d8-4000-9697-d291704d2fc5",
+        "fields": {
+            "grn": "GRN2021/000011",
+            "date": "2021-07-03",
+            "print_date": null,
+            "vendor": "aa563de4-8153-4fa0-8ec5-03529840b027",
+            "notes": "",
+            "created_time": "2021-07-03T14:02:20.202111+02:00",
+            "last_modified": "2021-07-03T14:02:20.202111+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "ed3bc6a6-8532-4870-8c90-c7e134a895ff",
+        "fields": {
+            "gdn": "GDN2021/000001",
+            "date": "2021-07-03",
+            "print_date": null,
+            "customer": "04680d12-3f86-42f3-ab68-c1ec1c1723c9",
+            "notes": "",
+            "created_time": "2021-07-03T14:06:46.084582+02:00",
+            "last_modified": "2021-07-03T14:06:46.084582+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "9b3be5b1-84b8-46ec-97e5-660b2ed5543d",
+        "fields": {
+            "grn": "GRN2021/000012",
+            "date": "2021-07-04",
+            "print_date": null,
+            "vendor": "245202dc-9604-452d-8a6c-33bf3b446035",
+            "notes": "",
+            "created_time": "2021-07-04T10:36:20.014496+02:00",
+            "last_modified": "2021-07-04T10:36:20.014496+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "03b474d4-25dd-4ad8-8568-3fba5bf650dc",
+        "fields": {
+            "grn": "GRN2021/000013",
+            "date": "2021-07-04",
+            "print_date": null,
+            "vendor": "47d9c5e5-0b83-489a-b71f-6308e5674d4a",
+            "notes": "",
+            "created_time": "2021-07-04T12:51:23.645433+02:00",
+            "last_modified": "2021-07-04T12:51:23.645433+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "f40ddbbc-fafa-44bd-9923-98dfec33f16e",
+        "fields": {
+            "grn": "GRN2021/000014",
+            "date": "2021-07-04",
+            "print_date": null,
+            "vendor": "68c56936-0a8d-4c24-b886-ea2091235029",
+            "notes": "",
+            "created_time": "2021-07-04T16:38:18.209604+02:00",
+            "last_modified": "2021-07-04T16:38:18.209604+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "05b00cd5-3512-45bc-96ce-41b3583f6783",
+        "fields": {
+            "grn": "GRN2021/000015",
+            "date": "2021-07-05",
+            "print_date": null,
+            "vendor": "95b3176b-0014-4b62-be34-c40f28b50f58",
+            "notes": "",
+            "created_time": "2021-07-05T09:47:26.487419+02:00",
+            "last_modified": "2021-07-05T09:47:26.487419+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "30ac8834-6bc3-45c3-a9e8-4204a47c4352",
+        "fields": {
+            "grn": "GRN2021/000016",
+            "date": "2021-07-05",
+            "print_date": null,
+            "vendor": "d519324d-90b0-4283-b507-5f12234a2b10",
+            "notes": "",
+            "created_time": "2021-07-05T10:30:14.951610+02:00",
+            "last_modified": "2021-07-05T10:30:14.951610+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "e24f8ef2-9ab1-413c-974d-a25d62733bc6",
+        "fields": {
+            "grn": "GRN2021/000017",
+            "date": "2021-07-05",
+            "print_date": null,
+            "vendor": "aa563de4-8153-4fa0-8ec5-03529840b027",
+            "notes": "",
+            "created_time": "2021-07-05T12:20:00.503057+02:00",
+            "last_modified": "2021-07-05T12:20:00.503057+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "a421dc9c-f55f-4d88-9b04-43c96498e5e1",
+        "fields": {
+            "gdn": "GDN2021/000002",
+            "date": "2021-07-05",
+            "print_date": null,
+            "customer": "04680d12-3f86-42f3-ab68-c1ec1c1723c9",
+            "notes": "",
+            "created_time": "2021-07-05T12:28:02.695220+02:00",
+            "last_modified": "2021-07-05T12:28:02.695220+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "6139593e-4897-4d88-b760-c3611c63344b",
+        "fields": {
+            "gdn": "GDN2021/000003",
+            "date": "2021-07-05",
+            "print_date": null,
+            "customer": "89475154-1d2e-4184-9ff8-258d9f8b6af3",
+            "notes": "",
+            "created_time": "2021-07-05T13:09:59.260325+02:00",
+            "last_modified": "2021-07-05T13:09:59.260325+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "376a0afc-215e-4dd3-8d87-69b7dc308383",
+        "fields": {
+            "grn": "GRN2021/000018",
+            "date": "2021-07-05",
+            "print_date": null,
+            "vendor": "96588da0-7ed7-4e5f-9a25-d3b34949fdb1",
+            "notes": "",
+            "created_time": "2021-07-05T13:13:44.980642+02:00",
+            "last_modified": "2021-07-05T13:13:44.980642+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "296d9eff-1828-4504-a67f-41818129b07f",
+        "fields": {
+            "grn": "GRN2021/000019",
+            "date": "2021-07-06",
+            "print_date": null,
+            "vendor": "aa563de4-8153-4fa0-8ec5-03529840b027",
+            "notes": "",
+            "created_time": "2021-07-06T14:04:40.254015+02:00",
+            "last_modified": "2021-07-06T14:04:40.254015+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "c6b73c48-1d3c-4875-8666-641696f056da",
+        "fields": {
+            "grn": "GRN2021/000020",
+            "date": "2021-07-06",
+            "print_date": null,
+            "vendor": "09aa9cec-1a1f-4fd3-8904-b61eb7dfa485",
+            "notes": "",
+            "created_time": "2021-07-06T14:41:32.402629+02:00",
+            "last_modified": "2021-07-06T14:41:32.402629+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "2748c838-4561-49c3-9cf7-99e937344f9f",
+        "fields": {
+            "gdn": "GDN2021/000004",
+            "date": "2021-07-06",
+            "print_date": null,
+            "customer": "aa1a54fc-7f7c-46fb-83f4-2b4d86bcc488",
+            "notes": "",
+            "created_time": "2021-07-06T14:45:17.743595+02:00",
+            "last_modified": "2021-07-06T14:45:17.743595+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "c1b5fe63-2609-48d6-8419-77307e85aede",
+        "fields": {
+            "grn": "GRN2021/000021",
+            "date": "2021-07-06",
+            "print_date": null,
+            "vendor": "6916553b-7180-4b19-a336-84399a220667",
+            "notes": "",
+            "created_time": "2021-07-06T16:02:48.026246+02:00",
+            "last_modified": "2021-07-06T16:02:48.026246+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "0caed4a1-c9fc-4634-adad-81b7e37cd886",
+        "fields": {
+            "grn": "GRN2021/000022",
+            "date": "2021-07-06",
+            "print_date": null,
+            "vendor": "e1d91b3d-9714-4023-9254-ff30562e3a3d",
+            "notes": "",
+            "created_time": "2021-07-06T16:10:16.639912+02:00",
+            "last_modified": "2021-07-06T16:10:16.639912+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "360367e1-691c-4384-a2e9-d1e5816d6722",
+        "fields": {
+            "grn": "GRN2021/000023",
+            "date": "2021-07-06",
+            "print_date": null,
+            "vendor": "5573a227-fdc4-4e8a-8eea-ad0b0f3ac9bd",
+            "notes": "",
+            "created_time": "2021-07-06T16:40:24.901518+02:00",
+            "last_modified": "2021-07-06T16:40:24.901518+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "a116f961-085e-4e63-b744-1c799bdb6dd9",
+        "fields": {
+            "gdn": "GDN2021/000005",
+            "date": "2021-07-07",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-07T08:41:08.319904+02:00",
+            "last_modified": "2021-07-07T08:41:08.319904+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "6427d318-3685-49c5-8fbc-9dd1f4156cce",
+        "fields": {
+            "grn": "GRN2021/000024",
+            "date": "2021-07-07",
+            "print_date": null,
+            "vendor": "0f44d4d7-eb2e-41ef-b7c9-0a4c2cc05c22",
+            "notes": "",
+            "created_time": "2021-07-07T11:30:14.319363+02:00",
+            "last_modified": "2021-07-07T11:30:14.319363+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "f056ba8b-98a2-4a25-b4c0-04d62427b183",
+        "fields": {
+            "grn": "GRN2021/000025",
+            "date": "2021-07-07",
+            "print_date": null,
+            "vendor": "d50d8dd2-dd18-4a9b-b89b-c175ca21f6c7",
+            "notes": "",
+            "created_time": "2021-07-07T14:56:14.919231+02:00",
+            "last_modified": "2021-07-07T14:56:14.919231+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "279aedf5-9fb9-4e48-bf24-1e271d511f10",
+        "fields": {
+            "grn": "GRN2021/000026",
+            "date": "2021-07-07",
+            "print_date": null,
+            "vendor": "2ea74bf8-dd10-4284-be6b-a9df91d826d1",
+            "notes": "",
+            "created_time": "2021-07-07T15:25:04.344279+02:00",
+            "last_modified": "2021-07-07T15:25:04.344279+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "12ae1cdc-c9e0-4788-8523-87acbe7c3634",
+        "fields": {
+            "gdn": "GDN2021/000006",
+            "date": "2021-07-07",
+            "print_date": null,
+            "customer": "020c43e9-b47c-491b-bf3b-707909973d32",
+            "notes": "",
+            "created_time": "2021-07-07T16:11:29.001794+02:00",
+            "last_modified": "2021-07-07T16:11:29.001794+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "f40b0cb4-4809-4889-b9e0-0a56352ad3d8",
+        "fields": {
+            "gdn": "GDN2021/000007",
+            "date": "2021-07-07",
+            "print_date": null,
+            "customer": "5a47507a-7be2-4859-a904-5689ab5066b2",
+            "notes": "",
+            "created_time": "2021-07-07T16:35:00.627097+02:00",
+            "last_modified": "2021-07-07T16:35:00.627097+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "d12ed0b0-8993-4246-bdb2-d8018bacbdef",
+        "fields": {
+            "grn": "GRN2021/000027",
+            "date": "2021-07-08",
+            "print_date": null,
+            "vendor": "9800031c-1a92-403e-8946-7ef6c6873b07",
+            "notes": "",
+            "created_time": "2021-07-08T08:34:53.666634+02:00",
+            "last_modified": "2021-07-08T08:34:53.666634+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "a92eedbd-c30f-4afa-bccd-1c5b5940b19e",
+        "fields": {
+            "gdn": "GDN2021/000008",
+            "date": "2021-07-08",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-08T09:05:57.417900+02:00",
+            "last_modified": "2021-07-08T09:05:57.417900+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a30981cb-ff6c-41af-b9f4-1330f853fd81",
+        "fields": {
+            "grn": "GRN2021/000028",
+            "date": "2021-07-08",
+            "print_date": null,
+            "vendor": "e1d91b3d-9714-4023-9254-ff30562e3a3d",
+            "notes": "",
+            "created_time": "2021-07-08T09:36:36.745431+02:00",
+            "last_modified": "2021-07-08T09:36:36.745431+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "c9f39ac2-80b8-4e76-b758-c9b32d74ea95",
+        "fields": {
+            "gdn": "GDN2021/000009",
+            "date": "2021-07-08",
+            "print_date": null,
+            "customer": "0464df14-1603-4232-9065-d1410d137a25",
+            "notes": "",
+            "created_time": "2021-07-08T10:26:16.027464+02:00",
+            "last_modified": "2021-07-08T10:26:16.027464+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "0a309914-2bcd-43e7-ad2d-03b5d4b86aaa",
+        "fields": {
+            "grn": "GRN2021/000029",
+            "date": "2021-07-09",
+            "print_date": null,
+            "vendor": "e9404ed2-e822-434e-babf-c050294ec1c3",
+            "notes": "",
+            "created_time": "2021-07-09T11:20:31.687461+02:00",
+            "last_modified": "2021-07-09T11:20:31.687461+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "952296db-6323-4012-9b85-b56fb0c7cb5f",
+        "fields": {
+            "gdn": "GDN2021/000010",
+            "date": "2021-07-09",
+            "print_date": null,
+            "customer": "0464df14-1603-4232-9065-d1410d137a25",
+            "notes": "",
+            "created_time": "2021-07-09T11:36:58.480849+02:00",
+            "last_modified": "2021-07-09T11:36:58.480849+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "04b3a1fe-c186-4de3-80e4-29a016dc8266",
+        "fields": {
+            "grn": "GRN2021/000030",
+            "date": "2021-07-09",
+            "print_date": null,
+            "vendor": "95b3176b-0014-4b62-be34-c40f28b50f58",
+            "notes": "",
+            "created_time": "2021-07-09T12:37:38.980934+02:00",
+            "last_modified": "2021-07-09T12:37:38.980934+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "2ab85e0a-a4b5-40eb-a28b-8df5d2e8a5f6",
+        "fields": {
+            "grn": "GRN2021/000031",
+            "date": "2021-07-09",
+            "print_date": null,
+            "vendor": "5573a227-fdc4-4e8a-8eea-ad0b0f3ac9bd",
+            "notes": "",
+            "created_time": "2021-07-09T14:10:15.618665+02:00",
+            "last_modified": "2021-07-09T14:10:15.618665+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "04b64c76-46bf-4d53-9a9a-d325ee925afe",
+        "fields": {
+            "gdn": "GDN2021/000011",
+            "date": "2021-07-09",
+            "print_date": null,
+            "customer": "01662781-b4ac-40c2-a242-18504b1f3f86",
+            "notes": "",
+            "created_time": "2021-07-09T14:36:59.123191+02:00",
+            "last_modified": "2021-07-09T14:36:59.123191+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "21b85bd0-b291-437f-bdc9-dea3dc6936f2",
+        "fields": {
+            "gdn": "GDN2021/000012",
+            "date": "2021-07-09",
+            "print_date": null,
+            "customer": "020c43e9-b47c-491b-bf3b-707909973d32",
+            "notes": "",
+            "created_time": "2021-07-09T15:16:32.981199+02:00",
+            "last_modified": "2021-07-09T15:16:32.981199+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "801507bc-c9f2-40d8-870e-54a6b933a762",
+        "fields": {
+            "grn": "GRN2021/000032",
+            "date": "2021-07-09",
+            "print_date": null,
+            "vendor": "7f416394-8f7b-4947-b078-c86e1a1b7129",
+            "notes": "",
+            "created_time": "2021-07-09T16:01:41.207464+02:00",
+            "last_modified": "2021-07-09T16:01:41.207464+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "d354012a-9158-4950-a2fd-282661bf48cd",
+        "fields": {
+            "grn": "GRN2021/000033",
+            "date": "2021-07-09",
+            "print_date": null,
+            "vendor": "0f44d4d7-eb2e-41ef-b7c9-0a4c2cc05c22",
+            "notes": "",
+            "created_time": "2021-07-09T16:16:32.615053+02:00",
+            "last_modified": "2021-07-09T16:16:32.615053+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a7c31887-3370-48a2-bb66-4aff8abe545d",
+        "fields": {
+            "grn": "GRN2021/000034",
+            "date": "2021-07-09",
+            "print_date": null,
+            "vendor": "4fac5610-5859-49ec-9a2a-39c24507ff05",
+            "notes": "",
+            "created_time": "2021-07-09T16:35:39.473042+02:00",
+            "last_modified": "2021-07-09T16:35:39.473042+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "cf649429-3fc3-41df-b48b-1d152b1fddf2",
+        "fields": {
+            "grn": "GRN2021/000035",
+            "date": "2021-07-10",
+            "print_date": null,
+            "vendor": "2f73b0a3-b983-4e09-97c7-91d933e3482f",
+            "notes": "",
+            "created_time": "2021-07-10T08:13:26.071605+02:00",
+            "last_modified": "2021-07-10T08:13:26.071605+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "bd062b1a-2f7e-4a7e-8733-7ac0f317caef",
+        "fields": {
+            "grn": "GRN2021/000036",
+            "date": "2021-07-10",
+            "print_date": null,
+            "vendor": "ab927447-e9f5-4993-b433-04db9b44d5ec",
+            "notes": "",
+            "created_time": "2021-07-10T08:19:20.523832+02:00",
+            "last_modified": "2021-07-10T08:19:20.523832+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "ffa0a641-3e66-405a-8479-6c872a80be65",
+        "fields": {
+            "gdn": "GDN2021/000013",
+            "date": "2021-07-10",
+            "print_date": null,
+            "customer": "123d1415-e88d-4b13-a9c5-b94a89249cf4",
+            "notes": "",
+            "created_time": "2021-07-10T09:45:59.330033+02:00",
+            "last_modified": "2021-07-10T09:45:59.330033+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "2e31bdd9-c3eb-4ee7-8629-b220cee65bcb",
+        "fields": {
+            "gdn": "GDN2021/000014",
+            "date": "2021-07-10",
+            "print_date": null,
+            "customer": "020c43e9-b47c-491b-bf3b-707909973d32",
+            "notes": "",
+            "created_time": "2021-07-10T12:14:03.766527+02:00",
+            "last_modified": "2021-07-10T12:14:03.766527+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "b3d7a034-f238-4416-945e-3b9f669cf98b",
+        "fields": {
+            "gdn": "GDN2021/000015",
+            "date": "2021-07-10",
+            "print_date": null,
+            "customer": "d43d4931-0679-44f7-bb6b-fdd1f0a7b2dd",
+            "notes": "",
+            "created_time": "2021-07-10T12:48:11.794070+02:00",
+            "last_modified": "2021-07-10T12:48:11.794070+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "378e1d0f-4c68-4a3c-9839-a2e4cac61211",
+        "fields": {
+            "grn": "GRN2021/000037",
+            "date": "2021-07-10",
+            "print_date": null,
+            "vendor": "47d9c5e5-0b83-489a-b71f-6308e5674d4a",
+            "notes": "",
+            "created_time": "2021-07-10T14:27:38.046407+02:00",
+            "last_modified": "2021-07-10T14:27:38.046407+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "2d966403-c8fb-4cc8-b349-ee33181e1889",
+        "fields": {
+            "grn": "GRN2021/000038",
+            "date": "2021-07-10",
+            "print_date": null,
+            "vendor": "d19e36fd-40be-4444-a1b5-611285129c2f",
+            "notes": "",
+            "created_time": "2021-07-10T14:46:05.249966+02:00",
+            "last_modified": "2021-07-10T14:46:05.249966+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "f775e9eb-d70d-4699-8b3d-bc8a0e28155e",
+        "fields": {
+            "gdn": "GDN2021/000016",
+            "date": "2021-07-11",
+            "print_date": null,
+            "customer": "5a47507a-7be2-4859-a904-5689ab5066b2",
+            "notes": "",
+            "created_time": "2021-07-11T08:32:16.156888+02:00",
+            "last_modified": "2021-07-11T08:32:16.156888+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "7959b39f-80b7-4e57-ac68-891b5a89809a",
+        "fields": {
+            "grn": "GRN2021/000039",
+            "date": "2021-07-11",
+            "print_date": null,
+            "vendor": "92148170-5f22-4349-926f-8c91a87a488d",
+            "notes": "",
+            "created_time": "2021-07-11T09:24:20.317761+02:00",
+            "last_modified": "2021-07-11T09:24:20.317761+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "6e5a70df-677e-4ccd-9bba-6b3de2463eac",
+        "fields": {
+            "grn": "GRN2021/000040",
+            "date": "2021-07-11",
+            "print_date": null,
+            "vendor": "0107781c-f111-433f-af42-b95119376fad",
+            "notes": "",
+            "created_time": "2021-07-11T09:29:56.522257+02:00",
+            "last_modified": "2021-07-11T09:29:56.522257+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "21140942-6086-4fdb-9a43-075bec69510d",
+        "fields": {
+            "gdn": "GDN2021/000017",
+            "date": "2021-07-11",
+            "print_date": null,
+            "customer": "123d1415-e88d-4b13-a9c5-b94a89249cf4",
+            "notes": "",
+            "created_time": "2021-07-11T09:32:20.519859+02:00",
+            "last_modified": "2021-07-11T09:32:20.519859+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "da6c6b96-d973-481e-99ed-ba98953f2049",
+        "fields": {
+            "grn": "GRN2021/000041",
+            "date": "2021-07-11",
+            "print_date": null,
+            "vendor": "64a22009-c63b-4205-8fa3-929322860b9e",
+            "notes": "",
+            "created_time": "2021-07-11T13:58:26.322632+02:00",
+            "last_modified": "2021-07-11T13:58:26.322632+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "4750c19e-217a-4bcb-b90f-8bcdebde9699",
+        "fields": {
+            "gdn": "GDN2021/000018",
+            "date": "2021-07-11",
+            "print_date": null,
+            "customer": "dfa334eb-c326-4f63-94a9-f8c54ed74700",
+            "notes": "",
+            "created_time": "2021-07-11T13:59:55.750283+02:00",
+            "last_modified": "2021-07-11T13:59:55.750283+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "92fd5694-5045-4cee-8db2-a81ff41a551b",
+        "fields": {
+            "grn": "GRN2021/000042",
+            "date": "2021-07-11",
+            "print_date": null,
+            "vendor": "30a18575-7f91-4fdb-8422-ab4ea5c37e10",
+            "notes": "",
+            "created_time": "2021-07-11T15:44:31.581638+02:00",
+            "last_modified": "2021-07-11T15:44:31.581638+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "5cd01817-540f-4ef8-9199-bea0bb989d84",
+        "fields": {
+            "gdn": "GDN2021/000019",
+            "date": "2021-07-11",
+            "print_date": null,
+            "customer": "3f59e497-687f-4ce2-b760-569dad5e6f6e",
+            "notes": "",
+            "created_time": "2021-07-11T16:15:51.532209+02:00",
+            "last_modified": "2021-07-11T16:15:51.532209+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "986afb8c-6bf4-490e-a1b5-55d679e4b302",
+        "fields": {
+            "grn": "GRN2021/000043",
+            "date": "2021-07-12",
+            "print_date": null,
+            "vendor": "9800031c-1a92-403e-8946-7ef6c6873b07",
+            "notes": "",
+            "created_time": "2021-07-12T13:17:48.513273+02:00",
+            "last_modified": "2021-07-12T13:17:48.513273+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "54e74b85-735f-40e8-b0dd-dac4b810e996",
+        "fields": {
+            "grn": "GRN2021/000044",
+            "date": "2021-07-12",
+            "print_date": null,
+            "vendor": "ab927447-e9f5-4993-b433-04db9b44d5ec",
+            "notes": "",
+            "created_time": "2021-07-12T14:37:58.144970+02:00",
+            "last_modified": "2021-07-12T14:37:58.144970+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "cfb29b86-6300-4d84-9842-57130ff0a3af",
+        "fields": {
+            "gdn": "GDN2021/000020",
+            "date": "2021-07-12",
+            "print_date": null,
+            "customer": "04680d12-3f86-42f3-ab68-c1ec1c1723c9",
+            "notes": "",
+            "created_time": "2021-07-12T15:34:03.876138+02:00",
+            "last_modified": "2021-07-12T15:34:03.876138+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "32a63c96-b5e6-4cd1-84ac-0d14700ba6fc",
+        "fields": {
+            "grn": "GRN2021/000045",
+            "date": "2021-07-13",
+            "print_date": null,
+            "vendor": "7f416394-8f7b-4947-b078-c86e1a1b7129",
+            "notes": "",
+            "created_time": "2021-07-13T08:35:17.354167+02:00",
+            "last_modified": "2021-07-13T08:35:17.354167+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "9821280e-4bf9-4f3e-9c3b-8df966501b09",
+        "fields": {
+            "grn": "GRN2021/000046",
+            "date": "2021-07-13",
+            "print_date": null,
+            "vendor": "95b3176b-0014-4b62-be34-c40f28b50f58",
+            "notes": "",
+            "created_time": "2021-07-13T09:12:17.151860+02:00",
+            "last_modified": "2021-07-13T09:12:17.151860+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "4f8d582e-4b86-4c58-8b25-838ea7fa4e2d",
+        "fields": {
+            "grn": "GRN2021/000047",
+            "date": "2021-07-13",
+            "print_date": null,
+            "vendor": "d519324d-90b0-4283-b507-5f12234a2b10",
+            "notes": "",
+            "created_time": "2021-07-13T12:11:05.202023+02:00",
+            "last_modified": "2021-07-13T12:11:05.202023+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "6872d129-2788-400e-a576-0e20804a8ed3",
+        "fields": {
+            "gdn": "GDN2021/000021",
+            "date": "2021-07-13",
+            "print_date": null,
+            "customer": "89475154-1d2e-4184-9ff8-258d9f8b6af3",
+            "notes": "",
+            "created_time": "2021-07-13T12:41:26.786330+02:00",
+            "last_modified": "2021-07-13T12:41:26.786330+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "8bb19349-f0cf-4813-b86c-572edd95fa34",
+        "fields": {
+            "grn": "GRN2021/000048",
+            "date": "2021-07-13",
+            "print_date": null,
+            "vendor": "6b25cc1e-666d-498f-b8dd-beb95c01e0d4",
+            "notes": "",
+            "created_time": "2021-07-13T13:20:52.319830+02:00",
+            "last_modified": "2021-07-13T13:20:52.319830+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "c4571029-eea6-49b5-affc-72e2cccf6ce1",
+        "fields": {
+            "gdn": "GDN2021/000022",
+            "date": "2021-07-13",
+            "print_date": null,
+            "customer": "63300422-4978-4793-bb5c-fb8f150c4afd",
+            "notes": "",
+            "created_time": "2021-07-13T13:29:42.342286+02:00",
+            "last_modified": "2021-07-13T13:29:42.342286+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "c0a981d6-d02e-4d38-adc6-35def389d9b6",
+        "fields": {
+            "grn": "GRN2021/000049",
+            "date": "2021-07-13",
+            "print_date": null,
+            "vendor": "2f73b0a3-b983-4e09-97c7-91d933e3482f",
+            "notes": "",
+            "created_time": "2021-07-13T15:21:10.259821+02:00",
+            "last_modified": "2021-07-13T15:21:10.259821+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a28ef8af-c8e8-4633-9b7c-f580c2d1b3bb",
+        "fields": {
+            "grn": "GRN2021/000050",
+            "date": "2021-07-14",
+            "print_date": null,
+            "vendor": "6eaea05f-ced9-4989-b436-e45c0d9195f6",
+            "notes": "",
+            "created_time": "2021-07-14T08:58:50.085626+02:00",
+            "last_modified": "2021-07-14T08:58:50.085626+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "613a437b-9d70-4d29-8b3d-4849882fcd34",
+        "fields": {
+            "gdn": "GDN2021/000023",
+            "date": "2021-07-14",
+            "print_date": null,
+            "customer": "5a47507a-7be2-4859-a904-5689ab5066b2",
+            "notes": "",
+            "created_time": "2021-07-14T09:01:40.451701+02:00",
+            "last_modified": "2021-07-14T09:01:40.451701+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "75e0c5c9-dd7f-4f08-84f3-559e6c9e20bf",
+        "fields": {
+            "grn": "GRN2021/000051",
+            "date": "2021-07-14",
+            "print_date": null,
+            "vendor": "327277ee-59bc-4af2-ba63-ccf6455f4f48",
+            "notes": "",
+            "created_time": "2021-07-14T11:28:58.738787+02:00",
+            "last_modified": "2021-07-14T11:28:58.738787+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "881c4442-c445-4013-9a50-a3e14cc5e72f",
+        "fields": {
+            "grn": "GRN2021/000052",
+            "date": "2021-07-14",
+            "print_date": null,
+            "vendor": "6eaea05f-ced9-4989-b436-e45c0d9195f6",
+            "notes": "",
+            "created_time": "2021-07-14T13:08:45.161662+02:00",
+            "last_modified": "2021-07-14T13:08:45.161662+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "d9db90bf-36ad-415a-bad3-f9fa6cea43e4",
+        "fields": {
+            "gdn": "GDN2021/000024",
+            "date": "2021-07-14",
+            "print_date": null,
+            "customer": "b87bfb7a-b2be-4144-983c-1dfd48866ca5",
+            "notes": "",
+            "created_time": "2021-07-14T13:30:32.446622+02:00",
+            "last_modified": "2021-07-14T13:30:32.446622+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "93c491fb-5d45-4f19-a93c-386cf784f8e0",
+        "fields": {
+            "gdn": "GDN2021/000025",
+            "date": "2021-07-14",
+            "print_date": null,
+            "customer": "b87bfb7a-b2be-4144-983c-1dfd48866ca5",
+            "notes": "",
+            "created_time": "2021-07-14T14:25:52.518239+02:00",
+            "last_modified": "2021-07-14T14:25:52.518239+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "2918cb50-1aff-4887-959d-0f69bd9cc504",
+        "fields": {
+            "grn": "GRN2021/000053",
+            "date": "2021-07-14",
+            "print_date": null,
+            "vendor": "0f44d4d7-eb2e-41ef-b7c9-0a4c2cc05c22",
+            "notes": "",
+            "created_time": "2021-07-14T14:59:08.601646+02:00",
+            "last_modified": "2021-07-14T14:59:08.601646+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "b0703208-2be7-4a81-b6c6-cd8c9ce42f44",
+        "fields": {
+            "gdn": "GDN2021/000026",
+            "date": "2021-07-14",
+            "print_date": null,
+            "customer": "0464df14-1603-4232-9065-d1410d137a25",
+            "notes": "",
+            "created_time": "2021-07-14T16:28:19.405020+02:00",
+            "last_modified": "2021-07-14T16:28:19.405020+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "6917de20-4ea6-4f73-9f44-06e6183963fe",
+        "fields": {
+            "grn": "GRN2021/000054",
+            "date": "2021-07-15",
+            "print_date": null,
+            "vendor": "77bfa38f-37c1-4b3d-800a-7ca352a7177f",
+            "notes": "",
+            "created_time": "2021-07-15T11:51:51.523203+02:00",
+            "last_modified": "2021-07-15T11:51:51.523203+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "ae5400e3-bc48-4dca-9900-2a03efa14bd6",
+        "fields": {
+            "grn": "GRN2021/000055",
+            "date": "2021-07-15",
+            "print_date": null,
+            "vendor": "6eaea05f-ced9-4989-b436-e45c0d9195f6",
+            "notes": "",
+            "created_time": "2021-07-15T14:41:24.861965+02:00",
+            "last_modified": "2021-07-15T14:41:24.861965+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "5935ef82-7c0c-4e34-b866-8e892fbb1194",
+        "fields": {
+            "gdn": "GDN2021/000027",
+            "date": "2021-07-15",
+            "print_date": null,
+            "customer": "b87bfb7a-b2be-4144-983c-1dfd48866ca5",
+            "notes": "",
+            "created_time": "2021-07-15T16:55:00.845364+02:00",
+            "last_modified": "2021-07-15T16:55:00.845364+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "91902203-caf2-42dd-8958-563285da6969",
+        "fields": {
+            "grn": "GRN2021/000056",
+            "date": "2021-07-16",
+            "print_date": null,
+            "vendor": "02f97fd7-9eb9-46f6-8290-48fd3e05c7e2",
+            "notes": "",
+            "created_time": "2021-07-16T13:15:27.442646+02:00",
+            "last_modified": "2021-07-16T13:15:27.442646+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "1750d57d-f7a1-440a-bc2c-f7b5c4aa2d5d",
+        "fields": {
+            "grn": "GRN2021/000057",
+            "date": "2021-07-16",
+            "print_date": null,
+            "vendor": "ab927447-e9f5-4993-b433-04db9b44d5ec",
+            "notes": "",
+            "created_time": "2021-07-16T14:01:30.180336+02:00",
+            "last_modified": "2021-07-16T14:01:30.180336+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "10806a34-3408-491f-b527-82da2182a467",
+        "fields": {
+            "gdn": "GDN2021/000028",
+            "date": "2021-07-16",
+            "print_date": null,
+            "customer": "dfa334eb-c326-4f63-94a9-f8c54ed74700",
+            "notes": "",
+            "created_time": "2021-07-16T15:00:48.365145+02:00",
+            "last_modified": "2021-07-16T15:00:48.365145+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "b7efec39-8a6f-481c-ab82-ab8cfa0ca005",
+        "fields": {
+            "grn": "GRN2021/000058",
+            "date": "2021-07-17",
+            "print_date": null,
+            "vendor": "6b25cc1e-666d-498f-b8dd-beb95c01e0d4",
+            "notes": "",
+            "created_time": "2021-07-17T11:55:18.491395+02:00",
+            "last_modified": "2021-07-17T11:55:18.491395+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "c30fc694-26d1-4f67-8e17-75cefcc41a49",
+        "fields": {
+            "grn": "GRN2021/000059",
+            "date": "2021-07-17",
+            "print_date": null,
+            "vendor": "7f416394-8f7b-4947-b078-c86e1a1b7129",
+            "notes": "",
+            "created_time": "2021-07-17T12:41:11.360332+02:00",
+            "last_modified": "2021-07-17T12:41:11.360332+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "58003caa-a205-4df3-a691-71bf3ed96c68",
+        "fields": {
+            "grn": "GRN2021/000060",
+            "date": "2021-07-17",
+            "print_date": null,
+            "vendor": "0989e1b0-6466-46b0-a99f-75f66c532b02",
+            "notes": "",
+            "created_time": "2021-07-17T12:47:57.625151+02:00",
+            "last_modified": "2021-07-17T12:47:57.625151+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "2f5b2ca0-26bf-4f63-ae16-6e183cb9375a",
+        "fields": {
+            "gdn": "GDN2021/000029",
+            "date": "2021-07-17",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-17T12:56:58.358901+02:00",
+            "last_modified": "2021-07-17T12:56:58.358901+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "4bdf33db-4886-4a76-965d-dea315510d73",
+        "fields": {
+            "gdn": "GDN2021/000030",
+            "date": "2021-07-17",
+            "print_date": null,
+            "customer": "63300422-4978-4793-bb5c-fb8f150c4afd",
+            "notes": "",
+            "created_time": "2021-07-17T15:05:46.333565+02:00",
+            "last_modified": "2021-07-17T15:05:46.333565+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "c8f6bacd-7d1e-41b8-9648-d880bd0afaae",
+        "fields": {
+            "grn": "GRN2021/000061",
+            "date": "2021-07-18",
+            "print_date": null,
+            "vendor": "245202dc-9604-452d-8a6c-33bf3b446035",
+            "notes": "",
+            "created_time": "2021-07-18T08:08:13.590574+02:00",
+            "last_modified": "2021-07-18T08:08:13.590574+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "8e9665d2-8156-4693-bf4f-5e1035930f9f",
+        "fields": {
+            "gdn": "GDN2021/000031",
+            "date": "2021-07-18",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-18T13:48:31.058454+02:00",
+            "last_modified": "2021-07-18T13:48:31.058454+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "526acf42-1d17-4f89-bc4f-74b41f724f5d",
+        "fields": {
+            "grn": "GRN2021/000062",
+            "date": "2021-07-18",
+            "print_date": null,
+            "vendor": "80835b0c-c8db-4309-9d33-d523baf4de7e",
+            "notes": "",
+            "created_time": "2021-07-18T14:24:32.766242+02:00",
+            "last_modified": "2021-07-18T14:24:32.766242+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a386c770-43c9-45b5-b2d2-e485259d7d94",
+        "fields": {
+            "grn": "GRN2021/000063",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "ecabfc51-c268-4319-b337-cf5fe8d2dfa3",
+            "notes": "",
+            "created_time": "2021-07-19T12:36:20.406184+02:00",
+            "last_modified": "2021-07-19T12:36:20.406184+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "b01c6921-a5b6-4dcb-a782-6f2fe1b2d79b",
+        "fields": {
+            "grn": "GRN2021/000064",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "d50d8dd2-dd18-4a9b-b89b-c175ca21f6c7",
+            "notes": "",
+            "created_time": "2021-07-19T12:42:04.127214+02:00",
+            "last_modified": "2021-07-19T12:42:04.127214+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "418caeea-90fe-41bc-bd0a-cde084c50bac",
+        "fields": {
+            "grn": "GRN2021/000065",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "7f416394-8f7b-4947-b078-c86e1a1b7129",
+            "notes": "",
+            "created_time": "2021-07-19T13:05:30.226674+02:00",
+            "last_modified": "2021-07-19T13:05:30.226674+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "52b1def2-396c-49e7-a4ee-15d0a84f5f23",
+        "fields": {
+            "grn": "GRN2021/000066",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "2ea74bf8-dd10-4284-be6b-a9df91d826d1",
+            "notes": "",
+            "created_time": "2021-07-19T13:34:46.271854+02:00",
+            "last_modified": "2021-07-19T13:34:46.271854+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "dcca8606-dae5-4fe7-b3d2-b045e77a083a",
+        "fields": {
+            "gdn": "GDN2021/000032",
+            "date": "2021-07-19",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-19T13:43:19.920684+02:00",
+            "last_modified": "2021-07-19T13:43:19.920684+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "4098ed6f-6919-4d9c-9d52-17e11c4ea736",
+        "fields": {
+            "grn": "GRN2021/000067",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "3b016108-52f4-4f57-9c47-9a0509caba82",
+            "notes": "",
+            "created_time": "2021-07-19T13:54:05.312445+02:00",
+            "last_modified": "2021-07-19T13:54:05.312445+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "27e03e18-d516-49e8-92c2-146369673e6b",
+        "fields": {
+            "gdn": "GDN2021/000033",
+            "date": "2021-07-19",
+            "print_date": null,
+            "customer": "d43d4931-0679-44f7-bb6b-fdd1f0a7b2dd",
+            "notes": "",
+            "created_time": "2021-07-19T14:32:01.397705+02:00",
+            "last_modified": "2021-07-19T14:32:01.397705+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "d500ff6b-e6e4-421d-acdf-b5afbeb1d0a5",
+        "fields": {
+            "gdn": "GDN2021/000034",
+            "date": "2021-07-19",
+            "print_date": null,
+            "customer": "63300422-4978-4793-bb5c-fb8f150c4afd",
+            "notes": "",
+            "created_time": "2021-07-19T14:37:55.491787+02:00",
+            "last_modified": "2021-07-19T14:37:55.491787+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "dcedf78e-fde5-4534-ac1e-a0da87f8fa05",
+        "fields": {
+            "grn": "GRN2021/000068",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "f3af9027-a878-470f-a1bb-9abd8e63d998",
+            "notes": "",
+            "created_time": "2021-07-19T15:21:03.613419+02:00",
+            "last_modified": "2021-07-19T15:21:03.613419+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "18416779-afd3-450d-8a18-ebc1ad9401e1",
+        "fields": {
+            "gdn": "GDN2021/000035",
+            "date": "2021-07-19",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-19T15:22:01.504154+02:00",
+            "last_modified": "2021-07-19T15:22:01.504154+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "b8868c12-fff6-44af-81fd-d4e22a59450b",
+        "fields": {
+            "grn": "GRN2021/000069",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "0107781c-f111-433f-af42-b95119376fad",
+            "notes": "",
+            "created_time": "2021-07-19T15:36:27.965863+02:00",
+            "last_modified": "2021-07-19T15:36:27.965863+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "27bc9ff5-0620-4863-bd01-9ba16666650a",
+        "fields": {
+            "grn": "GRN2021/000070",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "09aa9cec-1a1f-4fd3-8904-b61eb7dfa485",
+            "notes": "",
+            "created_time": "2021-07-19T15:50:00.441591+02:00",
+            "last_modified": "2021-07-19T15:50:00.441591+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "71d9c979-99d9-4d3a-9ddb-acaee0ce2959",
+        "fields": {
+            "gdn": "GDN2021/000036",
+            "date": "2021-07-19",
+            "print_date": null,
+            "customer": "aa1a54fc-7f7c-46fb-83f4-2b4d86bcc488",
+            "notes": "",
+            "created_time": "2021-07-19T16:08:00.874409+02:00",
+            "last_modified": "2021-07-19T16:08:00.874409+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "dfca59e5-c0ef-4af9-ba6b-3324f3a8591c",
+        "fields": {
+            "grn": "GRN2021/000071",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "92148170-5f22-4349-926f-8c91a87a488d",
+            "notes": "",
+            "created_time": "2021-07-19T16:11:34.177704+02:00",
+            "last_modified": "2021-07-19T16:11:34.177704+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "c2c20db7-80e9-47b4-8096-c233ee7b1063",
+        "fields": {
+            "grn": "GRN2021/000072",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "d50d8dd2-dd18-4a9b-b89b-c175ca21f6c7",
+            "notes": "",
+            "created_time": "2021-07-19T16:23:14.922572+02:00",
+            "last_modified": "2021-07-19T16:23:14.922572+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "15c3cf4b-71f9-489c-83a4-9360c402c467",
+        "fields": {
+            "grn": "GRN2021/000073",
+            "date": "2021-07-19",
+            "print_date": null,
+            "vendor": "0107781c-f111-433f-af42-b95119376fad",
+            "notes": "",
+            "created_time": "2021-07-19T16:35:32.057929+02:00",
+            "last_modified": "2021-07-19T16:35:32.057929+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "2140011b-b79e-4fb9-a050-735611f26025",
+        "fields": {
+            "gdn": "GDN2021/000037",
+            "date": "2021-07-19",
+            "print_date": null,
+            "customer": "89475154-1d2e-4184-9ff8-258d9f8b6af3",
+            "notes": "",
+            "created_time": "2021-07-19T16:36:49.010197+02:00",
+            "last_modified": "2021-07-19T16:36:49.010197+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "b4054666-6794-40b9-82bd-17cee3d3d650",
+        "fields": {
+            "gdn": "GDN2021/000038",
+            "date": "2021-07-20",
+            "print_date": null,
+            "customer": "3f59e497-687f-4ce2-b760-569dad5e6f6e",
+            "notes": "",
+            "created_time": "2021-07-20T08:37:33.037030+02:00",
+            "last_modified": "2021-07-20T08:37:33.037030+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "5e97cce7-0392-4b37-9c31-30f23c745fcd",
+        "fields": {
+            "grn": "GRN2021/000074",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "7f416394-8f7b-4947-b078-c86e1a1b7129",
+            "notes": "",
+            "created_time": "2021-07-20T10:44:00.995982+02:00",
+            "last_modified": "2021-07-20T10:44:00.995982+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "26bb09ae-2657-4f80-bfd1-6dd93e8e2cf0",
+        "fields": {
+            "gdn": "GDN2021/000039",
+            "date": "2021-07-20",
+            "print_date": null,
+            "customer": "d43d4931-0679-44f7-bb6b-fdd1f0a7b2dd",
+            "notes": "",
+            "created_time": "2021-07-20T12:12:19.418285+02:00",
+            "last_modified": "2021-07-20T12:12:19.418285+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "de819697-8720-4bb5-8cfe-b7f550b21a19",
+        "fields": {
+            "grn": "GRN2021/000075",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "882dbdbe-df9b-4afd-8b0f-4e9603e56cb3",
+            "notes": "",
+            "created_time": "2021-07-20T12:18:48.081888+02:00",
+            "last_modified": "2021-07-20T12:18:48.081888+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "189c1b2e-fc62-487f-97e4-9fb224eb9689",
+        "fields": {
+            "gdn": "GDN2021/000040",
+            "date": "2021-07-20",
+            "print_date": null,
+            "customer": "b87bfb7a-b2be-4144-983c-1dfd48866ca5",
+            "notes": "",
+            "created_time": "2021-07-20T15:55:29.873427+02:00",
+            "last_modified": "2021-07-20T15:55:29.873427+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "34ec3e92-f52b-48e7-84fd-f1709f441ce8",
+        "fields": {
+            "grn": "GRN2021/000076",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "4fac5610-5859-49ec-9a2a-39c24507ff05",
+            "notes": "",
+            "created_time": "2021-07-20T15:55:32.855234+02:00",
+            "last_modified": "2021-07-20T15:55:32.855234+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "56c84231-1505-4763-9a75-0235d89ae166",
+        "fields": {
+            "grn": "GRN2021/000077",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "3bf9b68c-d5c3-4652-802c-9f635b0af7a4",
+            "notes": "",
+            "created_time": "2021-07-20T16:05:31.439272+02:00",
+            "last_modified": "2021-07-20T16:05:31.439272+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "73170404-e73f-44af-952d-77852f3a3deb",
+        "fields": {
+            "grn": "GRN2021/000078",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "95b3176b-0014-4b62-be34-c40f28b50f58",
+            "notes": "",
+            "created_time": "2021-07-20T16:08:29.146596+02:00",
+            "last_modified": "2021-07-20T16:08:29.146596+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "501efa66-b851-465d-bd70-427adc2089aa",
+        "fields": {
+            "grn": "GRN2021/000079",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "083a9ee0-6cb7-4afd-ae44-6fa67568cd30",
+            "notes": "",
+            "created_time": "2021-07-20T16:20:45.209671+02:00",
+            "last_modified": "2021-07-20T16:20:45.209671+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "d92b69dd-e4d8-453f-b36f-296431e9543c",
+        "fields": {
+            "grn": "GRN2021/000080",
+            "date": "2021-07-20",
+            "print_date": null,
+            "vendor": "d50d8dd2-dd18-4a9b-b89b-c175ca21f6c7",
+            "notes": "",
+            "created_time": "2021-07-20T16:26:58.211264+02:00",
+            "last_modified": "2021-07-20T16:26:58.211264+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "305627be-1205-4c00-a70b-9244b6f13684",
+        "fields": {
+            "grn": "GRN2021/000081",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "f3af9027-a878-470f-a1bb-9abd8e63d998",
+            "notes": "",
+            "created_time": "2021-07-21T08:00:43.586294+02:00",
+            "last_modified": "2021-07-21T08:00:43.586294+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "11e91133-dbd3-4013-9b85-2cb5971918cf",
+        "fields": {
+            "grn": "GRN2021/000082",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "07a08ce9-9800-41d5-9c2d-500e588e56cb",
+            "notes": "",
+            "created_time": "2021-07-21T09:45:55.395669+02:00",
+            "last_modified": "2021-07-21T09:45:55.395669+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "042fe64e-7653-4906-a121-d0db6b0420e2",
+        "fields": {
+            "grn": "GRN2021/000083",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "327277ee-59bc-4af2-ba63-ccf6455f4f48",
+            "notes": "",
+            "created_time": "2021-07-21T10:34:45.677074+02:00",
+            "last_modified": "2021-07-21T10:34:45.677074+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "434d2545-8df1-47da-8ba4-d788f62fc38c",
+        "fields": {
+            "gdn": "GDN2021/000041",
+            "date": "2021-07-21",
+            "print_date": null,
+            "customer": "dfa334eb-c326-4f63-94a9-f8c54ed74700",
+            "notes": "",
+            "created_time": "2021-07-21T11:21:43.961344+02:00",
+            "last_modified": "2021-07-21T11:21:43.961344+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "90716910-5385-43ee-b7ee-349f95892c2a",
+        "fields": {
+            "grn": "GRN2021/000084",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "5ec4f0a8-7cac-4f8f-902e-78f68d757b56",
+            "notes": "",
+            "created_time": "2021-07-21T11:30:21.212579+02:00",
+            "last_modified": "2021-07-21T11:30:21.212579+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "d186b96c-ea26-42c7-86ff-6a69058a024d",
+        "fields": {
+            "gdn": "GDN2021/000042",
+            "date": "2021-07-21",
+            "print_date": null,
+            "customer": "63300422-4978-4793-bb5c-fb8f150c4afd",
+            "notes": "",
+            "created_time": "2021-07-21T13:29:49.048550+02:00",
+            "last_modified": "2021-07-21T13:29:49.048550+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "a7a00ac1-fa83-44db-a2f2-901f4b54549d",
+        "fields": {
+            "gdn": "GDN2021/000043",
+            "date": "2021-07-21",
+            "print_date": null,
+            "customer": "a7c1c27b-3563-460f-a102-b39909c76d77",
+            "notes": "",
+            "created_time": "2021-07-21T13:48:01.452124+02:00",
+            "last_modified": "2021-07-21T13:48:01.452124+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "357b1eab-9a49-4e48-aa2f-fa3edb537178",
+        "fields": {
+            "grn": "GRN2021/000085",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "9f40f12e-bc10-4a7f-b3df-1f0a7c591abf",
+            "notes": "",
+            "created_time": "2021-07-21T14:56:18.274385+02:00",
+            "last_modified": "2021-07-21T14:56:18.274385+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "3187b12e-1125-4201-a8fa-aa88c25cf6e1",
+        "fields": {
+            "gdn": "GDN2021/000044",
+            "date": "2021-07-21",
+            "print_date": null,
+            "customer": "aa1a54fc-7f7c-46fb-83f4-2b4d86bcc488",
+            "notes": "",
+            "created_time": "2021-07-21T16:23:20.376948+02:00",
+            "last_modified": "2021-07-21T16:23:20.376948+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "b8bfb25d-1b66-45ca-86d7-9212e984dbf6",
+        "fields": {
+            "grn": "GRN2021/000086",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "ab927447-e9f5-4993-b433-04db9b44d5ec",
+            "notes": "",
+            "created_time": "2021-07-21T16:54:48.508420+02:00",
+            "last_modified": "2021-07-21T16:54:48.508420+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "0ebfbfcc-70ec-443c-acc5-378ada77226c",
+        "fields": {
+            "grn": "GRN2021/000087",
+            "date": "2021-07-21",
+            "print_date": null,
+            "vendor": "77bfa38f-37c1-4b3d-800a-7ca352a7177f",
+            "notes": "",
+            "created_time": "2021-07-21T16:57:12.331319+02:00",
+            "last_modified": "2021-07-21T16:57:12.331319+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "9ea364ed-8496-41d2-b648-1803901d9d3f",
+        "fields": {
+            "grn": "GRN2021/000088",
+            "date": "2021-07-22",
+            "print_date": null,
+            "vendor": "0107781c-f111-433f-af42-b95119376fad",
+            "notes": "",
+            "created_time": "2021-07-22T10:30:19.050716+02:00",
+            "last_modified": "2021-07-22T10:30:19.050716+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "28acccd6-5be1-453c-9e9e-1353ddc2579d",
+        "fields": {
+            "grn": "GRN2021/000089",
+            "date": "2021-07-22",
+            "print_date": null,
+            "vendor": "327277ee-59bc-4af2-ba63-ccf6455f4f48",
+            "notes": "",
+            "created_time": "2021-07-22T11:02:44.101784+02:00",
+            "last_modified": "2021-07-22T11:02:44.101784+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "31aa9431-e53c-43d1-8972-195c39055807",
+        "fields": {
+            "gdn": "GDN2021/000045",
+            "date": "2021-07-22",
+            "print_date": null,
+            "customer": "4f1f3f8a-7b4f-42c4-8ed8-1f40677fd955",
+            "notes": "",
+            "created_time": "2021-07-22T11:20:43.972975+02:00",
+            "last_modified": "2021-07-22T11:20:43.972975+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "7f3baa10-40de-400a-bba6-537780056132",
+        "fields": {
+            "grn": "GRN2021/000090",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "5d08e336-0695-4bf5-8d16-fbd750090aed",
+            "notes": "",
+            "created_time": "2021-07-23T10:07:56.586607+02:00",
+            "last_modified": "2021-07-23T10:07:56.586607+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a31824dc-d323-408d-8f27-2ae602a217ad",
+        "fields": {
+            "grn": "GRN2021/000091",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "aa563de4-8153-4fa0-8ec5-03529840b027",
+            "notes": "",
+            "created_time": "2021-07-23T10:21:56.911321+02:00",
+            "last_modified": "2021-07-23T10:21:56.911321+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "7ab88279-aecb-46c5-8528-87982b7c3efc",
+        "fields": {
+            "grn": "GRN2021/000092",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "d92d1210-112c-4dd5-81ed-bcd6845251df",
+            "notes": "",
+            "created_time": "2021-07-23T10:43:58.486860+02:00",
+            "last_modified": "2021-07-23T10:43:58.486860+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "1e5206c2-341c-48e5-bb6e-f510e3fe7f32",
+        "fields": {
+            "grn": "GRN2021/000093",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "127ff520-86e3-421f-9119-b2af843a50ad",
+            "notes": "",
+            "created_time": "2021-07-23T10:46:49.100926+02:00",
+            "last_modified": "2021-07-23T10:46:49.100926+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "51ec361a-8566-4407-acbd-2868c8ebe19b",
+        "fields": {
+            "gdn": "GDN2021/000046",
+            "date": "2021-07-23",
+            "print_date": null,
+            "customer": "0464df14-1603-4232-9065-d1410d137a25",
+            "notes": "",
+            "created_time": "2021-07-23T10:47:05.197382+02:00",
+            "last_modified": "2021-07-23T10:47:05.197382+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "31ae5cc9-6c88-4224-b365-cf1632b51cd9",
+        "fields": {
+            "gdn": "GDN2021/000047",
+            "date": "2021-07-23",
+            "print_date": null,
+            "customer": "04680d12-3f86-42f3-ab68-c1ec1c1723c9",
+            "notes": "",
+            "created_time": "2021-07-23T10:49:54.714617+02:00",
+            "last_modified": "2021-07-23T10:49:54.714617+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "6b8c0e94-e9af-4525-899b-75f022749eee",
+        "fields": {
+            "gdn": "GDN2021/000048",
+            "date": "2021-07-23",
+            "print_date": null,
+            "customer": "4f1f3f8a-7b4f-42c4-8ed8-1f40677fd955",
+            "notes": "",
+            "created_time": "2021-07-23T11:26:21.061030+02:00",
+            "last_modified": "2021-07-23T11:26:21.061030+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "8fc33f49-e26f-4db5-865f-330bd29bad44",
+        "fields": {
+            "gdn": "GDN2021/000049",
+            "date": "2021-07-23",
+            "print_date": null,
+            "customer": "89475154-1d2e-4184-9ff8-258d9f8b6af3",
+            "notes": "",
+            "created_time": "2021-07-23T11:30:42.513190+02:00",
+            "last_modified": "2021-07-23T11:30:42.513190+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "71370149-5a8f-458d-9c18-5b6a59509752",
+        "fields": {
+            "grn": "GRN2021/000094",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "30a18575-7f91-4fdb-8422-ab4ea5c37e10",
+            "notes": "",
+            "created_time": "2021-07-23T11:58:39.128092+02:00",
+            "last_modified": "2021-07-23T11:58:39.128092+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "efc6489f-ed74-4754-b462-d56691f9f4d8",
+        "fields": {
+            "grn": "GRN2021/000095",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "27e6351c-f403-48ea-a283-2eb859e7d2a1",
+            "notes": "",
+            "created_time": "2021-07-23T15:05:07.966802+02:00",
+            "last_modified": "2021-07-23T15:05:07.966802+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "58e5a8a1-20ba-4b6b-90f1-801a150b2227",
+        "fields": {
+            "grn": "GRN2021/000096",
+            "date": "2021-07-23",
+            "print_date": null,
+            "vendor": "47d9c5e5-0b83-489a-b71f-6308e5674d4a",
+            "notes": "",
+            "created_time": "2021-07-23T15:23:36.392732+02:00",
+            "last_modified": "2021-07-23T15:23:36.392732+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "58290904-dad8-4487-948c-aa06321d8280",
+        "fields": {
+            "gdn": "GDN2021/000050",
+            "date": "2021-07-23",
+            "print_date": null,
+            "customer": "9863b336-8653-41a0-af43-4367a7856a12",
+            "notes": "",
+            "created_time": "2021-07-23T15:23:50.518766+02:00",
+            "last_modified": "2021-07-23T15:23:50.518766+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "5f38157c-9768-4bf9-b002-48143bc26024",
+        "fields": {
+            "grn": "GRN2021/000097",
+            "date": "2021-07-24",
+            "print_date": null,
+            "vendor": "738e2a64-4579-49ba-8682-3bae341d2cac",
+            "notes": "",
+            "created_time": "2021-07-24T09:41:44.839056+02:00",
+            "last_modified": "2021-07-24T09:41:44.839056+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "cf13ae73-037e-4525-89e5-1f01a12e44ab",
+        "fields": {
+            "grn": "GRN2021/000098",
+            "date": "2021-07-24",
+            "print_date": null,
+            "vendor": "ecabfc51-c268-4319-b337-cf5fe8d2dfa3",
+            "notes": "",
+            "created_time": "2021-07-24T09:48:19.429814+02:00",
+            "last_modified": "2021-07-24T09:48:19.429814+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "f0b0eead-51c7-4c83-bfa6-74bb709592c3",
+        "fields": {
+            "grn": "GRN2021/000099",
+            "date": "2021-07-24",
+            "print_date": null,
+            "vendor": "ab927447-e9f5-4993-b433-04db9b44d5ec",
+            "notes": "",
+            "created_time": "2021-07-24T10:25:13.553789+02:00",
+            "last_modified": "2021-07-24T10:25:13.553789+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "6b60e1ea-2c4f-43aa-b0d9-bbc5ade14127",
+        "fields": {
+            "gdn": "GDN2021/000051",
+            "date": "2021-07-24",
+            "print_date": null,
+            "customer": "4f1f3f8a-7b4f-42c4-8ed8-1f40677fd955",
+            "notes": "",
+            "created_time": "2021-07-24T11:51:00.139406+02:00",
+            "last_modified": "2021-07-24T11:51:00.139406+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "ca01b6dd-3a8f-4818-b65f-b41b429ce3fe",
+        "fields": {
+            "grn": "GRN2021/000100",
+            "date": "2021-07-24",
+            "print_date": null,
+            "vendor": "64a22009-c63b-4205-8fa3-929322860b9e",
+            "notes": "",
+            "created_time": "2021-07-24T12:34:16.039668+02:00",
+            "last_modified": "2021-07-24T12:34:16.039668+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "7c48d66d-f391-409c-8e00-6d5a90e22dbb",
+        "fields": {
+            "gdn": "GDN2021/000052",
+            "date": "2021-07-24",
+            "print_date": null,
+            "customer": "eafe3deb-0c90-460c-8468-17537b022b08",
+            "notes": "",
+            "created_time": "2021-07-24T12:38:02.648855+02:00",
+            "last_modified": "2021-07-24T12:38:02.648855+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "9e1a4797-dd67-44d6-bf42-d5a234500471",
+        "fields": {
+            "grn": "GRN2021/000101",
+            "date": "2021-07-24",
+            "print_date": null,
+            "vendor": "96588da0-7ed7-4e5f-9a25-d3b34949fdb1",
+            "notes": "",
+            "created_time": "2021-07-24T15:34:38.853784+02:00",
+            "last_modified": "2021-07-24T15:34:38.853784+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "9af58d30-5d6a-4db0-a78f-d403119456df",
+        "fields": {
+            "gdn": "GDN2021/000053",
+            "date": "2021-07-24",
+            "print_date": null,
+            "customer": "89475154-1d2e-4184-9ff8-258d9f8b6af3",
+            "notes": "",
+            "created_time": "2021-07-24T15:56:59.809024+02:00",
+            "last_modified": "2021-07-24T15:56:59.809024+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "c13f7249-5a13-4e15-9047-0b589254b1b0",
+        "fields": {
+            "gdn": "GDN2021/000054",
+            "date": "2021-07-24",
+            "print_date": null,
+            "customer": "020c43e9-b47c-491b-bf3b-707909973d32",
+            "notes": "",
+            "created_time": "2021-07-24T16:10:40.800010+02:00",
+            "last_modified": "2021-07-24T16:10:40.800010+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "fe52bae0-ad11-42e2-a42f-df033dfca83a",
+        "fields": {
+            "grn": "GRN2021/000102",
+            "date": "2021-07-25",
+            "print_date": null,
+            "vendor": "80835b0c-c8db-4309-9d33-d523baf4de7e",
+            "notes": "",
+            "created_time": "2021-07-25T12:10:42.592342+02:00",
+            "last_modified": "2021-07-25T12:10:42.592342+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "3da0f281-f0e6-4c39-99ea-218cce6bcddf",
+        "fields": {
+            "gdn": "GDN2021/000055",
+            "date": "2021-07-25",
+            "print_date": null,
+            "customer": "9863b336-8653-41a0-af43-4367a7856a12",
+            "notes": "",
+            "created_time": "2021-07-25T14:01:33.315969+02:00",
+            "last_modified": "2021-07-25T14:01:33.315969+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "5cf6b64e-169e-4bdf-b8b3-b7e0c05b2534",
+        "fields": {
+            "gdn": "GDN2021/000056",
+            "date": "2021-07-25",
+            "print_date": null,
+            "customer": "0464df14-1603-4232-9065-d1410d137a25",
+            "notes": "",
+            "created_time": "2021-07-25T14:17:42.804898+02:00",
+            "last_modified": "2021-07-25T14:17:42.804898+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "07a28800-c5ea-4702-95ba-736182fb9594",
+        "fields": {
+            "grn": "GRN2021/000103",
+            "date": "2021-07-25",
+            "print_date": null,
+            "vendor": "e9404ed2-e822-434e-babf-c050294ec1c3",
+            "notes": "",
+            "created_time": "2021-07-25T14:37:45.184527+02:00",
+            "last_modified": "2021-07-25T14:37:45.184527+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "03cbff0e-425f-470b-aff2-42d1844e90b6",
+        "fields": {
+            "grn": "GRN2021/000104",
+            "date": "2021-07-25",
+            "print_date": null,
+            "vendor": "3bf9b68c-d5c3-4652-802c-9f635b0af7a4",
+            "notes": "",
+            "created_time": "2021-07-25T15:42:34.822566+02:00",
+            "last_modified": "2021-07-25T15:42:34.822566+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a53d3875-49f9-48e0-84a9-14e97e9cc7b6",
+        "fields": {
+            "grn": "GRN2021/000105",
+            "date": "2021-07-25",
+            "print_date": null,
+            "vendor": "5d08e336-0695-4bf5-8d16-fbd750090aed",
+            "notes": "",
+            "created_time": "2021-07-25T16:22:05.973020+02:00",
+            "last_modified": "2021-07-25T16:22:05.973020+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "00feea96-f875-46cc-8ff1-aa867c19e3db",
+        "fields": {
+            "grn": "GRN2021/000106",
+            "date": "2021-07-26",
+            "print_date": null,
+            "vendor": "2a60bddb-17c4-425a-ac9d-8a01a661e19d",
+            "notes": "",
+            "created_time": "2021-07-26T08:12:56.399943+02:00",
+            "last_modified": "2021-07-26T08:12:56.399943+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "9980dd5e-21c9-410b-8b83-8bd6ecdf154f",
+        "fields": {
+            "gdn": "GDN2021/000057",
+            "date": "2021-07-26",
+            "print_date": null,
+            "customer": "dfa334eb-c326-4f63-94a9-f8c54ed74700",
+            "notes": "",
+            "created_time": "2021-07-26T08:14:12.288300+02:00",
+            "last_modified": "2021-07-26T08:14:12.288300+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "ea150d1f-3569-4229-aa32-b6fc5dc3ee49",
+        "fields": {
+            "gdn": "GDN2021/000058",
+            "date": "2021-07-26",
+            "print_date": null,
+            "customer": "01662781-b4ac-40c2-a242-18504b1f3f86",
+            "notes": "",
+            "created_time": "2021-07-26T10:25:34.631035+02:00",
+            "last_modified": "2021-07-26T10:25:34.631035+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "751d5122-e392-4c1d-8119-2449ee866823",
+        "fields": {
+            "grn": "GRN2021/000107",
+            "date": "2021-07-26",
+            "print_date": null,
+            "vendor": "d92d1210-112c-4dd5-81ed-bcd6845251df",
+            "notes": "",
+            "created_time": "2021-07-26T11:07:02.192178+02:00",
+            "last_modified": "2021-07-26T11:07:02.192178+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "6ce08677-aca9-48c3-9b42-0f797c06d514",
+        "fields": {
+            "gdn": "GDN2021/000059",
+            "date": "2021-07-26",
+            "print_date": null,
+            "customer": "d43d4931-0679-44f7-bb6b-fdd1f0a7b2dd",
+            "notes": "",
+            "created_time": "2021-07-26T11:34:02.891636+02:00",
+            "last_modified": "2021-07-26T11:34:02.891636+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "b7a05731-6910-462d-9254-a5355b56a703",
+        "fields": {
+            "grn": "GRN2021/000108",
+            "date": "2021-07-26",
+            "print_date": null,
+            "vendor": "2f73b0a3-b983-4e09-97c7-91d933e3482f",
+            "notes": "",
+            "created_time": "2021-07-26T13:58:25.860946+02:00",
+            "last_modified": "2021-07-26T13:58:25.860946+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "8480b284-9427-489c-a49e-d77cd0ec7a08",
+        "fields": {
+            "gdn": "GDN2021/000060",
+            "date": "2021-07-27",
+            "print_date": null,
+            "customer": "04680d12-3f86-42f3-ab68-c1ec1c1723c9",
+            "notes": "",
+            "created_time": "2021-07-27T09:32:34.781766+02:00",
+            "last_modified": "2021-07-27T09:32:34.781766+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "d0575edb-6a9f-495d-904f-23c9e7243bda",
+        "fields": {
+            "grn": "GRN2021/000109",
+            "date": "2021-07-28",
+            "print_date": null,
+            "vendor": "92148170-5f22-4349-926f-8c91a87a488d",
+            "notes": "",
+            "created_time": "2021-07-28T08:58:04.446956+02:00",
+            "last_modified": "2021-07-28T08:58:04.446956+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "248eecd8-ba3c-4c1b-af16-31f87cd2d01b",
+        "fields": {
+            "grn": "GRN2021/000110",
+            "date": "2021-07-28",
+            "print_date": null,
+            "vendor": "47d9c5e5-0b83-489a-b71f-6308e5674d4a",
+            "notes": "",
+            "created_time": "2021-07-28T09:09:06.188115+02:00",
+            "last_modified": "2021-07-28T09:09:06.188115+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "547b4d06-b8de-47b0-af4c-a5bb5723b146",
+        "fields": {
+            "gdn": "GDN2021/000061",
+            "date": "2021-07-28",
+            "print_date": null,
+            "customer": "01662781-b4ac-40c2-a242-18504b1f3f86",
+            "notes": "",
+            "created_time": "2021-07-28T10:43:29.245957+02:00",
+            "last_modified": "2021-07-28T10:43:29.245957+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "f3666e28-dd59-43dc-a9dc-30a25149d8f0",
+        "fields": {
+            "grn": "GRN2021/000111",
+            "date": "2021-07-28",
+            "print_date": null,
+            "vendor": "f4e372a0-6a35-4706-87c9-c5f486dfc33f",
+            "notes": "",
+            "created_time": "2021-07-28T11:42:39.393083+02:00",
+            "last_modified": "2021-07-28T11:42:39.393083+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "63b686f2-0538-44e3-8c7b-6f27c2b70129",
+        "fields": {
+            "grn": "GRN2021/000112",
+            "date": "2021-07-28",
+            "print_date": null,
+            "vendor": "92148170-5f22-4349-926f-8c91a87a488d",
+            "notes": "",
+            "created_time": "2021-07-28T12:00:39.141423+02:00",
+            "last_modified": "2021-07-28T12:00:39.141423+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "df379a12-bd87-4ad2-87aa-f27b014f6198",
+        "fields": {
+            "gdn": "GDN2021/000062",
+            "date": "2021-07-28",
+            "print_date": null,
+            "customer": "b87bfb7a-b2be-4144-983c-1dfd48866ca5",
+            "notes": "",
+            "created_time": "2021-07-28T13:53:07.765054+02:00",
+            "last_modified": "2021-07-28T13:53:07.765054+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "3fdcd060-210f-47e6-b6d0-5a6cac0d1811",
+        "fields": {
+            "grn": "GRN2021/000113",
+            "date": "2021-07-29",
+            "print_date": null,
+            "vendor": "95b3176b-0014-4b62-be34-c40f28b50f58",
+            "notes": "",
+            "created_time": "2021-07-29T10:28:45.493090+02:00",
+            "last_modified": "2021-07-29T10:28:45.493090+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "87a0f136-9b28-4960-b54c-920263b6b874",
+        "fields": {
+            "gdn": "GDN2021/000063",
+            "date": "2021-07-29",
+            "print_date": null,
+            "customer": "9863b336-8653-41a0-af43-4367a7856a12",
+            "notes": "",
+            "created_time": "2021-07-29T11:48:34.014406+02:00",
+            "last_modified": "2021-07-29T11:48:34.014406+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "f7b8cadf-12f1-4f47-a4c2-3ec65e182865",
+        "fields": {
+            "gdn": "GDN2021/000064",
+            "date": "2021-07-29",
+            "print_date": null,
+            "customer": "3f59e497-687f-4ce2-b760-569dad5e6f6e",
+            "notes": "",
+            "created_time": "2021-07-29T15:13:23.339849+02:00",
+            "last_modified": "2021-07-29T15:13:23.339849+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "38eb64fd-99c1-4085-95b7-382716dcd660",
+        "fields": {
+            "grn": "GRN2021/000114",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "02f97fd7-9eb9-46f6-8290-48fd3e05c7e2",
+            "notes": "",
+            "created_time": "2021-07-30T08:32:04.915666+02:00",
+            "last_modified": "2021-07-30T08:32:04.915666+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "31c1481f-f177-4eda-88de-95afc7c962b0",
+        "fields": {
+            "grn": "GRN2021/000115",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "2f73b0a3-b983-4e09-97c7-91d933e3482f",
+            "notes": "",
+            "created_time": "2021-07-30T09:24:24.657203+02:00",
+            "last_modified": "2021-07-30T09:24:24.657203+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "48111d9e-ac46-4824-8ca0-e0e359750f9b",
+        "fields": {
+            "grn": "GRN2021/000116",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "2ea74bf8-dd10-4284-be6b-a9df91d826d1",
+            "notes": "",
+            "created_time": "2021-07-30T10:31:33.208841+02:00",
+            "last_modified": "2021-07-30T10:31:33.208841+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "7ded1dac-8f52-4bfe-9641-a393518d866e",
+        "fields": {
+            "gdn": "GDN2021/000065",
+            "date": "2021-07-30",
+            "print_date": null,
+            "customer": "0464df14-1603-4232-9065-d1410d137a25",
+            "notes": "",
+            "created_time": "2021-07-30T10:31:58.142241+02:00",
+            "last_modified": "2021-07-30T10:31:58.142241+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "488fd012-0edb-41ab-bd4a-2b7201d83131",
+        "fields": {
+            "grn": "GRN2021/000117",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "f4e372a0-6a35-4706-87c9-c5f486dfc33f",
+            "notes": "",
+            "created_time": "2021-07-30T13:10:11.879793+02:00",
+            "last_modified": "2021-07-30T13:10:11.879793+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "9c4a14b6-7ff0-490f-98c2-b637992e5278",
+        "fields": {
+            "grn": "GRN2021/000118",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "c39ec1f6-d308-495b-9e88-0466ede0c17a",
+            "notes": "",
+            "created_time": "2021-07-30T14:30:16.117561+02:00",
+            "last_modified": "2021-07-30T14:30:16.117561+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "f35f7e82-108f-4a87-9f7f-a145ef19b1e4",
+        "fields": {
+            "gdn": "GDN2021/000066",
+            "date": "2021-07-30",
+            "print_date": null,
+            "customer": "4f1f3f8a-7b4f-42c4-8ed8-1f40677fd955",
+            "notes": "",
+            "created_time": "2021-07-30T14:46:45.624987+02:00",
+            "last_modified": "2021-07-30T14:46:45.624987+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "4f33ee08-999b-466d-82c0-f7dae3ec8ee4",
+        "fields": {
+            "grn": "GRN2021/000119",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "6916553b-7180-4b19-a336-84399a220667",
+            "notes": "",
+            "created_time": "2021-07-30T15:52:34.320621+02:00",
+            "last_modified": "2021-07-30T15:52:34.320621+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "2bb31c2a-4552-40c0-9ca9-86f11c410ae1",
+        "fields": {
+            "grn": "GRN2021/000120",
+            "date": "2021-07-30",
+            "print_date": null,
+            "vendor": "80835b0c-c8db-4309-9d33-d523baf4de7e",
+            "notes": "",
+            "created_time": "2021-07-30T16:17:37.898047+02:00",
+            "last_modified": "2021-07-30T16:17:37.898047+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "c519909c-2856-4907-abc1-5b010ec3c33d",
+        "fields": {
+            "gdn": "GDN2021/000067",
+            "date": "2021-07-30",
+            "print_date": null,
+            "customer": "dfa334eb-c326-4f63-94a9-f8c54ed74700",
+            "notes": "",
+            "created_time": "2021-07-30T16:27:44.785475+02:00",
+            "last_modified": "2021-07-30T16:27:44.785475+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "8a4b1cd2-2dbf-41b6-8b3a-0cde03ca87e1",
+        "fields": {
+            "grn": "GRN2021/000121",
+            "date": "2021-07-31",
+            "print_date": null,
+            "vendor": "7efd362b-3ef1-4576-943b-949fadef4c92",
+            "notes": "",
+            "created_time": "2021-07-31T09:27:05.739126+02:00",
+            "last_modified": "2021-07-31T09:27:05.739126+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "a27167dc-a0b8-43f1-a22a-b3b078c0121f",
+        "fields": {
+            "grn": "GRN2021/000122",
+            "date": "2021-07-31",
+            "print_date": null,
+            "vendor": "07a08ce9-9800-41d5-9c2d-500e588e56cb",
+            "notes": "",
+            "created_time": "2021-07-31T09:55:05.039750+02:00",
+            "last_modified": "2021-07-31T09:55:05.039750+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "1eeb5bb1-ca4b-4c96-b2b5-bf202d92c916",
+        "fields": {
+            "grn": "GRN2021/000123",
+            "date": "2021-07-31",
+            "print_date": null,
+            "vendor": "9f40f12e-bc10-4a7f-b3df-1f0a7c591abf",
+            "notes": "",
+            "created_time": "2021-07-31T11:28:47.668181+02:00",
+            "last_modified": "2021-07-31T11:28:47.668181+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "cc9dc6e2-e888-4478-9126-9f035d6d6e3f",
+        "fields": {
+            "gdn": "GDN2021/000068",
+            "date": "2021-07-31",
+            "print_date": null,
+            "customer": "01662781-b4ac-40c2-a242-18504b1f3f86",
+            "notes": "",
+            "created_time": "2021-07-31T13:07:02.036781+02:00",
+            "last_modified": "2021-07-31T13:07:02.036781+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "e2ef5c6f-a037-4c60-b1b7-923947a74b32",
+        "fields": {
+            "grn": "GRN2021/000124",
+            "date": "2021-07-31",
+            "print_date": null,
+            "vendor": "3bf9b68c-d5c3-4652-802c-9f635b0af7a4",
+            "notes": "",
+            "created_time": "2021-07-31T14:04:54.788859+02:00",
+            "last_modified": "2021-07-31T14:04:54.788859+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "df0bb11c-b570-4ef9-8db9-95b189dc572c",
+        "fields": {
+            "gdn": "GDN2021/000069",
+            "date": "2021-07-31",
+            "print_date": null,
+            "customer": "5a47507a-7be2-4859-a904-5689ab5066b2",
+            "notes": "",
+            "created_time": "2021-07-31T15:33:59.637244+02:00",
+            "last_modified": "2021-07-31T15:33:59.637244+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "6998a6df-1c71-4056-9e8e-e79034e51267",
+        "fields": {
+            "gdn": "GDN2021/000070",
+            "date": "2021-07-31",
+            "print_date": null,
+            "customer": "dfa334eb-c326-4f63-94a9-f8c54ed74700",
+            "notes": "",
+            "created_time": "2021-07-31T15:44:30.953894+02:00",
+            "last_modified": "2021-07-31T15:44:30.953894+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsreceiptnote",
+        "pk": "53308fc8-373d-4fb4-89d6-01dfb53f0dbb",
+        "fields": {
+            "grn": "GRN2021/000125",
+            "date": "2021-07-31",
+            "print_date": null,
+            "vendor": "5ec4f0a8-7cac-4f8f-902e-78f68d757b56",
+            "notes": "",
+            "created_time": "2021-07-31T16:08:52.176936+02:00",
+            "last_modified": "2021-07-31T16:08:52.176936+02:00"
+        }
+    },
+    {
+        "model": "documents.goodsdispatchnote",
+        "pk": "1fa9f3cd-94e6-4265-b6c8-61c69685165d",
+        "fields": {
+            "gdn": "GDN2021/000071",
+            "date": "2021-07-31",
+            "print_date": null,
+            "customer": "5a47507a-7be2-4859-a904-5689ab5066b2",
+            "notes": "",
+            "created_time": "2021-07-31T16:51:45.927485+02:00",
+            "last_modified": "2021-07-31T16:51:45.927485+02:00"
+        }
+    }
+]
