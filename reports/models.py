@@ -187,7 +187,11 @@ def sales_and_purchases_report(date_from, date_to, by_material_group=False, norm
     result['item'] = []
     result['sales'] = []
     result['purchases'] = []
-    filters = MaterialGroup.objects.order_by('name').all() if by_material_group else Material.objects.order_by('name').all()
+    
+    material_groups = MaterialGroup.objects.order_by('name').all()
+    materials = Material.objects.order_by('material_group__name','name').filter(material_group__in=material_groups)
+    filters = material_groups if by_material_group else materials
+    # filters = MaterialGroup.objects.order_by('name').all() if by_material_group else Material.objects.order_by('material_group__name','name').all()
     for filter in filters:
         sales, purchases = sales_and_purchases(date_from, date_to, filter_by=filter)
         result['item'].append(filter.name)

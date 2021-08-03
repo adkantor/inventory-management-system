@@ -13,7 +13,7 @@ from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
 from bokeh.models.widgets import Panel, Tabs
 from bokeh.models.ranges import Range1d
 from bokeh.embed import components
-from bokeh.palettes import Category20c
+from bokeh.palettes import viridis
 from bokeh.transform import cumsum
 
 from inventories.models import Transaction, MaterialGroup, Material
@@ -333,9 +333,8 @@ def get_summary_sales_and_purchases(request):
         hover = HoverTool(
             # tooltips=f"@item: @{field}",
             tooltips=[
-                ("Item",    "@item $swatch:color"),
-                ("Pct",     f"@{field}"),
-                ("fill color", "$swatch:color"),
+                ("Item",        "@item"),
+                ("Weight",      f"@{field}" + "{0,0}"),
             ],
             formatters={
                 f"@{field}":  "numeral",
@@ -347,35 +346,38 @@ def get_summary_sales_and_purchases(request):
         plot = figure(
             width_policy='max',
             height_policy='max',
-            max_height=200,
+            max_height=600,
             toolbar_location="below",
             tools=[hover],
+            # tools=['hover'],
+            # tooltips=f"@{field}" + "{0,0}"
         )
 
-        # outer donut: by material group
+        # inner donut: by material group
         source_material_group = ColumnDataSource(data=report_material_group)
-        source_material_group.data['angle'] = [x * 2 * pi for x in source_material_group.data[f'{field}']]
-        source_material_group.data['color'] = Category20c[len(source_material_group.data[f'{field}'])]
+        source_material_group.data['angle'] = [x * 2 * pi / sum(source_material_group.data[f'{field}']) for x in source_material_group.data[f'{field}']]
+        source_material_group.data['color'] = viridis(len(source_material_group.data[f'{field}']))
         plot.annular_wedge(
             x=0, y=0, source=source_material_group, 
             inner_radius=0.15, 
-            outer_radius=0.25, 
+            outer_radius=0.34, 
             direction="anticlock",
             start_angle=cumsum('angle', include_zero=True), 
             end_angle=cumsum('angle'),
-            line_color="white", 
+            line_color="white",
+            line_width=3,
             fill_color='color', 
             name='material_group'
         )
 
-        # inner donut: by material
+        # outer donut: by material
         source_material = ColumnDataSource(data=report_material)
-        source_material.data['angle'] = [x * 2 * pi for x in source_material.data[f'{field}']]
-        source_material.data['color'] = Category20c[len(source_material.data[f'{field}'])]
+        source_material.data['angle'] = [x * 2 * pi / sum(source_material.data[f'{field}']) for x in source_material.data[f'{field}']]
+        source_material.data['color'] = viridis(len(source_material.data[f'{field}']))
         plot.annular_wedge(
             x=0, y=0, source=source_material, 
-            inner_radius=0.05, 
-            outer_radius=0.14, 
+            inner_radius=0.35, 
+            outer_radius=0.75, 
             direction="anticlock",
             start_angle=cumsum('angle', include_zero=True), 
             end_angle=cumsum('angle'),
@@ -403,9 +405,10 @@ def get_summary_sales_and_purchases(request):
     chart_tabs = Tabs()
 
     # get report data
-    report_material_group = sales_and_purchases_report(date_from, date_to, by_material_group=True, normalize=True)
-    report_material = sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=True)
+    report_material_group = sales_and_purchases_report(date_from, date_to, by_material_group=True, normalize=False)
+    report_material = sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=False)
     # get plots
+    print(report_material_group)
     plot_sales = get_plot(report_material_group, report_material, 'sales')
     plot_purchases = get_plot(report_material_group, report_material, 'purchases')
     # get tabs
