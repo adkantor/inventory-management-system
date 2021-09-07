@@ -1,1 +1,5 @@
 *.pyc
+media/*
+documents_data.json
+inventories_data.json
+partner_data.json
