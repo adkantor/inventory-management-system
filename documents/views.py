@@ -1,6 +1,7 @@
+from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
-from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect 
+from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseRedirect, FileResponse, Http404
 
 from .models import GoodsReceiptNote, GoodsDispatchNote
 from inventories.models import Transaction
@@ -8,9 +9,12 @@ from .forms import (
     GoodsReceiptNoteHeaderForm, GoodsDispatchNoteHeaderForm, 
     GoodsReceiptTransactionFormSet, GoodsDispatchTransactionFormSet
 )
+from .render import Render
 
 
+########################
 # Goods Receipt Note
+########################
 
 class GoodsReceiptNoteCreateView(CreateView):
     model = GoodsReceiptNote
@@ -153,7 +157,18 @@ class GoodsReceiptNoteDeleteView(DeleteView):
     success_url = reverse_lazy('goods_receipt_note_list')
 
 
-# Goods Receipt Note
+def goods_receipt_note_display_pdf(request, pk):
+    return goods_movement_note_display_pdf(request, pk, GoodsReceiptNote)
+
+
+def goods_receipt_note_generate_pdf(request, pk):
+    return goods_movement_note_generate_pdf(request, pk, GoodsReceiptNote)
+
+
+
+########################
+# Goods Dispatch Note
+########################
 
 class GoodsDispatchNoteCreateView(CreateView):
     model = GoodsDispatchNote
@@ -289,6 +304,58 @@ class GoodsDispatchNoteDeleteView(DeleteView):
     context_object_name = 'goods_movement_note'
     template_name = 'documents/goods_movement_note_delete.html'
     success_url = reverse_lazy('goods_dispatch_note_list')
+
+
+def goods_dispatch_note_display_pdf(request, pk):
+    return goods_movement_note_display_pdf(request, pk, GoodsDispatchNote)
+
+
+def goods_dispatch_note_generate_pdf(request, pk):
+    return goods_movement_note_generate_pdf(request, pk, GoodsDispatchNote)
+
+
+####################################
+# Common functions for PDF handling
+####################################
+
+
+def goods_movement_note_display_pdf(request, pk, goods_movement_note_class):
+    # get document
+    try:
+        doc = goods_movement_note_class.objects.get(pk=pk)
+    except goods_movement_note_class.DoesNotExist:
+        return JsonResponse({"error": "Document not found."}, status=404) 
+    # check if pdf exists
+    if not doc.pdf:
+        return JsonResponse({
+            "error": "Pdf not yet generated."
+        }, status=400)
+    # display pdf
+    try:
+        return FileResponse(doc.pdf, content_type='application/pdf')
+    except FileNotFoundError:
+        raise Http404()
+
+
+def goods_movement_note_generate_pdf(request, pk, goods_movement_note_class):
+    # only PATCH method is accepted
+    if request.method != "PATCH":
+        return JsonResponse({"error": "PATCH request required."}, status=400) 
+    # get document
+    try:
+        doc = goods_movement_note_class.objects.get(pk=pk)
+    except goods_movement_note_class.DoesNotExist:
+        return JsonResponse({"error": "Document not found."}, status=404)
+    # check if pdf is not yet generated
+    if doc.pdf:
+        return JsonResponse({
+            "error": "Pdf already exists."
+        }, status=400)
+    # generate pdf
+    doc.generate_pdf()
+    serialized = doc.serialize()
+    return JsonResponse(serialized)
+
 
 # https://docs.djangoproject.com/en/3.2/topics/forms/formsets/
 # https://www.codementor.io/@ankurrathore/handling-multiple-instances-of-django-forms-in-templates-8guz5s0pc

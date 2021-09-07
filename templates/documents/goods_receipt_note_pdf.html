@@ -1,0 +1,206 @@
+{% load custom_tags %}
+
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+ 
+    <title>Goods Receipt Note</title>
+    <style type="text/css">
+
+        @page {
+            size: A4 landscape;
+            margin: 1.5cm;
+        }
+
+        .document-title {
+            width: 50%; 
+            margin: auto; 
+            padding: 10px; 
+            text-align: center; 
+            font-size: 2em; 
+            font-weight: bold; 
+            color: blue;
+        }
+
+        .document-head {
+            width: 100%;
+            table-layout: fixed;
+            border: None;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .document-head .col1 {width: 10%; text-align: left;}
+        .document-head .col2 {width: 40%; text-align: left;}
+        .document-head .col3 {width: 10%; text-align: left;}
+        .document-head .col4 {width: 40%; text-align: left;}
+
+        .document-head th {
+            padding: 2px;            
+            font-weight: bold;
+        }
+
+        .document-head td {
+            padding: 2px;            
+        }
+
+        .transactions {
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .transactions .col1 {width: 05%; text-align: center;}
+        .transactions .col2 {width: 30%; text-align: left;}
+        .transactions .col3 {width: 15%; text-align: left;}
+        .transactions .col4 {width: 05%; text-align: right;}
+        .transactions .col5 {width: 05%; text-align: right;}
+        .transactions .col6 {width: 05%; text-align: right;}
+        .transactions .col7 {width: 05%; text-align: right;}
+        .transactions .col8 {width: 05%; text-align: right;}
+        .transactions .col9 {width: 25%; text-align: left;}
+
+        .transactions thead th {
+            background-color: lightgrey;
+            border-top: 0.5px solid grey;
+            border-bottom: 0.5px solid grey;
+            padding: 2px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .transactions tbody td {
+            border-bottom: 0.5px solid grey;
+            padding: 2px;
+            vertical-align: middle;
+        }
+
+        .transactions-total {
+            height: 40px;
+        }
+
+        .transactions-total td {
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .signatures {
+            width: 100%;
+            table-layout: fixed;
+            border: None;
+            margin-top: 80px;
+        }
+
+        .signatures .col1 {width: 40%; text-align: left;}
+        .signatures .col2 {width: 20%; text-align: left;}
+        .signatures .col3 {width: 40%; text-align: left;}
+
+        .signatures td {
+            padding: 2px;            
+        }
+
+        .signature-line {
+            border-bottom: 1px solid black;
+            height: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        {# Title #}
+        <div class="document-title">
+            Goods Receipt Note
+        </div>
+
+        {# Head #}
+        <table class="document-head">
+            <tbody>
+                <tr>
+                    <th class="col1" scope="row">GRN #</th>
+                    <td class="col2">{{ goods_movement_note.grn }}</td>
+                    <th class="col3" scope="row">Vendor</th>
+                    <td class="col4">{{ goods_movement_note.vendor_name }}</td>
+                </tr>
+                <tr>
+                    <th class="col1" scope="row">Date</th>
+                    <td class="col2">{{ goods_movement_note.date }}</td>
+                    <th class="col3" scope="row">Print Date</th>
+                    <td class="col4">{{ goods_movement_note.print_date }}</td>
+                </tr>
+                <tr>
+                    <th class="col1"  scope="row">Notes</th>
+                    <td class="col2" colspan=3>{{ goods_movement_note.notes }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {# Transactions #}
+        <table class="transactions">
+            <thead>
+                <tr>
+                    <th class="col1" scope="col">#</th>
+                    <th class="col2" scope="col">Item Name</th>
+                    <th class="col3" scope="col">Transaction time</th>
+                    <th class="col4" scope="col">Gross Weight</th>
+                    <th class="col5" scope="col">Tare Weight</th>
+                    <th class="col6" scope="col">Net Weight</th>
+                    <th class="col7" scope="col">Unit Price</th>
+                    <th class="col8" scope="col">Net Value</th>
+                    <th class="col9" scope="col">Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in goods_movement_note.transactions.all %}
+
+                    <tr>
+                        <td class="col1">{{ forloop.counter }}</td>
+                        <td class="col2">{{ transaction.material.name }}</td>
+                        <td class="col3">{{ transaction.created_time }}</td>
+                        <td class="col4">{{ transaction.gross_weight }}</td>
+                        <td class="col5">{{ transaction.tare_weight }}</td>
+                        <td class="col6">{{ transaction.net_weight }}</td>
+                        <td class="col7">{{ transaction.unit_price }}</td>
+                        <td class="col8">{{ transaction.net_value }}</td>
+                        <td class="col9">{{ transaction.notes }}</td>
+                    </tr>
+
+                {% endfor %}
+
+                {# Total row #}
+                <tr class="transactions-total">
+                    <td colspan=7>Total Net Value</td>
+                    <td class="col8">{{ goods_movement_note.total_net_value }}</td>
+                    <td class="col9"></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        {# Signatures #}
+        <table class="signatures">
+            <tbody>
+                <tr>
+                    <td class="col1">Vendor:</th>
+                    <td class="col2"></td>
+                    <th class="col3">Store:</th>
+
+                </tr>
+                <tr>
+                    <th class="col1 signature-line"></th>
+                    <td class="col2"></td>
+                    <th class="col3 signature-line"></th>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+</body>
+</html>

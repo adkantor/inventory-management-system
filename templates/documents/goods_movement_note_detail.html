@@ -1,5 +1,6 @@
 {% extends '_base_with_header.html' %}
 {% load custom_tags %}
+{% load static %}
 
 
 {% block title %}
@@ -14,12 +15,26 @@
 
 {% block header %}
     {% with url_name=request.resolver_match.url_name %}
+        
         {% if url_name|startswith:'goods_dispatch' %}
             {{ goods_movement_note.gdn }}
         {% elif url_name|startswith:'goods_receipt' %}
             {{ goods_movement_note.grn }}
         {% endif %}
+
+        {# button to create/open PDF #}
+        <a  id="pdf-button"
+            class="btn btn-secondary btn-sm mx-3"
+            href="#"
+            target="_blank"
+            data-pdf-exists="{% if goods_movement_note.pdf %}1{% else %}0{% endif %}"
+            data-uuid="{{ goods_movement_note.pk }}"
+            disabled>
+            Pdf not available
+        </a>
+
     {% endwith %}
+
 {% endblock header %}
 
 
@@ -93,3 +108,7 @@
 
     {% endwith %}
 {% endblock content %}
+
+{% block bodyscripts %}
+    <script type="text/javascript" src="{% static 'js/pdf_generation.js' %}"></script>
+{% endblock bodyscripts %}
