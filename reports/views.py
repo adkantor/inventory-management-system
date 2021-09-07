@@ -9,7 +9,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from bokeh.plotting import figure, output_file, show
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Label
 from bokeh.models.widgets import Panel, Tabs
 from bokeh.models.ranges import Range1d
 from bokeh.embed import components
@@ -353,38 +353,57 @@ def get_summary_sales_and_purchases(request):
             # tooltips=f"@{field}" + "{0,0}"
         )
 
-        # inner donut: by material group
-        source_material_group = ColumnDataSource(data=report_material_group)
-        source_material_group.data['angle'] = [x * 2 * pi / sum(source_material_group.data[f'{field}']) for x in source_material_group.data[f'{field}']]
-        source_material_group.data['color'] = viridis(len(source_material_group.data[f'{field}']))
-        plot.annular_wedge(
-            x=0, y=0, source=source_material_group, 
-            inner_radius=0.15, 
-            outer_radius=0.34, 
-            direction="anticlock",
-            start_angle=cumsum('angle', include_zero=True), 
-            end_angle=cumsum('angle'),
-            line_color="white",
-            line_width=3,
-            fill_color='color', 
-            name='material_group'
+        no_data_label = Label(
+            x=10, 
+            y=plot.plot_height-70, 
+            x_units='screen', 
+            y_units='screen',
+            text='No Data', 
+            render_mode='css',
+            border_line_color='black', 
+            border_line_alpha=1.0,
+            background_fill_color='white', 
+            background_fill_alpha=1.0
         )
 
-        # outer donut: by material
-        source_material = ColumnDataSource(data=report_material)
-        source_material.data['angle'] = [x * 2 * pi / sum(source_material.data[f'{field}']) for x in source_material.data[f'{field}']]
-        source_material.data['color'] = viridis(len(source_material.data[f'{field}']))
-        plot.annular_wedge(
-            x=0, y=0, source=source_material, 
-            inner_radius=0.35, 
-            outer_radius=0.75, 
-            direction="anticlock",
-            start_angle=cumsum('angle', include_zero=True), 
-            end_angle=cumsum('angle'),
-            line_color="white", 
-            fill_color='color', 
-            name='material'
-        )
+        # check for zero content -> piechart is not possible in these cases
+        no_data = sum(report_material_group[field]) == 0 or sum(report_material[field]) == 0
+        if no_data:
+            plot.add_layout(no_data_label)
+        else:
+
+            # inner donut: by material group
+            source_material_group = ColumnDataSource(data=report_material_group)
+            source_material_group.data['angle'] = [x * 2 * pi / sum(source_material_group.data[f'{field}']) for x in source_material_group.data[f'{field}']]
+            source_material_group.data['color'] = viridis(len(source_material_group.data[f'{field}']))
+            plot.annular_wedge(
+                x=0, y=0, source=source_material_group, 
+                inner_radius=0.15, 
+                outer_radius=0.34, 
+                direction="anticlock",
+                start_angle=cumsum('angle', include_zero=True), 
+                end_angle=cumsum('angle'),
+                line_color="white",
+                line_width=3,
+                fill_color='color', 
+                name='material_group'
+            )
+
+            # outer donut: by material
+            source_material = ColumnDataSource(data=report_material)
+            source_material.data['angle'] = [x * 2 * pi / sum(source_material.data[f'{field}']) for x in source_material.data[f'{field}']]
+            source_material.data['color'] = viridis(len(source_material.data[f'{field}']))
+            plot.annular_wedge(
+                x=0, y=0, source=source_material, 
+                inner_radius=0.35, 
+                outer_radius=0.75, 
+                direction="anticlock",
+                start_angle=cumsum('angle', include_zero=True), 
+                end_angle=cumsum('angle'),
+                line_color="white", 
+                fill_color='color', 
+                name='material'
+            )
 
         plot.axis.axis_label=None
         plot.axis.visible=False
@@ -396,7 +415,7 @@ def get_summary_sales_and_purchases(request):
     # only GET method is accepted
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400) 
-
+    
     date_from = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=30))
     # min_timestamp = date_from.timestamp() * 1000
     date_to = tz.localize(datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1, microseconds=-1))
@@ -407,6 +426,7 @@ def get_summary_sales_and_purchases(request):
     # get report data
     report_material_group = sales_and_purchases_report(date_from, date_to, by_material_group=True, normalize=False)
     report_material = sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=False)
+
     # get plots
     print(report_material_group)
     plot_sales = get_plot(report_material_group, report_material, 'sales')
