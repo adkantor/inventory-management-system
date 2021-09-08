@@ -36,17 +36,53 @@
                 <th scope="col">{% if url_name|startswith:'goods_dispatch' %}#GDN{% elif url_name|startswith:'goods_receipt' %}#GRN{% endif %}</th>
                 <th scope="col">Date</th>
                 <th scope="col">{% if url_name|startswith:'goods_dispatch' %}Customer{% elif url_name|startswith:'goods_receipt' %}Vendor{% endif %}</th>
-                <th scope="col">Transaction Count</th>
+                <th scope="col" class="text-center">Transaction Count</th>
+                <th scope="col" class="text-center">PDF</th>
+                <th scope="col">Printed on</th>
             </tr>
         </thead>
 
         <tbody>
             {% for item in goods_movement_note_list %}
                 <tr>
-                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{% if url_name|startswith:'goods_dispatch' %}{{ item.gdn }}{% elif url_name|startswith:'goods_receipt' %}{{ item.grn }}{% endif %}</a></td>
-                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{{ item.date }}</a></td>
-                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{% if url_name|startswith:'goods_dispatch' %}{{ item.customer.name }}{% elif url_name|startswith:'goods_receipt' %}{{ item.vendor.name }}{% endif %}</a></td>
-                    <td><a class="d-block text-decoration-none link-dark" href="{{ item.get_absolute_url }}">{{ item.transactions.all.count }}</a></td>
+                    <td class="align-middle">
+                        <a  class="d-block text-decoration-none link-dark" 
+                            href="{{ item.get_absolute_url }}">{% if url_name|startswith:'goods_dispatch' %}{{ item.gdn }}{% elif url_name|startswith:'goods_receipt' %}{{ item.grn }}{% endif %}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a  class="d-block text-decoration-none link-dark" 
+                            href="{{ item.get_absolute_url }}">
+                            {{ item.date }}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a  class="d-block text-decoration-none link-dark" 
+                            href="{{ item.get_absolute_url }}">
+                            {% if url_name|startswith:'goods_dispatch' %}{{ item.customer.name }}{% elif url_name|startswith:'goods_receipt' %}{{ item.vendor.name }}{% endif %}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a  class="d-block text-decoration-none link-dark text-center" 
+                            href="{{ item.get_absolute_url }}">
+                            {{ item.transactions.all.count }}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        {% if item.pdf %}
+                        <a  class="btn btn-sm btn-outline-primary" 
+                            href="{% if url_name|startswith:'goods_dispatch' %}{% url 'goods_dispatch_note_pdf' item.pk %}{% elif url_name|startswith:'goods_receipt' %}{% url 'goods_receipt_note_pdf' item.pk %}{% endif %}" 
+                            target="_blank">
+                            Open
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle">
+                        <a  class="d-block text-decoration-none link-dark" 
+                            href="{{ item.get_absolute_url }}">
+                            {{ item.print_date|default_if_none:'-' }}
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
