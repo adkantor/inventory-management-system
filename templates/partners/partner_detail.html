@@ -24,7 +24,12 @@
                       {% endif %}">
                 Delete
             </a>
-            <button class="btn btn-outline-primary btn-sm mx-3" onclick="javascript:history.back();">Back</button>
+            <a  class="btn btn-outline-primary btn-sm mx-3" 
+                href="{% if url_name|startswith:'vendor' %}{% url 'vendor_list' %}
+                      {% elif url_name|startswith:'customer' %}{% url 'customer_list' %}
+                      {% endif %}">
+                Back
+            </a>
         </p>
 
         <table class="table table-borderless">

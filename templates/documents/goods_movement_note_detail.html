@@ -57,7 +57,12 @@
                       {% endif %}">
                 Delete
             </a>
-            <button class="btn btn-outline-primary btn-sm mx-3" onclick="javascript:history.back();">Back</button>
+            <a  class="btn btn-outline-primary btn-sm mx-3" 
+                href="{% if url_name|startswith:'goods_dispatch' %}{% url 'goods_dispatch_note_list' %}
+                      {% elif url_name|startswith:'goods_receipt' %}{% url 'goods_receipt_note_list' %}
+                      {% endif %}">
+                Back
+            </a>
         </p>
 
         <table class="table table-borderless">
