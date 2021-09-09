@@ -1,0 +1,85 @@
+{% extends '_base_with_header.html' %}
+{% load static %}
+
+{% block title %}{{ employee.username }}{% endblock title %}
+
+{% block header %}{{ employee.full_name }}{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="employee-detail">
+
+        <p>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% url 'employee_edit' employee.pk %}">
+                Edit
+            </a>
+            <a  class="btn btn-outline-danger btn-sm mx-3" 
+                href="{% url 'employee_delete' employee.pk %}">
+                Delete
+            </a>
+            <a  class="btn btn-outline-primary btn-sm mx-3" 
+                href="{% url 'employee_list' %}">
+                Back
+            </a>
+        </p>
+
+        <div class="card mb-3" style="max-width: 100%;">
+            <div class="row g-0">
+                <div class="col-md-2">
+                    <img style="height: 12vw;" src="{% if employee.profile_picture %}{{ employee.profile_picture.url }}{% else %}{% static 'img/profile_picture_placeholder.png' %}{% endif %}" class="img-fluid rounded-start" alt="{{ employee.full_name }}">
+                </div>
+                <div class="col-md-10">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ employee.full_name }}</h5>
+                        <table class="table table-borderless">
+                            <colgroup>
+                                <col class="col-md-2">
+                                <col class="col-md-10">
+                            </colgroup>
+                            <tbody>
+                                <tr><th scope="row">Username</th><td>{{ employee.username }}</td></tr>
+                                <tr><th scope="row">Email address</th><td>{{ employee.email }}</td></tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} 
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-3">
+                <col class="col-md-9">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Employee data</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">First Name</th><td>{{ employee.first_number }}</td></tr>
+                <tr><th scope="row">Last Name</th><td>{{ employee.last_number }}</td></tr>
+                <tr><th scope="row">Username</th><td>{{ employee.username }}</td></tr>
+                <tr><th scope="row">Email address</th><td>{{ employee.email }}</td></tr>
+            </tbody>
+        </table> 
+        {% endcomment %}
+        
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-12">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Permission Groups</th></tr>
+            </thead>
+            <tbody>
+                {% for group in employee.groups.all %}
+                    <tr><td>{{ group }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock content %}

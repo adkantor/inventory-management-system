@@ -1,0 +1,41 @@
+{% extends '_base_with_header.html' %}
+
+
+    {% block title %}
+        Employees
+    {% endblock title %}
+
+    {% block header %}
+        Employees
+        <a class="btn btn-success mx-5 px-5" href="{% url 'employee_new' %}">+ New Employee</a>
+    {% endblock header %}
+
+
+{% block content %}
+    {{ block.super }}
+    
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Last Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Email address</th>
+                <th scope="col">Username</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for employee in employee_list %}
+                <tr>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ employee.get_absolute_url }}">{{ employee.last_name }}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ employee.get_absolute_url }}">{{ employee.first_name }}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ employee.get_absolute_url }}">{{ employee.email }}</a></td>
+                    <td><a class="d-block text-decoration-none link-dark" href="{{ employee.get_absolute_url }}">{{ employee.username }}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+{% endblock content %}

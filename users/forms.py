@@ -12,10 +12,10 @@ class EmailRequiredMixin(object):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ('email', 'username',)
+        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture',)
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = get_user_model()
-        fields = ('email', 'username',)
+        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture',)

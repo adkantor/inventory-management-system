@@ -91,6 +91,10 @@
                                 </ul> 
                             </div>
 
+                            {% comment %} Employee admin {% endcomment %}
+                            <a class="nav-link {% if url_name|startswith:'employee' %}active{% endif %}" href="{% url 'employee_list' %}">Employee Admin</a>
+                            
+
                         </div>
 
                         <div class="d-flex">
