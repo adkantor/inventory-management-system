@@ -45,12 +45,10 @@ class EmployeeUpdateView(UpdateView):
     model = get_user_model()
     context_object_name = 'employee'
     template_name = 'users/employee_edit.html'
-    fields = ('first_name', 'last_name', 'username', 'email', 'profile_picture')
-    success_url = reverse_lazy('employee_list')
+    fields = ('first_name', 'last_name', 'profile_picture')
 
     def get_form(self, form_class=None):
         form = super(EmployeeUpdateView, self).get_form(form_class)
-        form.fields['email'].required = True
         return form
 
     def get_success_url(self):
