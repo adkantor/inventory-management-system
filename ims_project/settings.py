@@ -164,6 +164,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # django-allauth config
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGOUT_REDIRECT = 'home'
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 
 SITE_ID = 1
 
@@ -174,8 +175,7 @@ AUTHENTICATION_BACKENDS = (
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Disable new users signup (see users/adapter.py)
-# ACCOUNT_ADAPTER = 'users.adapter.NoNewUsersAccountAdapter'
+ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
 
 ACCOUNT_SESSION_REMEMBER = True
 
@@ -183,8 +183,17 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'none' # not needed as we start with password reset email
 
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.CustomUserCreationForm'
+}
+
+DEFAULT_FROM_EMAIL = 'noreply@inventory-management-system.com'
+
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
 
 # django-crispy-forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

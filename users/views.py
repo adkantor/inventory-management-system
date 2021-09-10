@@ -1,6 +1,9 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
+from allauth.account.views import SignupView
+from allauth.exceptions import ImmediateHttpResponse
+from allauth.account import signals
 
 from .forms import UserCreationForm, UserChangeForm
 
@@ -15,17 +18,23 @@ class EmployeeDetailView(DetailView):
     context_object_name = 'employee'
     template_name = 'users/employee_detail.html'
 
-class EmployeeCreateView(CreateView):
-    model = get_user_model()
-    context_object_name = 'employee'
-    template_name = 'users/employee_new.html'
-    fields = ('first_name', 'last_name', 'username', 'email', 'profile_picture')
-    success_url = reverse_lazy('employee_list')
 
-    def get_form(self, form_class=None):
-        form = super(EmployeeCreateView, self).get_form(form_class)
-        form.fields['email'].required = True
-        return form
+class EmployeeCreateView(LoginRequiredMixin, SignupView):
+    success_url = reverse_lazy('employee_list')
+    def form_valid(self, form):
+        # override method to prevent logging in as the newly created user
+        self.user = form.save(self.request)
+        try:
+            signals.user_signed_up.send(
+                sender=self.user.__class__,
+                request=self.request,
+                user=self.user, 
+                **{}
+            )            
+            return HttpResponseRedirect(self.get_success_url())
+
+        except ImmediateHttpResponse as e:
+            return e.response
 
 
 class EmployeeUpdateView(UpdateView):
