@@ -1,0 +1,63 @@
+{% extends '_base_with_header.html' %}
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock title %}
+
+{% block header %}{{ user.full_name }}{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="user-detail">
+
+        <p>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% url 'employee_edit' user.pk %}">
+                Edit
+            </a>
+            <button class="btn btn-outline-primary btn-sm mx-3" 
+                    onclick="javascript:history.back();">
+                    Cancel
+            </button>
+        </p>
+
+        <div class="card mb-3" style="max-width: 100%;">
+            <div class="row g-0">
+                <div class="col-md-2">
+                    <img style="height: 12vw;" src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/profile_picture_placeholder.png' %}{% endif %}" class="img-fluid rounded-start" alt="{{ user.full_name }}">
+                </div>
+                <div class="col-md-10">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.full_name }}</h5>
+                        <table class="table table-borderless">
+                            <colgroup>
+                                <col class="col-md-2">
+                                <col class="col-md-10">
+                            </colgroup>
+                            <tbody>
+                                <tr><th scope="row">Username</th><td>{{ user.username }}</td></tr>
+                                <tr><th scope="row">Email address</th><td>{{ user.email }}</td></tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <table class="table table-borderless">
+            <colgroup>
+                <col class="col-md-12">
+            </colgroup>
+            <thead class="table-light">
+                <tr><th scope="col" class="fs-3 py-0" colspan=2>Permission Groups</th></tr>
+            </thead>
+            <tbody>
+                {% for group in user.groups.all %}
+                    <tr><td>{{ group }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock content %}

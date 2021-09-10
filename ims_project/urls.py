@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from users.views import EmployeeProfileView
 
 urlpatterns = [
     # Django admin
@@ -25,6 +26,7 @@ urlpatterns = [
 
     # User management
     path('accounts/', include('allauth.urls')),
+    path('profile/', EmployeeProfileView.as_view(), name='profile'),
 
     # Local apps
     path('', include('pages.urls')),

@@ -101,11 +101,11 @@
                             <div class="dropdown">
 
                                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://pbs.twimg.com/profile_images/658625563142156288/H2sSv6IA_400x400.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
-                                    <strong>mdo</strong>
+                                    <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/profile_picture_placeholder.png' %}{% endif %}" alt="" width="32" height="32" class="rounded-circle me-2">
+                                    <strong>{{ user.username }}</strong>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="{% url 'account_logout' %}">Sign out</a></li>
                                 </ul>

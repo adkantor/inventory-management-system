@@ -19,6 +19,10 @@ class EmployeeDetailView(DetailView):
     template_name = 'users/employee_detail.html'
 
 
+class EmployeeProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/profile.html'
+
+
 class EmployeeCreateView(LoginRequiredMixin, SignupView):
     success_url = reverse_lazy('employee_list')
     def form_valid(self, form):
@@ -49,7 +53,10 @@ class EmployeeUpdateView(UpdateView):
         form.fields['email'].required = True
         return form
 
-class EmployeeDeleteView(DeleteView):
+    def get_success_url(self):
+        if self.request.user.pk == self.kwargs['pk']:
+            return reverse_lazy('profile')
+        return reverse_lazy('employee_list')
     model = get_user_model()
     context_object_name = 'employee'
     template_name = 'users/employee_delete.html'
