@@ -8,6 +8,14 @@ from django.urls import reverse
 class CustomUser(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
 
+    class Meta:
+        permissions = [
+            ('can_view_all_users', 'Can view all users'),
+            ('can_add_user', 'Can add new user'),
+            ('can_update_all_users', 'Can update all users'),
+            ('can_delete_all_users', 'Can delete all users'),
+        ]
+
     @property
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
