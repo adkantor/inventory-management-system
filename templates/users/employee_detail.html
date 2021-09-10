@@ -15,10 +15,12 @@
                 href="{% url 'employee_edit' employee.pk %}">
                 Edit
             </a>
+            {% if employee.pk != user.pk %}
             <a  class="btn btn-outline-danger btn-sm mx-3" 
                 href="{% url 'employee_delete' employee.pk %}">
                 Delete
             </a>
+            {% endif %}
             <a  class="btn btn-outline-primary btn-sm mx-3" 
                 href="{% url 'employee_list' %}">
                 Back

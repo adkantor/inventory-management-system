@@ -1,0 +1,18 @@
+{% extends '_base_with_header.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ employee.last_name }} | Delete{% endblock title %}
+
+{% block header %}<a class="d-block text-decoration-none link-dark" href="{{ employee.get_absolute_url }}">{{ employee.full_name }}</a>{% endblock header %}
+
+{% block content %}
+    {{ block.super }}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "<strong>{{ employee.full_name }}</strong>"?</p>
+        <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+        <button class="btn btn-primary ml-2 mx-3" onclick="javascript:history.back();">Cancel</button>
+    </form>
+
+{% endblock content %}

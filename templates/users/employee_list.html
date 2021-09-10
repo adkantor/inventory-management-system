@@ -1,5 +1,5 @@
 {% extends '_base_with_header.html' %}
-
+{% load static %}
 
     {% block title %}
         Employees
@@ -7,13 +7,13 @@
 
     {% block header %}
         Employees
-        <a class="btn btn-success mx-5 px-5" href="{% url 'employee_new' %}">+ New Employee</a>
+        <a class="btn btn-success mx-5 px-5" href="{% url 'employee_create' %}">+ New Employee</a>
     {% endblock header %}
 
 
 {% block content %}
     {{ block.super }}
-    
+
     <table class="table table-hover">
 
         <thead>
@@ -36,6 +36,6 @@
             {% endfor %}
         </tbody>
         
-    </table>
+    </table> 
 
 {% endblock content %}

@@ -13,7 +13,15 @@
         <p>
             <a  class="btn btn-outline-secondary btn-sm" 
                 href="{% url 'employee_edit' user.pk %}">
-                Edit
+                Edit Personal Data
+            </a>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% url 'account_change_password' %}">
+                Change Password
+            </a>
+            <a  class="btn btn-outline-secondary btn-sm" 
+                href="{% url 'account_email' %}">
+                Manage E-mail Addresses
             </a>
             <button class="btn btn-outline-primary btn-sm mx-3" 
                     onclick="javascript:history.back();">
