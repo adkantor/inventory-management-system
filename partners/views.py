@@ -1,37 +1,41 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 from .models import Vendor, Customer
 
 
 # Vendors
 
-class VendorListView(ListView):
+class VendorListView(LoginRequiredMixin, ListView):
     model = Vendor
     context_object_name = 'partner_list'
     template_name = 'partners/partner_list.html'
     ordering = ['name']
 
-class VendorDetailView(DetailView):
+class VendorDetailView(LoginRequiredMixin, DetailView):
     model = Vendor
     context_object_name = 'partner'
     template_name = 'partners/partner_detail.html'
 
-class VendorCreateView(CreateView):
+class VendorCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'partners.add_vendor'
     model = Vendor
     context_object_name = 'partner'
     fields = ('name', 'country', 'postcode', 'city', 'address', 'tax_number', 'is_private_person', 
               'contact_name', 'contact_phone', 'contact_email',)
     template_name = 'partners/partner_new.html'
 
-class VendorUpdateView(UpdateView):
+class VendorUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'partners.change_vendor'
     model = Vendor
     context_object_name = 'partner'
     fields = ('name', 'country', 'postcode', 'city', 'address', 'tax_number', 'is_private_person', 
               'contact_name', 'contact_phone', 'contact_email',)
     template_name = 'partners/partner_edit.html'
 
-class VendorDeleteView(DeleteView):
+class VendorDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'partners.delete_vendor'
     model = Vendor
     context_object_name = 'partner'
     template_name = 'partners/partner_delete.html'
@@ -40,32 +44,35 @@ class VendorDeleteView(DeleteView):
 
 # Customers
 
-class CustomerListView(ListView):
+class CustomerListView(LoginRequiredMixin, ListView):
     model = Customer
     context_object_name = 'partner_list'
     template_name = 'partners/partner_list.html'
     ordering = ['name']
     
-class CustomerDetailView(DetailView):
+class CustomerDetailView(LoginRequiredMixin, DetailView):
     model = Customer
     context_object_name = 'partner'
     template_name = 'partners/partner_detail.html'
 
-class CustomerCreateView(CreateView):
+class CustomerCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'partners.add_customer'
     model = Customer
     context_object_name = 'partner'
     fields = ('name', 'country', 'postcode', 'city', 'address', 'tax_number', 'is_private_person', 
               'contact_name', 'contact_phone', 'contact_email',)
     template_name = 'partners/partner_new.html'
 
-class CustomerUpdateView(UpdateView):
+class CustomerUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'partners.change_customer'
     model = Customer
     context_object_name = 'partner'
     fields = ('name', 'country', 'postcode', 'city', 'address', 'tax_number', 'is_private_person', 
               'contact_name', 'contact_phone', 'contact_email',)
     template_name = 'partners/partner_edit.html'
 
-class CustomerDeleteView(DeleteView):
+class CustomerDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'partners.delete_customer'
     model = Customer
     context_object_name = 'partner'
     template_name = 'partners/partner_delete.html'

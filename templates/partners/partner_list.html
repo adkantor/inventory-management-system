@@ -16,11 +16,15 @@
         {% with url_name=request.resolver_match.url_name %}
             {% if url_name|startswith:'vendor' %}
                 Vendors
-                <a class="btn btn-success mx-5 px-5" href="{% url 'vendor_new' %}">+ New Vendor</a>
+                {% if perms.partners.add_vendor %}
+                    <a class="btn btn-success mx-5 px-5" href="{% url 'vendor_new' %}">+ New Vendor</a>
+                {% endif %}
             {% elif url_name|startswith:'customer' %}
                 Customers
-                <a class="btn btn-success mx-5 px-5" href="{% url 'customer_new' %}">+ New Customer</a>
-            {% endif %}   
+                {% if perms.partners.add_customer %}
+                    <a class="btn btn-success mx-5 px-5" href="{% url 'customer_new' %}">+ New Customer</a>
+                {% endif %}
+            {% endif %}
         {% endwith %}
     {% endblock header %}
 

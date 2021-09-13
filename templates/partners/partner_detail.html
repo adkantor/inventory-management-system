@@ -12,24 +12,47 @@
     <div class="partner-detail">
 
         <p>
-            <a  class="btn btn-outline-secondary btn-sm" 
-                href="{% if url_name|startswith:'vendor' %}{% url 'vendor_edit' partner.pk %}
-                      {% elif url_name|startswith:'customer' %}{% url 'customer_edit' partner.pk %}
-                      {% endif %}">
-                Edit
-            </a>
-            <a  class="btn btn-outline-danger btn-sm mx-3" 
-                href="{% if url_name|startswith:'vendor' %}{% url 'vendor_delete' partner.pk %}
-                      {% elif url_name|startswith:'customer' %}{% url 'customer_delete' partner.pk %}
-                      {% endif %}">
-                Delete
-            </a>
-            <a  class="btn btn-outline-primary btn-sm mx-3" 
-                href="{% if url_name|startswith:'vendor' %}{% url 'vendor_list' %}
-                      {% elif url_name|startswith:'customer' %}{% url 'customer_list' %}
-                      {% endif %}">
-                Back
-            </a>
+            {% if url_name|startswith:'vendor' %}
+                {# Edit button #}
+                {% if perms.partners.change_vendor %}
+                    <a  class="btn btn-outline-secondary btn-sm" 
+                        href="{% url 'vendor_edit' partner.pk %}">
+                        Edit
+                    </a>
+                {% endif %}
+                {# Delete button #}
+                {% if perms.partners.delete_vendor %}
+                    <a  class="btn btn-outline-danger btn-sm mx-3" 
+                        href="{% url 'vendor_delete' partner.pk %}">
+                        Delete
+                    </a>
+                {% endif %}
+                {# Back button #}
+                <a  class="btn btn-outline-primary btn-sm mx-3" 
+                    href="{% url 'vendor_list' %}">
+                    Back
+                </a>
+            {% elif url_name|startswith:'customer' %}
+                {# Edit button #}
+                {% if perms.partners.change_customer %}
+                    <a  class="btn btn-outline-secondary btn-sm" 
+                        href="{% url 'customer_edit' partner.pk %}">
+                        Edit
+                    </a>
+                {% endif %}
+                {# Delete button #}
+                {% if perms.partners.delete_customer %}
+                    <a  class="btn btn-outline-danger btn-sm mx-3" 
+                        href="{% url 'customer_delete' partner.pk %}">
+                        Delete
+                    </a>
+                {% endif %}
+                {# Back button #}
+                <a  class="btn btn-outline-primary btn-sm mx-3" 
+                    href="{% url 'customer_list' %}">
+                    Back
+                </a>
+            {% endif %}
         </p>
 
         <table class="table table-borderless">
