@@ -16,11 +16,15 @@
         {% with url_name=request.resolver_match.url_name %}
             {% if url_name|startswith:'material_group' %}
                 Material Groups
-                <a class="btn btn-success mx-5 px-5" href="{% url 'material_group_new' %}">+ New Material Group</a>
+                {% if perms.inventories.add_materialgroup %}
+                    <a class="btn btn-success mx-5 px-5" href="{% url 'material_group_new' %}">+ New Material Group</a>
+                {% endif %}
             {% elif url_name|startswith:'material' %}
                 Materials
-                <a class="btn btn-success mx-5 px-5" href="{% url 'material_new' %}">+ New Material</a>
-            {% endif %}   
+                {% if perms.inventories.add_material %}
+                    <a class="btn btn-success mx-5 px-5" href="{% url 'material_new' %}">+ New Material</a>
+                {% endif %}
+            {% endif %}
         {% endwith %}
     {% endblock header %}
 

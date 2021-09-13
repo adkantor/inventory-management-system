@@ -14,24 +14,47 @@
     <div class="inventory-detail">
 
         <p>
-            <a  class="btn btn-outline-secondary btn-sm" 
-                href="{% if url_name|startswith:'material_group' %}{% url 'material_group_edit' item.pk %}
-                      {% elif url_name|startswith:'material' %}{% url 'material_edit' item.pk %}
-                      {% endif %}">
-                Edit
-            </a>
-            <a  class="btn btn-outline-danger btn-sm mx-3" 
-                href="{% if url_name|startswith:'material_group' %}{% url 'material_group_delete' item.pk %}
-                      {% elif url_name|startswith:'material' %}{% url 'material_delete' item.pk %}
-                      {% endif %}">
-                Delete
-            </a>
-            <a  class="btn btn-outline-primary btn-sm mx-3" 
-                href="{% if url_name|startswith:'material_group' %}{% url 'material_group_list' %}
-                      {% elif url_name|startswith:'material' %}{% url 'material_list' %}
-                      {% endif %}">
-                Back
-            </a>
+            {% if url_name|startswith:'material_group' %}
+                {# Edit button #}
+                {% if perms.inventories.change_materialgroup %}
+                    <a  class="btn btn-outline-secondary btn-sm" 
+                        href="{% url 'material_group_edit' item.pk %}">
+                        Edit
+                    </a>
+                {% endif %}
+                {# Delete button #}
+                {% if perms.inventories.delete_materialgroup %}
+                    <a  class="btn btn-outline-danger btn-sm mx-3" 
+                        href="{% url 'material_group_delete' item.pk %}">
+                        Delete
+                    </a>
+                {% endif %}
+                {# Back button #}
+                <a  class="btn btn-outline-primary btn-sm mx-3" 
+                    href="{% url 'material_group_list' %}">
+                    Back
+                </a>
+            {% elif url_name|startswith:'material' %}
+                {# Edit button #}
+                {% if perms.inventories.change_material %}
+                    <a  class="btn btn-outline-secondary btn-sm" 
+                        href="{% url 'material_edit' item.pk %}">
+                        Edit
+                    </a>
+                {% endif %}
+                {# Delete button #}
+                {% if perms.inventories.delete_material %}
+                    <a  class="btn btn-outline-danger btn-sm mx-3" 
+                        href="{% url 'material_delete' item.pk %}">
+                        Delete
+                    </a>
+                {% endif %}
+                {# Back button #}
+                <a  class="btn btn-outline-primary btn-sm mx-3" 
+                    href="{% url 'material_list' %}">
+                    Back
+                </a>
+            {% endif %}
         </p>
 
         <table class="table table-borderless">
