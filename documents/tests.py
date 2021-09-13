@@ -1,17 +1,21 @@
 # -*- coding: iso-8859-2 -*-
 
 import datetime
+from django import urls
 import pytz
 
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from .models import GoodsReceiptNote, GoodsDispatchNote
 from partners.models import Vendor, Customer
 from inventories.models import MaterialGroup, Material, Transaction
 
 tz = pytz.timezone(settings.TIME_ZONE)
+
+
 
 class GoodsReceiptNoteTests(TestCase):
     
@@ -68,6 +72,13 @@ class GoodsReceiptNoteTests(TestCase):
             notes='Some notes 2'
         )
 
+        self.user = get_user_model().objects.create_user(
+            username='authorizeruser', 
+            email='user@email.com', 
+            password='testPass123'
+        )
+
+
     def test_goods_receipt_note_listing(self):
         # grn 1
         self.assertEqual(self.goods_receipt_note_1.date, datetime.date(2021,2,3))
@@ -84,17 +95,43 @@ class GoodsReceiptNoteTests(TestCase):
         self.assertEqual(self.goods_receipt_note_2.transactions.count(), 0)
         self.assertEqual(list(self.goods_receipt_note_2.transactions.all()), [])
 
-    def test_goods_receipt_note_list_view(self):
-        response = self.client.get(reverse('goods_receipt_note_list'))
+    def test_goods_receipt_note_list_view_for_logged_out_user(self):
+        url = reverse('goods_receipt_note_list')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_receipt_note_list_view_for_logged_in_user(self):
+        url = reverse('goods_receipt_note_list')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Feb. 3, 2021')
         self.assertContains(response, 'Test Vendor')
         self.assertContains(response, 'GRN2021/000001')
         self.assertContains(response, 'GRN2021/000002')
         self.assertTemplateUsed(response, 'documents/goods_movement_note_list.html')
-    
-    def test_goods_receipt_note_detail_view(self):
-        response = self.client.get(self.goods_receipt_note_1.get_absolute_url())
+
+    def test_goods_receipt_note_detail_view_for_logged_out_user(self):
+        url = self.goods_receipt_note_1.get_absolute_url()
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_receipt_note_detail_view_for_logged_in_user(self):
+        url = self.goods_receipt_note_1.get_absolute_url()
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         no_response = self.client.get('/documents/goods_receipt_notes/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
@@ -106,14 +143,40 @@ class GoodsReceiptNoteTests(TestCase):
         self.assertContains(response, 'transaction 2')
         self.assertTemplateUsed(response, 'documents/goods_movement_note_detail.html')
 
-    def test_goods_receipt_note_create_view(self):
-        response = self.client.get(reverse('goods_receipt_note_new'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'documents/goods_receipt_note_new.html')
+    def test_goods_receipt_note_create_view_for_logged_out_user(self):
+        url = reverse('goods_receipt_note_new')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
 
-    def test_goods_receipt_note_edit_view(self):
-        response = self.client.get(reverse('goods_receipt_note_edit', args=[f'{self.goods_receipt_note_1.id}']))
-        no_response = self.client.get('/documents/goods_receipt_note_edit/12345/')
+    def test_goods_receipt_note_create_view_for_logged_in_user(self):
+        url = reverse('goods_receipt_note_new')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_new.html')
+
+    def test_goods_receipt_note_edit_view_for_logged_out_user(self):
+        url = reverse('goods_receipt_note_edit', args=[f'{self.goods_receipt_note_1.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_receipt_note_edit_view_for_logged_in_user(self):
+        url = reverse('goods_receipt_note_edit', args=[f'{self.goods_receipt_note_1.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        no_response = self.client.get('/documents/goods_receipt_notes/12345/edit')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'Test Vendor')
@@ -122,16 +185,29 @@ class GoodsReceiptNoteTests(TestCase):
         self.assertContains(response, 'Some notes')
         self.assertContains(response, 'transaction 1')
         self.assertContains(response, 'transaction 2')
-        self.assertTemplateUsed(response, 'documents/goods_receipt_note_edit.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_edit.html')
 
-    def test_goods_receipt_note_delete_view(self):
-        response = self.client.get(reverse('goods_receipt_note_delete', args=[f'{self.goods_receipt_note_2.id}']))
-        no_response = self.client.get('/documents/goods_receipt_note_delete/12345/')
+    def test_goods_receipt_note_delete_view_for_logged_out_user(self):
+        url = reverse('goods_receipt_note_delete', args=[f'{self.goods_receipt_note_2.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_receipt_note_delete_view_for_logged_in_user(self):
+        url = reverse('goods_receipt_note_delete', args=[f'{self.goods_receipt_note_2.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        no_response = self.client.get('/documents/goods_receipt_notes/12345/delete')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'GRN2021/000002')
         self.assertContains(response, 'delete')
-        self.assertTemplateUsed(response, 'documents/goods_receipt_note_delete.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_delete.html')
 
 
 class GoodsDispatchNoteTests(TestCase):
@@ -189,6 +265,13 @@ class GoodsDispatchNoteTests(TestCase):
             notes='Some notes 2'
         )
 
+        self.user = get_user_model().objects.create_user(
+            username='authorizeruser', 
+            email='user@email.com', 
+            password='testPass123'
+        )
+
+
     def test_goods_dispatch_note_listing(self):
         # gdn 1
         self.assertEqual(self.goods_dispatch_note_1.date, datetime.date(2021,2,3))
@@ -205,17 +288,43 @@ class GoodsDispatchNoteTests(TestCase):
         self.assertEqual(self.goods_dispatch_note_2.transactions.count(), 0)
         self.assertEqual(list(self.goods_dispatch_note_2.transactions.all()), [])
 
-    def test_goods_dispatch_note_list_view(self):
-        response = self.client.get(reverse('goods_dispatch_note_list'))
+    def test_goods_dispatch_note_list_view_for_logged_out_user(self):
+        url = reverse('goods_dispatch_note_list')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_dispatch_note_list_view_for_logged_in_user(self):
+        url = reverse('goods_dispatch_note_list')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Feb. 3, 2021')
         self.assertContains(response, 'Test Customer')
         self.assertContains(response, 'GDN2021/000001')
         self.assertContains(response, 'GDN2021/000002')
         self.assertTemplateUsed(response, 'documents/goods_movement_note_list.html')
-    
-    def test_goods_dispatch_note_detail_view(self):
-        response = self.client.get(self.goods_dispatch_note_1.get_absolute_url())
+
+    def test_goods_dispatch_note_detail_view_for_logged_out_user(self):
+        url = self.goods_dispatch_note_1.get_absolute_url()
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_dispatch_note_detail_view_for_logged_in_user(self):
+        url = self.goods_dispatch_note_1.get_absolute_url()
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         no_response = self.client.get('/documents/goods_dispatch_notes/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
@@ -227,13 +336,39 @@ class GoodsDispatchNoteTests(TestCase):
         self.assertContains(response, 'transaction 2')
         self.assertTemplateUsed(response, 'documents/goods_movement_note_detail.html')
 
-    def test_goods_dispatch_note_create_view(self):
-        response = self.client.get(reverse('goods_dispatch_note_new'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'documents/goods_dispatch_note_new.html')
+    def test_goods_dispatch_note_create_view_for_logged_out_user(self):
+        url = reverse('goods_dispatch_note_new')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
 
-    def test_goods_dispatch_note_edit_view(self):
-        response = self.client.get(reverse('goods_dispatch_note_edit', args=[f'{self.goods_dispatch_note_1.id}']))
+    def test_goods_dispatch_note_create_view_for_logged_in_user(self):
+        url = reverse('goods_dispatch_note_new')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_new.html')
+
+    def test_goods_dispatch_note_edit_view_for_logged_out_user(self):
+        url = reverse('goods_dispatch_note_edit', args=[f'{self.goods_dispatch_note_1.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_goods_dispatch_note_edit_view_for_logged_in_user(self):
+        url = reverse('goods_dispatch_note_edit', args=[f'{self.goods_dispatch_note_1.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         no_response = self.client.get('/documents/goods_dispatch_note_edit/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
@@ -243,13 +378,26 @@ class GoodsDispatchNoteTests(TestCase):
         self.assertContains(response, 'Some notes')
         self.assertContains(response, 'transaction 1')
         self.assertContains(response, 'transaction 2')
-        self.assertTemplateUsed(response, 'documents/goods_dispatch_note_edit.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_edit.html')
 
-    def test_goods_dispatch_note_delete_view(self):
-        response = self.client.get(reverse('goods_dispatch_note_delete', args=[f'{self.goods_dispatch_note_2.id}']))
+    def test_goods_dispatch_note_delete_view_for_logged_out_user(self):
+        url = reverse('goods_dispatch_note_delete', args=[f'{self.goods_dispatch_note_2.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+        
+    def test_goods_dispatch_note_delete_view_for_logged_in_user(self):
+        url = reverse('goods_dispatch_note_delete', args=[f'{self.goods_dispatch_note_2.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         no_response = self.client.get('/documents/goods_dispatch_note_delete/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'GDN2021/000002')
         self.assertContains(response, 'delete')
-        self.assertTemplateUsed(response, 'documents/goods_dispatch_note_delete.html')
+        self.assertTemplateUsed(response, 'documents/goods_movement_note_delete.html')
