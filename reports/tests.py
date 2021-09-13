@@ -7,6 +7,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 from inventories.models import MaterialGroup, Material, Transaction
 
@@ -21,20 +23,97 @@ tz = pytz.timezone(settings.TIME_ZONE)
 
 class ReportViewsTests(TestCase):
 
-    def test_dashboard_view(self):
-        response = self.client.get(reverse('dashboard'))
+    def setUp(self):
+        
+        self.user = get_user_model().objects.create_user(
+            username='authorizeruser', 
+            email='user@email.com', 
+            password='testPass123'
+        )
+
+        self.manager_permission = Permission.objects.get(codename='can_view_all_transactions')
+
+
+    def test_dashboard_view_for_logged_out_user(self):
+        url = reverse('dashboard')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_dashboard_view_for_logged_in_user_without_permission(self):
+        url = reverse('dashboard')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_dashboard_view_for_logged_in_user_with_permission(self):
+        url = reverse('dashboard')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Stock levels')
         self.assertTemplateUsed(response, 'reports/dashboard.html')
 
-    def test_summary_view(self):
-        response = self.client.get(reverse('summary'))
+    def test_summary_view_for_logged_out_user(self):
+        url = reverse('summary')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_summary_view_for_logged_in_user_without_permission(self):
+        url = reverse('summary')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_summary_view_for_logged_in_user_with_permission(self):
+        url = reverse('summary')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Report type')
         self.assertTemplateUsed(response, 'reports/summary.html')
 
-    def test_transactions_view(self):
-        response = self.client.get(reverse('transactions'))
+    def test_transactions_view_for_logged_out_user(self):
+        url = reverse('transactions')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_transactions_view_for_logged_in_user_without_permission(self):
+        url = reverse('transactions')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_transactions_view_for_logged_in_user_with_permission(self):
+        url = reverse('transactions')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Transaction type')
         self.assertTemplateUsed(response, 'reports/transactions.html')
@@ -130,11 +209,25 @@ class GetTransactionsTests(TestCase):
             notes='some notes'
         )
 
+        self.user = get_user_model().objects.create_user(
+            username='authorizeruser', 
+            email='user@email.com', 
+            password='testPass123'
+        )
+
+        content_type = ContentType.objects.get_for_model(Transaction)
+        self.manager_permission = Permission.objects.get(codename='can_view_all_transactions', content_type=content_type)
+
 
     def test_get_all_transactions(self): 
+        url = reverse('get_transactions')
         payload = {}
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -147,11 +240,16 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_no_type_provided(self):
+        url = reverse('get_transactions')
         payload = {
             'transaction_types': ['']
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -162,11 +260,16 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_filtered_by_single_type(self):
+        url = reverse('get_transactions')
         payload = {
             'transaction_types': ['IN']
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -179,11 +282,16 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_filtered_by_multiple_types(self):
+        url = reverse('get_transactions')
         payload = {
             'transaction_types': ['IN', 'OUT']
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -196,11 +304,16 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_filtered_by_material_group(self): 
+        url = reverse('get_transactions')
         payload = {
             'material_group': self.mat_group_1.pk
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -213,11 +326,16 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_filtered_by_material(self): 
+        url = reverse('get_transactions')
         payload = {
             'material': self.mat_11.pk
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -230,11 +348,16 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_filtered_by_date_from(self): 
+        url = reverse('get_transactions')
         payload = {
             'date_from': '2021-03-01'
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
@@ -247,12 +370,17 @@ class GetTransactionsTests(TestCase):
 
 
     def test_get_transactions_filtered_by_material_group_and_date_from(self):
+        url = reverse('get_transactions')
         payload = {
             'material_group': self.mat_group_1.pk,
             'date_from': '2021-03-01'
         }
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.manager_permission)
         response = client.get(
-            reverse('get_transactions'),
+            url,
             data=payload,
             content_type='application/json'
         )
