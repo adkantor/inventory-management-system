@@ -2,6 +2,8 @@ from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect, FileResponse, Http404
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required, permission_required
 
 from .models import GoodsReceiptNote, GoodsDispatchNote
 from inventories.models import Transaction
@@ -16,7 +18,7 @@ from .render import Render
 # Goods Receipt Note
 ########################
 
-class GoodsReceiptNoteCreateView(CreateView):
+class GoodsReceiptNoteCreateView(LoginRequiredMixin, CreateView):
     model = GoodsReceiptNote
     form_class = GoodsReceiptNoteHeaderForm
     template_name = "documents/goods_movement_note_new.html"
@@ -79,7 +81,7 @@ class GoodsReceiptNoteCreateView(CreateView):
             )
 
 
-class GoodsReceiptNoteUpdateView(UpdateView):
+class GoodsReceiptNoteUpdateView(LoginRequiredMixin, UpdateView):
     model = GoodsReceiptNote
     form_class = GoodsReceiptNoteHeaderForm
     template_name = "documents/goods_movement_note_edit.html"
@@ -137,30 +139,32 @@ class GoodsReceiptNoteUpdateView(UpdateView):
         )
 
 
-class GoodsReceiptNoteListView(ListView):
+class GoodsReceiptNoteListView(LoginRequiredMixin, ListView):
     model = GoodsReceiptNote
     context_object_name = 'goods_movement_note_list'
     template_name = 'documents/goods_movement_note_list.html'
     ordering = ['-grn']
 
 
-class GoodsReceiptNoteDetailView(DetailView):
+class GoodsReceiptNoteDetailView(LoginRequiredMixin, DetailView):
     model = GoodsReceiptNote
     context_object_name = 'goods_movement_note'
     template_name = 'documents/goods_movement_note_detail.html'
 
 
-class GoodsReceiptNoteDeleteView(DeleteView):
+class GoodsReceiptNoteDeleteView(LoginRequiredMixin, DeleteView):
     model = GoodsReceiptNote
     context_object_name = 'goods_movement_note'
     template_name = 'documents/goods_movement_note_delete.html'
     success_url = reverse_lazy('goods_receipt_note_list')
 
 
+@login_required
 def goods_receipt_note_display_pdf(request, pk):
     return goods_movement_note_display_pdf(request, pk, GoodsReceiptNote)
 
 
+@login_required
 def goods_receipt_note_generate_pdf(request, pk):
     return goods_movement_note_generate_pdf(request, pk, GoodsReceiptNote)
 
@@ -170,7 +174,7 @@ def goods_receipt_note_generate_pdf(request, pk):
 # Goods Dispatch Note
 ########################
 
-class GoodsDispatchNoteCreateView(CreateView):
+class GoodsDispatchNoteCreateView(LoginRequiredMixin, CreateView):
     model = GoodsDispatchNote
     form_class = GoodsDispatchNoteHeaderForm
     template_name = "documents/goods_movement_note_new.html"
@@ -233,7 +237,7 @@ class GoodsDispatchNoteCreateView(CreateView):
             )
 
 
-class GoodsDispatchNoteUpdateView(UpdateView):
+class GoodsDispatchNoteUpdateView(LoginRequiredMixin, UpdateView):
     model = GoodsDispatchNote
     form_class = GoodsDispatchNoteHeaderForm
     template_name = "documents/goods_movement_note_edit.html"
@@ -286,30 +290,32 @@ class GoodsDispatchNoteUpdateView(UpdateView):
         )
 
 
-class GoodsDispatchNoteListView(ListView):
+class GoodsDispatchNoteListView(LoginRequiredMixin, ListView):
     model = GoodsDispatchNote
     context_object_name = 'goods_movement_note_list'
     template_name = 'documents/goods_movement_note_list.html'
     ordering = ['-gdn']
 
 
-class GoodsDispatchNoteDetailView(DetailView):
+class GoodsDispatchNoteDetailView(LoginRequiredMixin, DetailView):
     model = GoodsDispatchNote
     context_object_name = 'goods_movement_note'
     template_name = 'documents/goods_movement_note_detail.html'
 
 
-class GoodsDispatchNoteDeleteView(DeleteView):
+class GoodsDispatchNoteDeleteView(LoginRequiredMixin, DeleteView):
     model = GoodsDispatchNote
     context_object_name = 'goods_movement_note'
     template_name = 'documents/goods_movement_note_delete.html'
     success_url = reverse_lazy('goods_dispatch_note_list')
 
 
+@login_required
 def goods_dispatch_note_display_pdf(request, pk):
     return goods_movement_note_display_pdf(request, pk, GoodsDispatchNote)
 
 
+@login_required
 def goods_dispatch_note_generate_pdf(request, pk):
     return goods_movement_note_generate_pdf(request, pk, GoodsDispatchNote)
 
