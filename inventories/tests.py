@@ -4,6 +4,8 @@ import pytz
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth.models import Permission
+from django.contrib.auth import get_user_model
 
 from .models import (
     MaterialGroup, Material, Transaction,
@@ -12,102 +14,312 @@ from .models import (
 
 tz = pytz.timezone(settings.TIME_ZONE)
 
+
+
 class MaterialGroupTests(TestCase):
     
     def setUp(self):
+        
         self.material_group = MaterialGroup.objects.create(
             name = 'aluminium',
         )
- 
+
+        self.user = get_user_model().objects.create_user(
+            username='authorizeruser', 
+            email='user@email.com', 
+            password='testPass123'
+        )
+
+        self.create_permission = Permission.objects.get(codename='add_materialgroup')
+        self.update_permission = Permission.objects.get(codename='change_materialgroup')
+        self.delete_permission = Permission.objects.get(codename='delete_materialgroup')
+
 
     def test_material_group_listing(self):
         self.assertEqual(f'{self.material_group.name}', 'aluminium')
 
-    def test_material_group_list_view(self):
-        response = self.client.get(reverse('material_group_list'))
+    def test_material_group_list_view_for_logged_out_user(self):
+        url = reverse('material_group_list')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_group_list_view_for_logged_in_user(self):
+        url = reverse('material_group_list')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'aluminium')
         self.assertTemplateUsed(response, 'inventories/inventory_list.html')
-    
-    def test_material_group_detail_view(self):
-        response = self.client.get(self.material_group.get_absolute_url())
-        no_response = self.client.get('/inventories/inventory_groups/12345/')
+
+    def test_material_group_detail_view_for_logged_out_user(self):
+        url = self.material_group.get_absolute_url()
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_group_detail_view_for_logged_in_user(self):
+        url = self.material_group.get_absolute_url()
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        no_response = self.client.get('/inventories/material_groups/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'aluminium')
         self.assertTemplateUsed(response, 'inventories/inventory_detail.html')
 
-    def test_material_group_create_view(self):
-        response = self.client.get(reverse('material_group_new'))
+    def test_material_group_create_view_for_logged_out_user(self):
+        url = reverse('material_group_new')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_group_create_view_for_logged_in_user_without_permission(self):
+        url = reverse('material_group_new')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_material_group_create_view_for_logged_in_user_with_permission(self):
+        url = reverse('material_group_new')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.create_permission)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'inventories/inventory_new.html')
 
-    def test_material_group_edit_view(self):
-        response = self.client.get(reverse('material_group_edit', args=[f'{self.material_group.id}']))
-        no_response = self.client.get('/inventories/inventory_edit/12345/')
+    def test_material_group_edit_view_for_logged_out_user(self):
+        url = reverse('material_group_edit', args=[f'{self.material_group.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_group_edit_view_for_logged_in_user_without_permission(self):
+        url = reverse('material_group_edit', args=[f'{self.material_group.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_material_group_edit_view_for_logged_in_user_with_permission(self):
+        url = reverse('material_group_edit', args=[f'{self.material_group.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.update_permission)
+        response = self.client.get(url)
+        no_response = self.client.get('/inventories/material_groups/12345/edit/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'aluminium')
         self.assertTemplateUsed(response, 'inventories/inventory_edit.html')
 
-    def test_material_group_delete_view(self):
-        response = self.client.get(reverse('material_group_delete', args=[f'{self.material_group.id}']))
-        no_response = self.client.get('/inventories/inventory_delete/12345/')
+    def test_material_group_delete_view_for_logged_out_user(self):
+        url = reverse('material_group_delete', args=[f'{self.material_group.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')    
+
+    def test_material_group_delete_view_for_logged_in_user_without_permission(self):
+        url = reverse('material_group_delete', args=[f'{self.material_group.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)  
+
+    def test_material_group_delete_view_for_logged_in_user_with_permission(self):
+        url = reverse('material_group_delete', args=[f'{self.material_group.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.delete_permission)
+        response = self.client.get(url)
+        no_response = self.client.get('/inventories/material_groups/12345/delete/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'aluminium')
         self.assertContains(response, 'delete')
-        self.assertTemplateUsed(response, 'inventories/inventory_delete.html')        
+        self.assertTemplateUsed(response, 'inventories/inventory_delete.html')    
+
 
 
 class MaterialTests(TestCase):
     
     def setUp(self):
+        
         self.material = Material.objects.create(
             name = 'alu cooler',
             material_group = MaterialGroup.objects.get_or_create(name = 'aluminium')[0]
         )
- 
+
+        self.user = get_user_model().objects.create_user(
+            username='authorizeruser', 
+            email='user@email.com', 
+            password='testPass123'
+        )
+
+        self.create_permission = Permission.objects.get(codename='add_material')
+        self.update_permission = Permission.objects.get(codename='change_material')
+        self.delete_permission = Permission.objects.get(codename='delete_material')
+
 
     def test_material_listing(self):
         self.assertEqual(f'{self.material.name}', 'alu cooler')
         self.assertEqual(f'{self.material.material_group.name}', 'aluminium')
 
-    def test_material_list_view(self):
-        response = self.client.get(reverse('material_list'))
+    def test_material_list_view_for_logged_out_user(self):
+        url = reverse('material_list')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_list_view_for_logged_in_user(self):
+        url = reverse('material_list')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'alu cooler')
         self.assertTemplateUsed(response, 'inventories/inventory_list.html')
-    
-    def test_material_detail_view(self):
-        response = self.client.get(self.material.get_absolute_url())
+
+    def test_material_detail_view_for_logged_out_user(self):
+        url = self.material.get_absolute_url()
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_detail_view_for_logged_in_user(self):
+        url = self.material.get_absolute_url()
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
         no_response = self.client.get('/inventories/materials/12345/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'alu cooler')
         self.assertTemplateUsed(response, 'inventories/inventory_detail.html')
 
-    def test_material_create_view(self):
-        response = self.client.get(reverse('material_new'))
+    def test_material_create_view_for_logged_out_user(self):
+        url = reverse('material_new')
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_create_view_for_logged_in_user_without_permission(self):
+        url = reverse('material_new')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_material_create_view_for_logged_in_user_with_permission(self):
+        url = reverse('material_new')
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.create_permission)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'inventories/inventory_new.html')
 
-    def test_material_edit_view(self):
-        response = self.client.get(reverse('material_edit', args=[f'{self.material.id}']))
-        no_response = self.client.get('/inventories/inventory_edit/12345/')
+    def test_material_edit_view_for_logged_out_user(self):
+        url = reverse('material_edit', args=[f'{self.material.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')
+
+    def test_material_edit_view_for_logged_in_user_without_permission(self):
+        url = reverse('material_edit', args=[f'{self.material.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_material_edit_view_for_logged_in_user_with_permission(self):
+        url = reverse('material_edit', args=[f'{self.material.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.update_permission)
+        response = self.client.get(url)
+        no_response = self.client.get('/inventories/materials/12345/edit/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'alu cooler')
         self.assertTemplateUsed(response, 'inventories/inventory_edit.html')
 
-    def test_material_delete_view(self):
-        response = self.client.get(reverse('material_delete', args=[f'{self.material.id}']))
-        no_response = self.client.get('/inventories/inventory_delete/12345/')
+    def test_material_delete_view_for_logged_out_user(self):
+        url = reverse('material_delete', args=[f'{self.material.id}'])
+        # log-out user
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("account_login")}?next={url}')
+        response = self.client.get(f'{reverse("account_login")}?next={url}')
+        self.assertContains(response, 'Sign In')    
+
+    def test_material_delete_view_for_logged_in_user_without_permission(self):
+        url = reverse('material_delete', args=[f'{self.material.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)  
+
+    def test_material_delete_view_for_logged_in_user_with_permission(self):
+        url = reverse('material_delete', args=[f'{self.material.id}'])
+        # log-in user
+        self.client.login(email='user@email.com', password='testPass123')
+        # add permission
+        self.user.user_permissions.add(self.delete_permission)
+        response = self.client.get(url)
+        no_response = self.client.get('/inventories/materials/12345/delete/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'alu cooler')
         self.assertContains(response, 'delete')
-        self.assertTemplateUsed(response, 'inventories/inventory_delete.html')  
+        self.assertTemplateUsed(response, 'inventories/inventory_delete.html') 
+
 
 
 class TransactionTests(TestCase):
@@ -158,58 +370,6 @@ class TransactionTests(TestCase):
         self.assertEqual(self.goods_dispatch.net_weight, 16.0)
         self.assertEqual(self.goods_dispatch.net_value, 160.0)
 
-    # def test_transactions_with_annotations(self):
-    #     alu = Material.objects.get(name='alu cooler')
-    #     result = Transaction.transactions_with_annotations(material=alu)
-    #     self.assertEqual(result.count(), 2)
-    #     self.assertEqual(result[0].net_signed_weight, 8)
-    #     self.assertEqual(result[0].net_signed_value, 40)
-    #     self.assertEqual(result[0].balance, 8)
-    #     self.assertEqual(result[1].net_signed_weight, -16)
-    #     self.assertEqual(result[1].net_signed_value, -160)
-    #     self.assertEqual(result[1].balance, -8)
-    
-
-    def test_transaction_list_view(self):
-        response = self.client.get(reverse('transaction_list'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'alu cooler')
-        self.assertTemplateUsed(response, 'inventories/transaction_list.html')
-    
-    def test_transaction_detail_view(self):
-        response = self.client.get(self.goods_receipt.get_absolute_url())
-        no_response = self.client.get('/inventories/transactions/12345/')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(no_response.status_code, 404)
-        self.assertContains(response, 'alu cooler')
-        self.assertTemplateUsed(response, 'inventories/transaction_detail.html')
-
-    def test_goods_receipt_create_view(self):
-        response = self.client.get(reverse('goods_receipt_new'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'inventories/goods_receipt_new.html')
-
-    def test_goods_dispatch_create_view(self):
-        response = self.client.get(reverse('goods_dispatch_new'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'inventories/goods_dispatch_new.html')
-
-    def test_goods_receipt_edit_view(self):
-        response = self.client.get(reverse('goods_receipt_edit', args=[f'{self.goods_receipt.id}']))
-        no_response = self.client.get('/inventories/goods_receipts/12345/edit')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(no_response.status_code, 404)
-        self.assertContains(response, 'alu cooler')
-        self.assertTemplateUsed(response, 'inventories/goods_receipt_edit.html')
-
-    def test_transaction_delete_view(self):
-        response = self.client.get(reverse('transaction_delete', args=[f'{self.goods_receipt.id}']))
-        no_response = self.client.get('/inventories/transactions/12345/delete')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(no_response.status_code, 404)
-        self.assertContains(response, 'alu cooler')
-        self.assertContains(response, 'delete')
-        self.assertTemplateUsed(response, 'inventories/transaction_delete.html')
 
 
 class CalculationTests(TestCase):
