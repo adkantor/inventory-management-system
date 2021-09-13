@@ -7,6 +7,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required, permission_required
 
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Label
@@ -25,16 +27,21 @@ from reports.models import (
 
 tz = pytz.timezone(settings.TIME_ZONE)
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    permission_required = 'inventories.can_view_all_transactions'
     template_name='reports/dashboard.html'
 
-class TransactionsView(TemplateView):
+class TransactionsView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    permission_required = 'inventories.can_view_all_transactions'
     template_name='reports/transactions.html'
 
-class SummaryView(TemplateView):
+class SummaryView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    permission_required = 'inventories.can_view_all_transactions'
     template_name='reports/summary.html'
 
 
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_material_groups(request):
     # only GET method is accepted
     if request.method != "GET":
@@ -43,6 +50,8 @@ def get_material_groups(request):
     return JsonResponse(material_groups, safe=False) 
     
 
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_materials(request, material_group_id):
     # only GET method is accepted
     if request.method != "GET":
@@ -60,6 +69,8 @@ def get_materials(request, material_group_id):
     return JsonResponse(materials, safe=False) 
 
 
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_transactions(request):
 
     # only GET method is accepted
@@ -124,6 +135,9 @@ def get_transactions(request):
 
     return JsonResponse(result, safe=False) 
 
+
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_summary(request):
     # only GET method is accepted
     if request.method != "GET":
@@ -180,6 +194,8 @@ def get_summary(request):
     return JsonResponse(result, safe=False)
 
 
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_stock_levels(request):
     # only GET method is accepted
     if request.method != "GET":
@@ -243,6 +259,8 @@ def get_stock_levels(request):
     )
 
 
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_weekly_sales_and_purchases(request):
     # only GET method is accepted
     if request.method != "GET":
@@ -327,6 +345,8 @@ def get_weekly_sales_and_purchases(request):
     )
 
 
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_summary_sales_and_purchases(request):
 
     def get_plot(report_material_group, report_material, field):
@@ -442,6 +462,9 @@ def get_summary_sales_and_purchases(request):
         {'div': div, 'script':script}
     )
 
+
+@login_required
+@permission_required('inventories.can_view_all_transactions', raise_exception=True)
 def get_user_statuses(request):
     # only GET method is accepted
     if request.method != "GET":

@@ -80,16 +80,18 @@
                             </div>
 
                             {% comment %} Reports {% endcomment %}
-                            <div class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle  {% if url_name|startswith:'transactions' or url_name|startswith:'summary' or url_name|startswith:'dashboard' %}active{% endif %}" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Reports
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item {% if url_name|startswith:'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a></li>
-                                    <li><a class="dropdown-item {% if url_name|startswith:'transactions' %}active{% endif %}" href="{% url 'transactions' %}">Transaction report</a></li>
-                                    <li><a class="dropdown-item {% if url_name|startswith:'summary' %}active{% endif %}" href="{% url 'summary' %}">Summary report</a></li>
-                                </ul> 
-                            </div>
+                            {% if perms.inventories.can_view_all_transactions %}
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle  {% if url_name|startswith:'transactions' or url_name|startswith:'summary' or url_name|startswith:'dashboard' %}active{% endif %}" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Reports
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item {% if url_name|startswith:'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a></li>
+                                        <li><a class="dropdown-item {% if url_name|startswith:'transactions' %}active{% endif %}" href="{% url 'transactions' %}">Transaction report</a></li>
+                                        <li><a class="dropdown-item {% if url_name|startswith:'summary' %}active{% endif %}" href="{% url 'summary' %}">Summary report</a></li>
+                                    </ul> 
+                                </div>
+                            {% endif %}
 
                             {% comment %} Employee admin {% endcomment %}
                             {% if perms.users.can_view_all_users %}

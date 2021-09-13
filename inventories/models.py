@@ -180,6 +180,11 @@ class Transaction(models.Model):
         null=True, 
         blank=True)
 
+    class Meta:
+        permissions = [
+            ('can_view_all_transactions', 'Can view all transactions'),
+        ]
+
     @property
     def net_weight(self):
         return self.gross_weight - self.tare_weight
