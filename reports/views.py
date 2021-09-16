@@ -452,7 +452,6 @@ def get_summary_sales_and_purchases(request):
     report_material = sales_and_purchases_report(date_from, date_to, by_material_group=False, normalize=False)
 
     # get plots
-    print(report_material_group)
     plot_sales = get_plot(report_material_group, report_material, 'sales')
     plot_purchases = get_plot(report_material_group, report_material, 'purchases')
     # get tabs
@@ -476,7 +475,6 @@ def get_user_statuses(request):
 
     User = get_user_model()
     report = User.statuses()
-    print(report)
     return render(request, 'reports/dashboard_table.html', 
         {'report': report}
     )
