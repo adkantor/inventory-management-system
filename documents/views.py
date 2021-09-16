@@ -14,9 +14,9 @@ from .forms import (
 from .render import Render
 
 
-########################
-# Goods Receipt Note
-########################
+
+# ------------   Goods Receipt Note   ------------
+
 
 class GoodsReceiptNoteCreateView(LoginRequiredMixin, CreateView):
     model = GoodsReceiptNote
@@ -170,9 +170,8 @@ def goods_receipt_note_generate_pdf(request, pk):
 
 
 
-########################
-# Goods Dispatch Note
-########################
+# ------------   Goods Dispatch Note   ------------
+
 
 class GoodsDispatchNoteCreateView(LoginRequiredMixin, CreateView):
     model = GoodsDispatchNote

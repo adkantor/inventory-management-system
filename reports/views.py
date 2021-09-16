@@ -7,10 +7,10 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
 
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Label
 from bokeh.models.widgets import Panel, Tabs
 from bokeh.models.ranges import Range1d
@@ -27,13 +27,17 @@ from reports.models import (
 
 tz = pytz.timezone(settings.TIME_ZONE)
 
+
+
 class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     permission_required = 'inventories.can_view_all_transactions'
     template_name='reports/dashboard.html'
 
+
 class TransactionsView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     permission_required = 'inventories.can_view_all_transactions'
     template_name='reports/transactions.html'
+
 
 class SummaryView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     permission_required = 'inventories.can_view_all_transactions'

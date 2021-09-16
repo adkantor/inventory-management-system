@@ -1,5 +1,4 @@
 import datetime
-import json
 import uuid
 import pytz
 
@@ -20,6 +19,8 @@ from .models import (
 
 client = Client()
 tz = pytz.timezone(settings.TIME_ZONE)
+
+
 
 class ReportViewsTests(TestCase):
 

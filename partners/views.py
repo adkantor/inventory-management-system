@@ -1,11 +1,13 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Vendor, Customer
 
 
-# Vendors
+
+# ------------   Vendors   ------------
+
 
 class VendorListView(LoginRequiredMixin, ListView):
     model = Vendor
@@ -42,7 +44,9 @@ class VendorDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('vendor_list')
 
 
-# Customers
+
+# ------------   Customers   ------------
+
 
 class CustomerListView(LoginRequiredMixin, ListView):
     model = Customer

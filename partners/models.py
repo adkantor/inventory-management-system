@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 
+
 class Partner(models.Model):
     id = models.UUIDField(
         primary_key=True,

@@ -5,7 +5,7 @@ services:
         build: .
         command: python /code/manage.py runserver 0.0.0.0:8000
         environment:
-            - SECRET_KEY=hx76H%y6MGX6$$fEV9QdHXt&qqCJS2dX^ # django-insecure-p2nl$7sgbqq$mr$$#6y*#s=n@zzw@ihk1*xi-#!_+hplrvc=6&
+            - SECRET_KEY=hx76H%y6MGX6$$fEV9QdHXt&qqCJS2dX^
             - DEBUG=1
             - POSTGRES_PASSWORD=adam
         volumes:

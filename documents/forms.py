@@ -1,23 +1,15 @@
 from django import forms
-from django.contrib.admin import widgets
 from django.forms import inlineformset_factory
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder, Submit, Row, Column
+from crispy_forms.layout import Layout, Fieldset, Div, HTML, ButtonHolder, Submit, Row, Column
 from .custom_layout_objects import TransactionFormset
 
 from .models import GoodsReceiptNote, GoodsDispatchNote
 from inventories.models import Transaction
 
-class GoodsReceiptNoteHeaderForm(forms.ModelForm):
 
-    # class Meta:
-    #     model=GoodsReceiptNote
-    #     fields=['date', 'vendor', 'notes']
-    #     widgets = {
-    #         'date': forms.DateInput(attrs={'type': 'date', 'required': True}),
-    #         'vendor': forms.Select(attrs={'required': True}),
-    #         'notes': forms.Textarea(),  
-    #     }
+
+class GoodsReceiptNoteHeaderForm(forms.ModelForm):
 
     class Meta:
         model=GoodsReceiptNote
@@ -27,6 +19,7 @@ class GoodsReceiptNoteHeaderForm(forms.ModelForm):
             'vendor': forms.Select(attrs={'required': True}),
             'notes': forms.Textarea(attrs={'rows': '3', 'cols': '100'}),  
         }
+
 
     def __init__(self, *args, **kwargs):
         super(GoodsReceiptNoteHeaderForm, self).__init__(*args, **kwargs)
@@ -54,6 +47,7 @@ class GoodsReceiptNoteHeaderForm(forms.ModelForm):
             )
         )
 
+
 class GoodsDispatchNoteHeaderForm(forms.ModelForm):
 
     class Meta:
@@ -64,6 +58,7 @@ class GoodsDispatchNoteHeaderForm(forms.ModelForm):
             'customer': forms.Select(attrs={'required': True}),
             'notes': forms.Textarea(attrs={'rows': '3', 'cols': '100'}),  
         }
+
 
     def __init__(self, *args, **kwargs):
         super(GoodsDispatchNoteHeaderForm, self).__init__(*args, **kwargs)
@@ -91,6 +86,7 @@ class GoodsDispatchNoteHeaderForm(forms.ModelForm):
             )
         )
 
+
 class GoodsReceiptNoteTransactionsForm(forms.ModelForm):
     class Meta:
         model=Transaction
@@ -105,6 +101,7 @@ class GoodsReceiptNoteTransactionsForm(forms.ModelForm):
         }
 
 class GoodsDispatchNoteTransactionsForm(forms.ModelForm):
+
     class Meta:
         model=Transaction
         fields=['material', 'transaction_time', 'gross_weight', 'tare_weight', 'unit_price', 'notes']
@@ -117,12 +114,14 @@ class GoodsDispatchNoteTransactionsForm(forms.ModelForm):
             'notes': forms.TextInput(),  
         }
 
+
 GoodsReceiptTransactionFormSet = inlineformset_factory(GoodsReceiptNote, Transaction, 
     form=GoodsReceiptNoteTransactionsForm,
     extra=0,
     min_num=1, 
     validate_min=True
 )
+
 
 GoodsDispatchTransactionFormSet = inlineformset_factory(GoodsDispatchNote, Transaction, 
     form=GoodsDispatchNoteTransactionsForm,

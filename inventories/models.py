@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 from django.db.models import Q, Sum, ExpressionWrapper, F, When, Case, Window
 from django.urls import reverse
@@ -6,8 +7,10 @@ from django.urls import reverse
 from documents.models import GoodsReceiptNote, GoodsDispatchNote
 
 
+
 def get_deleted_material_group():
     return MaterialGroup.objects.get_or_create(name='deleted')[0].id
+
 
 def get_undefined_material_group():
     return MaterialGroup.objects.get_or_create(name='undefined')[0].id
@@ -25,43 +28,6 @@ class MaterialGroup(models.Model):
 
     def get_absolute_url(self):
         return reverse('material_group_detail', args=[str(self.id)])
-
-    # def price_at(self, date):
-    #     pass # TODO
-
-    # def balance_at(self, date):
-    #     net_weight_exp = ExpressionWrapper((F('gross_weight') - F('tare_weight')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
-    #     result = Transaction.objects.filter(
-    #         Q(transaction_type=Transaction.TYPE_IN) &
-    #         Q(material__material_group=self) &
-    #         Q(transaction_time__lte=date)
-    #     ).annotate(
-    #             net_weight=net_weight_exp
-    #     ).aggregate(Sum('net_weight'))
-    #     cum_in_to_date = result['net_weight__sum'] or 0
-        
-    #     result = Transaction.objects.filter(
-    #         Q(transaction_type=Transaction.TYPE_OUT) &
-    #         Q(material__material_group=self) &
-    #         Q(transaction_time__lte=date)
-    #     ).annotate(
-    #             net_weight=net_weight_exp
-    #     ).aggregate(Sum('net_weight'))
-    #     cum_out_to_date = result['net_weight__sum'] or 0
-        
-    #     return cum_in_to_date - cum_out_to_date
-
-    # def movement_between(self, transaction_type, date_from, date_to):
-    #     net_weight_exp = ExpressionWrapper((F('gross_weight') - F('tare_weight')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
-    #     result = Transaction.objects.filter(
-    #         Q(transaction_type=transaction_type) &
-    #         Q(material__material_group=self) &
-    #         Q(transaction_time__gte=date_from) &
-    #         Q(transaction_time__lte=date_to)
-    #     ).annotate(
-    #             net_weight=net_weight_exp
-    #     ).aggregate(Sum('net_weight'))
-    #     return result['net_weight__sum'] or 0  
 
     def serialize(self):
         return {
@@ -92,44 +58,6 @@ class Material(models.Model):
 
     def get_absolute_url(self):
         return reverse('material_detail', args=[str(self.id)])
-
-    # def price_at(date):
-    #     pass # TODO
-
-    # def balance_at(self, date):
-    #     net_weight_exp = ExpressionWrapper((F('gross_weight') - F('tare_weight')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
-    #     result = Transaction.objects.filter(
-    #         Q(transaction_type=Transaction.TYPE_IN) &
-    #         Q(material=self) &
-    #         Q(transaction_time__lte=date)
-    #     ).annotate(
-    #             net_weight=net_weight_exp
-    #     ).aggregate(Sum('net_weight'))
-    #     cum_in_to_date = result['net_weight__sum'] or 0
-        
-    #     result = Transaction.objects.filter(
-    #         Q(transaction_type=Transaction.TYPE_OUT) &
-    #         Q(material=self) &
-    #         Q(transaction_time__lte=date)
-    #     ).annotate(
-    #             net_weight=net_weight_exp
-    #     ).aggregate(Sum('net_weight'))
-    #     cum_out_to_date = result['net_weight__sum'] or 0
-        
-    #     return cum_in_to_date - cum_out_to_date
-
-    # def movement_between(self, transaction_type, date_from, date_to):
-    #     net_weight_exp = ExpressionWrapper((F('gross_weight') - F('tare_weight')), output_field=models.DecimalField(max_digits=7, decimal_places=2))
-    #     result = Transaction.objects.filter(
-    #         Q(transaction_type=transaction_type) &
-    #         Q(material=self) &
-    #         Q(transaction_time__gte=date_from) &
-    #         Q(transaction_time__lte=date_to)
-    #     ).annotate(
-    #             net_weight=net_weight_exp
-    #     ).aggregate(Sum('net_weight'))
-    #     return result['net_weight__sum'] or 0        
-        
 
     def serialize(self):
         return {
@@ -189,19 +117,9 @@ class Transaction(models.Model):
     def net_weight(self):
         return self.gross_weight - self.tare_weight
 
-    # @property
-    # def net_signed_weight(self):
-    #     mult = 1 if self.transaction_type == self.TYPE_IN else -1
-    #     return self.net_weight * mult
-
     @property
     def net_value(self):
         return round(self.net_weight * self.unit_price, 2)
-
-    # @property
-    # def net_signed_value(self):
-    #     mult = 1 if self.transaction_type == self.TYPE_IN else -1
-    #     return self.net_value * mult
 
     @property
     def partner_name(self):
@@ -254,27 +172,6 @@ class Transaction(models.Model):
 
         transactions = Transaction.objects.filter(q).order_by('-transaction_time').all()
         return [transaction.serialize() for transaction in transactions]
-
-    # @staticmethod
-    # def transactions_with_annotations(material_group=None, material=None, date_from=None, date_to=None):
-    #     q = Q()
-    #     if material_group is not None:
-    #         q &= Q(material__material_group=material_group)
-    #     if material is not None:
-    #         q &= Q(material=material)
-    #     if date_from is not None:
-    #         q &= Q(transaction_time__gte=date_from)
-    #     if date_to is not None:
-    #         q &= Q(transaction_time__lte=date_to)
-    #     transactions = Transaction.objects.filter(q).order_by('transaction_time')\
-    #         .annotate(
-    #             net_signed_weight=ExpressionWrapper((F('gross_weight') - F('tare_weight')) * Case(When(transaction_type=Transaction.TYPE_IN, then=1), When(transaction_type=Transaction.TYPE_OUT, then=-1)), output_field=models.DecimalField(max_digits=7, decimal_places=2)),
-    #             net_signed_value=ExpressionWrapper(F('net_signed_weight') * F('unit_price'), output_field=models.DecimalField(max_digits=7, decimal_places=2)),
-    #             balance=ExpressionWrapper(Window(Sum('net_signed_weight'), order_by=F('transaction_time').asc()), output_field=models.DecimalField(max_digits=7, decimal_places=2)),
-    #     ).all()
-    #     # print(transactions.values())
-    #     return transactions
-
 
     def __str__(self):
         return f'{self.transaction_time} | {self.transaction_type} | {self.net_weight}  |  {self.material.name} | $({self.net_value})'

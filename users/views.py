@@ -11,6 +11,8 @@ from allauth.account import signals
 
 from .forms import UserCreationForm, UserChangeForm
 
+
+
 class EmployeeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = ('users.can_view_all_users')
     model = get_user_model()
@@ -18,26 +20,13 @@ class EmployeeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'users/employee_list.html'
     ordering = ['last_name']
 
+
 class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = ('users.can_view_all_users')
     model = get_user_model()
     context_object_name = 'employee'
     template_name = 'users/employee_detail.html'
 
-
-# class EmployeeDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-#     model = get_user_model()
-#     context_object_name = 'employee'
-#     template_name = 'users/employee_detail.html'
-
-#     def test_func(self):
-#         can_view_all_users = self.request.user.has_perm('users.can_view_all_users')
-#         can_view_itself_only = (
-#             self.request.user.has_perm('users.can_view_itself_only')
-#             and self.request.user.pk == self.kwargs['pk']
-#         )
-        
-#         return can_view_all_users or can_view_itself_only
 
 class EmployeeProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'users/profile.html'

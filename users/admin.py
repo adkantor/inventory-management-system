@@ -10,6 +10,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 CustomUser = get_user_model()
 
 
+
 class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
@@ -22,4 +23,5 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
-admin.site.login = login_required(admin.site.login) #TODO: ide permission is kell
+# restrict access to already authenticated users
+admin.site.login = login_required(admin.site.login)

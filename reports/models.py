@@ -6,10 +6,13 @@ from inventories.models import (
     balance, movement_between, sales_and_purchases, weighted_avg_price, period_weighted_avg_price
 )
 
+
+
 class Resolution(Enum):
     DAY = 'day'
     WEEK = 'week'
     MONTH = 'month'
+
 
 def datetime_range(start=None, end=None, resolution=Resolution.DAY):
     """
@@ -64,24 +67,6 @@ def normalized(data):
     
     return [x / sum_of_data for x in data]
 
-# def daily_material_report(date_from, date_to, material):
-#     qty_closing = None
-#     report = []
-#     for start_of_period, end_of_period in datetime_range(start=date_from, end=date_to, resolution=Resolution.DAY):
-#         qty_opening = qty_closing or material.balance_at(start_of_period - datetime.timedelta(days=1))
-#         qty_in = material.movement_between(Transaction.TYPE_IN, start_of_period, end_of_period)
-#         qty_out = material.movement_between(Transaction.TYPE_OUT, start_of_period, end_of_period)
-#         qty_closing = qty_opening + qty_in - qty_out
-#         data = {
-#             'start_of_period': start_of_period,
-#             'end_of_period': end_of_period,
-#             'qty_opening': qty_opening,
-#             'qty_in': qty_in,
-#             'qty_out': qty_out,
-#             'qty_closing': qty_closing,
-#         }
-#         report.append(data)
-#     return report
 
 def summary_report(date_from, date_to, resolution, filter_by=None):
     assert isinstance(date_from, datetime.datetime)
@@ -149,6 +134,7 @@ def stock_level_report(date_from, date_to, by_material_group=False):
         result[name] = balances
 
     return result
+
 
 def weekly_sales_and_purchases_report(date_from, date_to):
     """

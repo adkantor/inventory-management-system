@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY') #'django-insecure-p2nl$7sgbqq$mr$$#6y*#s=n@zzw@ihk1*xi-#!_+hplrvc=6&'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=0))
@@ -82,7 +82,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'custom_tags': 'templatetags.custom_tags' #os.path.join(BASE_DIR, 'templatetags', 'custom_tags.py'),
+                'custom_tags': 'templatetags.custom_tags'
             },
         },
     },

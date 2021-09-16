@@ -2,13 +2,13 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.http import HttpRequest
 from django.middleware.csrf import get_token
-from django.db.models.signals import post_save
-from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 
 from allauth.account.views import PasswordResetView
 
 from .forms import CustomUserCreationForm
 from .forms import signup_done
+
 
 
 @receiver(signup_done, sender=CustomUserCreationForm)
@@ -22,7 +22,7 @@ def send_reset_password_email(sender, instance, **kwargs):
     if settings.DEBUG:
         request.META['HTTP_HOST'] = '127.0.0.1:8000'
     else:
-        request.META['HTTP_HOST'] = 'www.mysite.com'
+        request.META['HTTP_HOST'] = Site.objects.get_current().domain
 
     # pass the post form data
     request.POST = {
@@ -30,4 +30,5 @@ def send_reset_password_email(sender, instance, **kwargs):
         'csrfmiddlewaretoken': get_token(HttpRequest())
     }
 
-    PasswordResetView.as_view()(request)  # email will be sent!
+    # the below line also sends notification email
+    PasswordResetView.as_view()(request)
