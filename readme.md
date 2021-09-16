@@ -146,8 +146,8 @@ This is an interactive dashboard withs charts and tables. Users can change views
 
 Available charts/tables
 - *Summary Sales and Purchases*: multi-level piechart showing the composition of the sales / purchases of the last 30 days by material and by material group.
-- *Stock levels*: line graph showing daily stock levels for the chosen material group
-- *Weekly Sales and Purchases*: barchart showing the total value of weekly sales / purchases and their balance (margin) as a line graph for the chosen material group.
+- *Stock levels*: barchart showing daily stock levels for the chosen material group
+- *Weekly Sales and Purchases*: stacked barchart showing the total value of weekly sales and purchases and their balance (margin) as a line graph.
 - *User statuses*: table showing all users and their respective last login time.
 
 
