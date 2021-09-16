@@ -1,0 +1,44 @@
+[
+{
+    "model": "inventories.materialgroup",
+    "pk": "2b13bbe9-015e-470b-b255-347161b6b37f",
+    "fields": {
+        "name": "other metal"
+    }
+},
+{
+    "model": "inventories.materialgroup",
+    "pk": "4a58aa80-e831-43a3-bf71-13207b19c33e",
+    "fields": {
+        "name": "aluminium"
+    }
+},
+{
+    "model": "inventories.materialgroup",
+    "pk": "4e1f2d2b-ffeb-4921-a812-c3b773a6faa1",
+    "fields": {
+        "name": "brass"
+    }
+},
+{
+    "model": "inventories.materialgroup",
+    "pk": "6da1dcac-3665-4cf1-a40d-23f7a95c2992",
+    "fields": {
+        "name": "undefined"
+    }
+},
+{
+    "model": "inventories.materialgroup",
+    "pk": "9bf9f565-511e-4278-9df1-91d854033205",
+    "fields": {
+        "name": "steel"
+    }
+},
+{
+    "model": "inventories.materialgroup",
+    "pk": "c77d5603-3113-4523-af5c-0143679e9f92",
+    "fields": {
+        "name": "copper"
+    }
+}
+]

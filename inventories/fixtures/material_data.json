@@ -1,0 +1,162 @@
+[
+{
+    "model": "inventories.material",
+    "pk": "080d672c-d00a-464c-ba42-0842a5d1b1c0",
+    "fields": {
+        "name": "alu alloy",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "0d3afaed-bf85-4d4b-9232-585bb4c68825",
+    "fields": {
+        "name": "miscellaneous copper",
+        "material_group": "c77d5603-3113-4523-af5c-0143679e9f92"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "16ed3ad1-bf93-4dad-a394-838b2892c345",
+    "fields": {
+        "name": "alu cast",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "44740492-4986-4077-9134-118b5ddc170a",
+    "fields": {
+        "name": "steel plate",
+        "material_group": "9bf9f565-511e-4278-9df1-91d854033205"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "5df2e66c-e217-4b93-8efe-013baa48b61f",
+    "fields": {
+        "name": "alu chips",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "61074fa6-75c7-4774-90dc-d0480e891c34",
+    "fields": {
+        "name": "brass chips",
+        "material_group": "4e1f2d2b-ffeb-4921-a812-c3b773a6faa1"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "6324645e-bcf8-494f-a2c4-cfa44c9ae235",
+    "fields": {
+        "name": "copper cable",
+        "material_group": "c77d5603-3113-4523-af5c-0143679e9f92"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "64c16ef6-2f6a-41a9-8044-7cd3d94a6331",
+    "fields": {
+        "name": "cast aluminium",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "70c98370-93a7-402b-937e-003b24f79c5a",
+    "fields": {
+        "name": "bronze",
+        "material_group": "2b13bbe9-015e-470b-b255-347161b6b37f"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "7d44389d-38f7-4d7a-9b81-2439e177bd0a",
+    "fields": {
+        "name": "copper-alu radiator",
+        "material_group": "c77d5603-3113-4523-af5c-0143679e9f92"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "939563f1-ac4a-4b22-bff7-354103a72209",
+    "fields": {
+        "name": "peeled copper",
+        "material_group": "c77d5603-3113-4523-af5c-0143679e9f92"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "9d45151b-ac90-4c0f-ac31-7c4749be260d",
+    "fields": {
+        "name": "alu unalloyed",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "b0b886eb-7a37-45a2-be5b-ac6464592892",
+    "fields": {
+        "name": "brass-copper radiator",
+        "material_group": "4e1f2d2b-ffeb-4921-a812-c3b773a6faa1"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "b1ac039d-0083-4240-a19f-7ef38aa0958c",
+    "fields": {
+        "name": "alu profile",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "d98eb8b2-cf5e-4c66-97ea-d76d2b798921",
+    "fields": {
+        "name": "steel can",
+        "material_group": "9bf9f565-511e-4278-9df1-91d854033205"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "dcb110d8-71ea-40a2-837c-27bee43bffec",
+    "fields": {
+        "name": "alu radiator",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "e94921a5-3ad8-447e-b314-810aae15a524",
+    "fields": {
+        "name": "steel chips",
+        "material_group": "9bf9f565-511e-4278-9df1-91d854033205"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "ea064bd2-0acb-4194-9f7a-0d6ce824ed8e",
+    "fields": {
+        "name": "alu can",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "eb381c58-0bbe-4f4b-809a-69bfeaaccd5f",
+    "fields": {
+        "name": "zinc",
+        "material_group": "2b13bbe9-015e-470b-b255-347161b6b37f"
+    }
+},
+{
+    "model": "inventories.material",
+    "pk": "f7460ba8-3d52-466d-8358-b396e9a91249",
+    "fields": {
+        "name": "painted alu",
+        "material_group": "4a58aa80-e831-43a3-bf71-13207b19c33e"
+    }
+}
+]
