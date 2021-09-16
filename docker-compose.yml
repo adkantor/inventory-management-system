@@ -7,6 +7,7 @@ services:
         environment:
             - SECRET_KEY=hx76H%y6MGX6$$fEV9QdHXt&qqCJS2dX^ # django-insecure-p2nl$7sgbqq$mr$$#6y*#s=n@zzw@ihk1*xi-#!_+hplrvc=6&
             - DEBUG=1
+            - POSTGRES_PASSWORD=adam
         volumes:
             - .:/code
         ports:
