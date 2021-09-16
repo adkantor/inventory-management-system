@@ -61,7 +61,6 @@ class GoodsReceiptNoteCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, header_form, transaction_formset):
         self.object = header_form.save()
-        print(self.object.id)
         transaction_formset.instance = self.object
         transaction_formset.save()
 
@@ -112,15 +111,10 @@ class GoodsReceiptNoteUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        print('POST')
         self.object = self.get_object()
-        print(self.object)
-        print(self.request)
-        print(self.request.POST)
         form_class = self.get_form_class()
         header_form = self.get_form(form_class)
         transaction_formset = GoodsReceiptTransactionFormSet(self.request.POST, instance=self.object, prefix='transaction')     
-        print(transaction_formset.errors)   
         #Checking the if the form is valid
         if header_form.is_valid() and transaction_formset.is_valid():
             return self.form_valid(header_form, transaction_formset)
@@ -216,7 +210,6 @@ class GoodsDispatchNoteCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, header_form, transaction_formset):
         self.object = header_form.save()
-        print(self.object.id)
         transaction_formset.instance = self.object
         transaction_formset.save()
 
